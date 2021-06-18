@@ -2,6 +2,7 @@
 {
     public enum Coalition
     {
-        
+        BLACK,
+        WHITE
     }
 }

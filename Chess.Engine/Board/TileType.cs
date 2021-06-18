@@ -1,4 +1,4 @@
-﻿namespace Engine
+﻿namespace Engine.Board
 {
     public enum TileType
     {
