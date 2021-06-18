@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
-using Engine.Board;
+using Engine.BoardRepresentation;
+using Engine.BoardRepresentation.TileRepresentation;
+using Engine.MoveRepresentation;
 
 namespace Engine.Pieces
 {
@@ -15,7 +17,13 @@ namespace Engine.Pieces
             PieceCoalition = pieceCoalition;
         }
         
-        public abstract List<Move> GenerateLegalMoves(Board.Board board);
+        protected bool IsEnemyPieceAtTile(Tile tile)
+        {
+            return PieceCoalition == tile.Piece.PieceCoalition;
+        }
+        
+        public abstract List<Move> GenerateLegalMoves(Board board);
+        protected abstract bool IsColumnExclusion(int currentPosition, int offset);
         public abstract Piece MovePiece(Move move);
     }
 }

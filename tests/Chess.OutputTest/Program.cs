@@ -1,6 +1,5 @@
 ﻿using System;
-using Engine;
-using Engine.Board;
+using Engine.BoardRepresentation;
 
 namespace OutputTest
 {

@@ -1,6 +1,6 @@
 ﻿using System.Linq;
 
-namespace Engine.Board
+namespace Engine.BoardRepresentation
 {
     public static class BoardUtilities
     {
@@ -39,6 +39,19 @@ namespace Engine.Board
         public static bool IsValidTileCoordinate(int tileCoordinate)
         {
             return tileCoordinate < NumTiles;
+        }
+        
+        public static bool IsInArray(int value, int[] array)
+        {
+            foreach (int i in array)
+            {
+                if (value == i)
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
     }
 }

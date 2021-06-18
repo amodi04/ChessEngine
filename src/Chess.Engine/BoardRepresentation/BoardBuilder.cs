@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Engine.Pieces;
 
-namespace Engine.Board
+namespace Engine.BoardRepresentation
 {
     public class BoardBuilder
     {

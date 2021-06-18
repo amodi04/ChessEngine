@@ -1,4 +1,4 @@
-﻿namespace Engine.Board
+﻿namespace Engine.MoveRepresentation
 {
     public class Move
     {

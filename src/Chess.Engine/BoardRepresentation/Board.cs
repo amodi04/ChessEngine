@@ -1,8 +1,7 @@
 ﻿using System.Collections.Generic;
-using System.Collections.Immutable;
-using System.Collections.ObjectModel;
+using Engine.BoardRepresentation.TileRepresentation;
 
-namespace Engine.Board
+namespace Engine.BoardRepresentation
 {
     public class Board
     {

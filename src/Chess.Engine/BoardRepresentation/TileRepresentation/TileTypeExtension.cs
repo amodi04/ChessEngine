@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Engine.Board
+namespace Engine.BoardRepresentation.TileRepresentation
 {
     public static class TileTypeExtension
     {
