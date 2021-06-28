@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Engine.BoardRepresentation;
 using Engine.BoardRepresentation.TileRepresentation;
 using Engine.MoveRepresentation;
@@ -7,15 +6,15 @@ using static Engine.BoardRepresentation.BoardUtilities;
 
 namespace Engine.Pieces
 {
-    public class Bishop : Piece
+    public class Queen : Piece
     {
-        public Bishop(int piecePosition, Coalition pieceCoalition) : base(piecePosition, pieceCoalition)
+        public Queen(int piecePosition, Coalition pieceCoalition) : base(piecePosition, pieceCoalition)
         {
         }
 
         public override List<Move> GenerateLegalMoves(Board board)
         {
-            int[] vectorOffsets = {-9, -7, 7, 9};
+            int[] vectorOffsets = {-9, -8, -7, -1, 1, 7, 8, 9};
 
             List<Move> moves = new List<Move>();
 
@@ -31,7 +30,6 @@ namespace Engine.Pieces
 
                     destinationCoordinate += vectorOffset;
                     if (!IsValidTileCoordinate(destinationCoordinate)) continue;
-                    
                     Tile tile = board.GetTile(destinationCoordinate);
                     if (!tile.IsOccupied())
                     {
@@ -42,28 +40,28 @@ namespace Engine.Pieces
                     {
                         if (IsEnemyPieceAtTile(tile))
                         {
-                            // Attacking move
+                            // Attack Move
                             moves.Add(new Move());
                         }
                         break;
                     }
                 }
             }
-            
+
             return moves;
         }
 
         public override Piece MovePiece(Move move)
         {
-            throw new NotImplementedException();
+            throw new System.NotImplementedException();
         }
-        
+
         protected override bool IsColumnExclusion(int currentPosition, int offset)
         {
             return IsInArray(currentPosition, FirstFile)
-                   && offset is -9 or -7 ||
+                   && offset is -9 or -1 or 7 ||
                    IsInArray(currentPosition, EighthFile)
-                   && offset is -7 or 9;
+                   && offset is -7 or 1 or 9;
         }
     }
 }

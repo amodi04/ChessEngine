@@ -1,6 +1,9 @@
-﻿namespace Engine.MoveRepresentation
+﻿using Engine.BoardRepresentation;
+using Engine.Pieces;
+
+namespace Engine.MoveRepresentation
 {
-    public class Move
+    public struct Move
     {
         
     }

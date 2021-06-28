@@ -7,15 +7,15 @@ using static Engine.BoardRepresentation.BoardUtilities;
 
 namespace Engine.Pieces
 {
-    public class Bishop : Piece
+    public class Rook : Piece
     {
-        public Bishop(int piecePosition, Coalition pieceCoalition) : base(piecePosition, pieceCoalition)
+        public Rook(int piecePosition, Coalition pieceCoalition) : base(piecePosition, pieceCoalition)
         {
         }
 
         public override List<Move> GenerateLegalMoves(Board board)
         {
-            int[] vectorOffsets = {-9, -7, 7, 9};
+            int[] vectorOffsets = {-8, -1, 1, 8};
 
             List<Move> moves = new List<Move>();
 
@@ -31,7 +31,6 @@ namespace Engine.Pieces
 
                     destinationCoordinate += vectorOffset;
                     if (!IsValidTileCoordinate(destinationCoordinate)) continue;
-                    
                     Tile tile = board.GetTile(destinationCoordinate);
                     if (!tile.IsOccupied())
                     {
@@ -42,14 +41,14 @@ namespace Engine.Pieces
                     {
                         if (IsEnemyPieceAtTile(tile))
                         {
-                            // Attacking move
+                            // Attack Move
                             moves.Add(new Move());
                         }
                         break;
                     }
                 }
             }
-            
+
             return moves;
         }
 
@@ -61,9 +60,9 @@ namespace Engine.Pieces
         protected override bool IsColumnExclusion(int currentPosition, int offset)
         {
             return IsInArray(currentPosition, FirstFile)
-                   && offset is -9 or -7 ||
+                   && offset is -1 ||
                    IsInArray(currentPosition, EighthFile)
-                   && offset is -7 or 9;
+                   && offset is 1;
         }
     }
 }

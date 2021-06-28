@@ -23,7 +23,7 @@ namespace Engine.Pieces
         }
         
         public abstract List<Move> GenerateLegalMoves(Board board);
-        protected abstract bool IsColumnExclusion(int currentPosition, int offset);
         public abstract Piece MovePiece(Move move);
+        protected abstract bool IsColumnExclusion(int currentPosition, int offset);
     }
 }
