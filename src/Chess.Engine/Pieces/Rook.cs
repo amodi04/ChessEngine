@@ -35,14 +35,14 @@ namespace Engine.Pieces
                     if (!tile.IsOccupied())
                     {
                         // Move move
-                        moves.Add(new Move());
+                        moves.Add(CreateNormalMove(board, destinationCoordinate));
                     }
                     else
                     {
                         if (IsEnemyPieceAtTile(tile))
                         {
                             // Attack Move
-                            moves.Add(new Move());
+                            moves.Add(CreateAttackMove(board, destinationCoordinate, tile.Piece));
                         }
                         break;
                     }
