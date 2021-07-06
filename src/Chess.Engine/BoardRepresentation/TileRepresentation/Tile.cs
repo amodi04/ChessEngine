@@ -5,35 +5,20 @@ namespace Engine.BoardRepresentation.TileRepresentation
 {
     public class Tile
     {
-        public int TileCoordinate { get; }
-        private Piece _piece;
-        public Piece Piece => IsOccupied() ? _piece : null;
-        
-        private readonly TileType _tileType;
-
         // Put all tiles into a dictionary. This is so that there are no repeating indexes.
         // 0-63 tiles
         private static readonly Dictionary<int, Tile> EMPTY_TILES = InitialiseEmptyTiles();
-        
-        // Initialises the board of 64 tiles
-        private static Dictionary<int, Tile> InitialiseEmptyTiles()
-        {
-            Dictionary<int, Tile> emptyTileDictionary = new Dictionary<int, Tile>();
-            for (int i = 0; i < 64; i++)
-            {
-                emptyTileDictionary[i] = new Tile(i);
-            }
-            
-            return emptyTileDictionary;
-        }
-        
+
+        private readonly TileType _tileType;
+        private readonly Piece _piece;
+
         // Empty tile constructor
         private Tile(int tileCoordinate)
         {
             TileCoordinate = tileCoordinate;
             _tileType = TileType.EMPTY;
         }
-        
+
         // Occupied tile constructor
         private Tile(int tileCoordinate, Piece piece)
         {
@@ -42,11 +27,23 @@ namespace Engine.BoardRepresentation.TileRepresentation
             _piece = piece;
         }
 
+        public int TileCoordinate { get; }
+        public Piece Piece => IsOccupied() ? _piece : null;
+
+        // Initialises the board of 64 tiles
+        private static Dictionary<int, Tile> InitialiseEmptyTiles()
+        {
+            var emptyTileDictionary = new Dictionary<int, Tile>();
+            for (var i = 0; i < 64; i++) emptyTileDictionary[i] = new Tile(i);
+
+            return emptyTileDictionary;
+        }
+
         public bool IsOccupied()
         {
             return _tileType.IsOccupied();
         }
-        
+
         // Public interface for creating tiles. Keeps immutability
         public static Tile CreateTile(int tileCoordinate, Piece piece)
         {

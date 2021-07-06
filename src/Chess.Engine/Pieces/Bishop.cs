@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using Engine.BoardRepresentation;
-using Engine.BoardRepresentation.TileRepresentation;
 using Engine.MoveRepresentation;
+using Engine.Opposition;
 using static Engine.BoardRepresentation.BoardUtilities;
 
 namespace Engine.Pieces
@@ -17,22 +17,19 @@ namespace Engine.Pieces
         {
             int[] vectorOffsets = {-9, -7, 7, 9};
 
-            List<Move> moves = new List<Move>();
+            var moves = new List<Move>();
 
-            foreach (int vectorOffset in vectorOffsets)
+            foreach (var vectorOffset in vectorOffsets)
             {
-                int destinationCoordinate = PiecePosition;
+                var destinationCoordinate = PiecePosition;
                 while (IsValidTileCoordinate(destinationCoordinate))
                 {
-                    if (IsColumnExclusion(destinationCoordinate, vectorOffset))
-                    {
-                        break;
-                    }
+                    if (IsColumnExclusion(destinationCoordinate, vectorOffset)) break;
 
                     destinationCoordinate += vectorOffset;
                     if (!IsValidTileCoordinate(destinationCoordinate)) continue;
-                    
-                    Tile tile = board.GetTile(destinationCoordinate);
+
+                    var tile = board.GetTile(destinationCoordinate);
                     if (!tile.IsOccupied())
                     {
                         // Move move
@@ -41,15 +38,13 @@ namespace Engine.Pieces
                     else
                     {
                         if (IsEnemyPieceAtTile(tile))
-                        {
                             // Attacking move
                             moves.Add(CreateAttackMove(board, destinationCoordinate, tile.Piece));
-                        }
                         break;
                     }
                 }
             }
-            
+
             return moves;
         }
 
@@ -57,7 +52,7 @@ namespace Engine.Pieces
         {
             throw new NotImplementedException();
         }
-        
+
         protected override bool IsColumnExclusion(int currentPosition, int offset)
         {
             return IsInArray(currentPosition, FirstFile)

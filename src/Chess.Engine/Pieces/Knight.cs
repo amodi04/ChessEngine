@@ -1,7 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Engine.BoardRepresentation;
-using Engine.BoardRepresentation.TileRepresentation;
 using Engine.MoveRepresentation;
+using Engine.Opposition;
 using static Engine.BoardRepresentation.BoardUtilities;
 
 namespace Engine.Pieces
@@ -15,19 +16,17 @@ namespace Engine.Pieces
         public override List<Move> GenerateLegalMoves(Board board)
         {
             int[] positionOffsets = {-17, -15, -10, -6, 6, 10, 15, 17};
-            
-            List<Move> moves = new List<Move>();
 
-            foreach (int positionOffset in positionOffsets)
+            var moves = new List<Move>();
+
+            foreach (var positionOffset in positionOffsets)
             {
-                int destinationCoordinate = PiecePosition + positionOffset;
+                var destinationCoordinate = PiecePosition + positionOffset;
                 if (IsValidTileCoordinate(destinationCoordinate) &&
                     IsColumnExclusion(PiecePosition, positionOffset))
-                {
                     continue;
-                }
 
-                Tile tile = board.GetTile(destinationCoordinate);
+                var tile = board.GetTile(destinationCoordinate);
                 if (!tile.IsOccupied())
                 {
                     // Move
@@ -36,21 +35,19 @@ namespace Engine.Pieces
                 else
                 {
                     if (IsEnemyPieceAtTile(tile))
-                    {
                         // Attacking move
                         moves.Add(CreateAttackMove(board, destinationCoordinate, tile.Piece));
-                    }
                 }
             }
-            
+
             return moves;
         }
-        
+
         public override Piece MovePiece(Move move)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
-        
+
         protected override bool IsColumnExclusion(int currentPosition, int offset)
         {
             return IsInArray(currentPosition, FirstFile)

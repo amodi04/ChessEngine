@@ -1,16 +1,19 @@
 ﻿using System.Collections.Generic;
+using Engine.Opposition;
 using Engine.Pieces;
 
 namespace Engine.BoardRepresentation
 {
     public class BoardBuilder
     {
-        public Dictionary<int, Piece> BoardConfiguration { get; }
-
         public BoardBuilder()
         {
             BoardConfiguration = new Dictionary<int, Piece>();
         }
+
+        public Dictionary<int, Piece> BoardConfiguration { get; }
+
+        public Coalition CoalitionToMove { get; private set; }
 
         public BoardBuilder SetPieceAtTile(Piece piece)
         {
@@ -18,9 +21,15 @@ namespace Engine.BoardRepresentation
             return this;
         }
 
+        public BoardBuilder SetCoalitionToMove(Coalition coalitionToMove)
+        {
+            CoalitionToMove = coalitionToMove;
+            return this;
+        }
+
         public Board BuildBoard()
         {
-            return new Board(this);
+            return new(this);
         }
     }
 }

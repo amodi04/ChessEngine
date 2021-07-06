@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using Engine.BoardRepresentation;
-using Engine.BoardRepresentation.TileRepresentation;
 using Engine.MoveRepresentation;
 using Engine.Opposition;
 using static Engine.BoardRepresentation.BoardUtilities;
@@ -18,14 +17,15 @@ namespace Engine.Pieces
         {
             int[] positionOffsets = {7, 8, 9, 16};
 
-            List<Move> moves = new List<Move>();
+            var moves = new List<Move>();
 
-            foreach (int positionOffset in positionOffsets)
+            foreach (var positionOffset in positionOffsets)
             {
-                int destinationCoordinate = PiecePosition + PieceCoalition.GetDirection() * positionOffset;
+                var destinationCoordinate = PiecePosition + PieceCoalition.GetDirection() * positionOffset;
                 if (IsValidTileCoordinate(destinationCoordinate))
                 {
-                    continue;;
+                    continue;
+                    ;
                 }
 
                 if (positionOffset == 8 && !board.GetTile(destinationCoordinate).IsOccupied())
@@ -33,25 +33,21 @@ namespace Engine.Pieces
                     // TODO: Check for promotion
                     // Move move
                     moves.Add(new Move());
-                } else if (positionOffset == 16 && IsFirstMove)
+                }
+                else if (positionOffset == 16 && IsFirstMove)
                 {
-                    int behindDestinationCoordinate = PiecePosition + PieceCoalition.GetDirection() * 8;
+                    var behindDestinationCoordinate = PiecePosition + PieceCoalition.GetDirection() * 8;
                     if (!board.GetTile(behindDestinationCoordinate).IsOccupied() &&
                         !board.GetTile(destinationCoordinate).IsOccupied())
-                    {
                         moves.Add(CreateNormalMove(board, destinationCoordinate));
-                    }
-                } else if (!IsColumnExclusion(PiecePosition, positionOffset))
+                }
+                else if (!IsColumnExclusion(PiecePosition, positionOffset))
                 {
-                    Tile tile = board.GetTile(destinationCoordinate);
+                    var tile = board.GetTile(destinationCoordinate);
                     if (!tile.IsOccupied())
-                    {
                         if (IsEnemyPieceAtTile(tile))
-                        {
                             // TODO: Check for promotion
                             moves.Add(CreateAttackMove(board, destinationCoordinate, tile.Piece));
-                        }
-                    }
                 }
             }
 

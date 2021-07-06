@@ -21,8 +21,9 @@ namespace Engine.MoveRepresentation
             MovedPiece = movedPiece;
             CapturedPiece = null;
         }
-        
-        public Move(MoveType moveType, Board board, int fromCoordinate, int toCoordinate, Piece movedPiece, Piece capturedPiece)
+
+        public Move(MoveType moveType, Board board, int fromCoordinate, int toCoordinate, Piece movedPiece,
+            Piece capturedPiece)
         {
             MoveType = moveType;
             Board = board;

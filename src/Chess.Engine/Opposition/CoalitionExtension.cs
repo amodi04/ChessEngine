@@ -4,12 +4,12 @@
     {
         public static int GetDirection(this Coalition coalition)
         {
-            return coalition == Coalition.WHITE ? 1 : -1;
+            return coalition == Coalition.White ? 1 : -1;
         }
 
         public static bool IsWhite(this Coalition coalition)
         {
-            return coalition == Coalition.WHITE;
+            return coalition == Coalition.White;
         }
     }
 }

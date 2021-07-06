@@ -1,8 +1,8 @@
-﻿namespace Engine
+﻿namespace Engine.Opposition
 {
     public enum Coalition
     {
-        BLACK,
-        WHITE
+        Black,
+        White
     }
 }

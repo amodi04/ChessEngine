@@ -6,6 +6,6 @@
         CaptureMove,
         CastleMove,
         PromotionMove,
-        EnPassantMove,
+        EnPassantMove
     }
 }

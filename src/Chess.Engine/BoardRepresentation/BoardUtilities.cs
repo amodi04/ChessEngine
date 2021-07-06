@@ -28,28 +28,24 @@ namespace Engine.BoardRepresentation
 
         private static int[] CreateRank(int startingTileNumber)
         {
-            return Enumerable.Range(startingTileNumber , 8).ToArray();
+            return Enumerable.Range(startingTileNumber, 8).ToArray();
         }
 
         private static int[] CreateFile(int startingFileNumber)
         {
-            return Enumerable.Range(0, 8).Select(n => 8*n + startingFileNumber ).ToArray();
+            return Enumerable.Range(0, 8).Select(n => 8 * n + startingFileNumber).ToArray();
         }
-        
+
         public static bool IsValidTileCoordinate(int tileCoordinate)
         {
             return tileCoordinate < NumTiles;
         }
-        
+
         public static bool IsInArray(int value, int[] array)
         {
-            foreach (int i in array)
-            {
+            foreach (var i in array)
                 if (value == i)
-                {
                     return true;
-                }
-            }
 
             return false;
         }
