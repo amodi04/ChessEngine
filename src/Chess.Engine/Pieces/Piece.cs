@@ -8,8 +8,8 @@ namespace Engine.Pieces
     public abstract class Piece
     {
         public int PiecePosition { get; }
-
         public Coalition PieceCoalition { get; }
+        public bool IsFirstMove { get; }
 
         public Piece(int piecePosition, Coalition pieceCoalition)
         {

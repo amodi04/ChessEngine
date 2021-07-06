@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Engine.BoardRepresentation;
 using Engine.MoveRepresentation;
 using Engine.Opposition;
@@ -31,6 +32,14 @@ namespace Engine.Pieces
                     // TODO: Check for promotion
                     // Move move
                     moves.Add(new Move());
+                } else if (positionOffset == 16 && IsFirstMove)
+                {
+                    int behindDestinationCoordinate = PiecePosition + PieceCoalition.GetDirection() * 8;
+                    if (!board.GetTile(behindDestinationCoordinate).IsOccupied() &&
+                        !board.GetTile(destinationCoordinate).IsOccupied())
+                    {
+                        moves.Add(CreateNormalMove(board, destinationCoordinate));
+                    }
                 }
                 // TODO: Implement pawn attacks
             }
@@ -40,12 +49,12 @@ namespace Engine.Pieces
 
         public override Piece MovePiece(Move move)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         protected override bool IsColumnExclusion(int currentPosition, int offset)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
     }
 }

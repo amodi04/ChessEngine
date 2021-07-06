@@ -6,10 +6,5 @@
         {
             return coalition == Coalition.WHITE ? 1 : -1;
         }
-
-        public static int GetOppositeDirection(this Coalition coalition)
-        {
-            return -GetDirection(coalition);
-        }
     }
 }
