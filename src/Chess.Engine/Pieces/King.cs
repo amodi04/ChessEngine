@@ -21,7 +21,7 @@ namespace Engine.Pieces
             {
                 int destinationCoordinate = PiecePosition + positionOffset;
 
-                if (IsColumnExclusion(PiecePosition, destinationCoordinate))
+                if (IsColumnExclusion(PiecePosition, positionOffset))
                 {
                     continue;
                 }
