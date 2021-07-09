@@ -3,7 +3,7 @@ using Engine.Pieces;
 
 namespace Engine.MoveRepresentation
 {
-    public struct Move
+    public readonly struct Move
     {
         public MoveType MoveType { get; }
         public Board Board { get; }

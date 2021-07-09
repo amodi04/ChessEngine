@@ -8,8 +8,8 @@ namespace Engine.BoardRepresentation.TileRepresentation
         {
             return tileType switch
             {
-                TileType.EMPTY => false,
-                TileType.OCCUPIED => true,
+                TileType.Empty => false,
+                TileType.Occupied => true,
                 _ => throw new ArgumentOutOfRangeException(nameof(tileType), tileType, null)
             };
         }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using Engine.BoardRepresentation;
 using Engine.MoveRepresentation;
@@ -13,7 +14,7 @@ namespace Engine.Pieces
         {
         }
 
-        public override List<Move> GenerateLegalMoves(Board board)
+        public override IList GenerateLegalMoves(Board board)
         {
             int[] positionOffsets = {-17, -15, -10, -6, 6, 10, 15, 17};
 

@@ -2,7 +2,7 @@
 {
     public enum TileType
     {
-        EMPTY,
-        OCCUPIED
+        Empty,
+        Occupied
     }
 }
