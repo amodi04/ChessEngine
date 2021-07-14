@@ -8,12 +8,13 @@ using static Engine.BoardRepresentation.BoardUtilities;
 
 namespace Engine.Pieces
 {
+
+    /// <inheritdoc cref="Piece"/>
     public class Bishop : Piece
     {
         public Bishop(int piecePosition, Coalition pieceCoalition) : base(piecePosition, pieceCoalition)
         {
         }
-
         public override IList GenerateLegalMoves(Board board)
         {
             int[] vectorOffsets = {-9, -7, 7, 9};

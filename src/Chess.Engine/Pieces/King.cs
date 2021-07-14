@@ -8,6 +8,7 @@ using static Engine.BoardRepresentation.BoardUtilities;
 
 namespace Engine.Pieces
 {
+    /// <inheritdoc cref="Piece"/>
     public class King : Piece
     {
         public King(int piecePosition, Coalition pieceCoalition) : base(piecePosition, pieceCoalition)

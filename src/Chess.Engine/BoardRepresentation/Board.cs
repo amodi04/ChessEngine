@@ -5,15 +5,52 @@ using Engine.Pieces;
 
 namespace Engine.BoardRepresentation
 {
+    /// <summary>
+    /// This class stores current game state in form of the chess board.
+    /// </summary>
     public class Board
     {
+        // Member fields
         private readonly Tile[] _board;
+        private IEnumerable<Piece> _blackPieces;
+        private IEnumerable<Piece> _whitePieces;
 
+        /// <summary>
+        /// Internal constructor - only used by board builder.
+        /// </summary>
+        /// <param name="boardBuilder">The BoardBuilder object that builds the board.</param>
         internal Board(BoardBuilder boardBuilder)
         {
             _board = InitialiseBoard(boardBuilder);
+            _whitePieces = CalculateActivePieces(_board, Coalition.White);
+            _blackPieces = CalculateActivePieces(_board, Coalition.Black);
         }
 
+        /// <summary>
+        /// Gets all pieces on the current board.
+        /// </summary>
+        /// <param name="board">The array of tile data which may contain pieces.</param>
+        /// <param name="coalition">Tile state that depicts what colour pieces are returned.</param>
+        /// <returns>Returns an iterable collection so that it cannot be modified.</returns>
+        private IEnumerable<Piece> CalculateActivePieces(Tile[] board, Coalition coalition)
+        {
+            // TODO: Test LINQ performance
+            var pieces = new List<Piece>();
+            foreach (var tile in board)
+            {
+                if (!tile.IsOccupied()) continue;
+                var piece = tile.Piece;
+                if (piece.PieceCoalition == coalition) pieces.Add(piece);
+            }
+
+            return pieces;
+        }
+
+        /// <summary>
+        /// Creates the board based on the BoardBuilder configuration.
+        /// </summary>
+        /// <param name="boardBuilder">The board builder containing the current board configuration.</param>
+        /// <returns>A length 64 array of tiles.</returns>
         private Tile[] InitialiseBoard(BoardBuilder boardBuilder)
         {
             var tiles = new Tile[BoardUtilities.NumTiles];
@@ -24,6 +61,10 @@ namespace Engine.BoardRepresentation
         }
 
         // TODO: Use FEN
+        /// <summary>
+        /// Generates the standard board of chess.
+        /// </summary>
+        /// <returns>Returns a board object containing tiles with pieces at their starting positions.</returns>
         public static Board CreateStandardBoard()
         {
             int[] boardConstants = {0, 56};
@@ -57,6 +98,11 @@ namespace Engine.BoardRepresentation
             return boardBuilder.BuildBoard();
         }
 
+        /// <summary>
+        /// Gets the tile data at the given tileCoordinate.
+        /// </summary>
+        /// <param name="tileCoordinate">The tile position on the board.</param>
+        /// <returns>Tile data at given position.</returns>
         public Tile GetTile(int tileCoordinate)
         {
             return _board[tileCoordinate];

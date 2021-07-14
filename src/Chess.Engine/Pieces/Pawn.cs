@@ -10,6 +10,7 @@ namespace Engine.Pieces
 {
     public class Pawn : Piece
     {
+        /// <inheritdoc cref="Piece"/>
         public Pawn(int piecePosition, Coalition pieceCoalition) : base(piecePosition, pieceCoalition)
         {
         }
