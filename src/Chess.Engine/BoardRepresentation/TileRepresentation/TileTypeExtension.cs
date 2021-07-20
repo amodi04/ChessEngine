@@ -19,6 +19,7 @@ namespace Engine.BoardRepresentation.TileRepresentation
             {
                 TileType.Empty => false,
                 TileType.Occupied => true,
+                // Handle unknown tile type.
                 _ => throw new ArgumentOutOfRangeException(nameof(tileType), tileType, null)
             };
         }

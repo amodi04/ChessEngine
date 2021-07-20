@@ -13,24 +13,41 @@ namespace Engine.Pieces
         /// <inheritdoc cref="Piece"/>
         public Rook(int piecePosition, Coalition pieceCoalition) : base(piecePosition, pieceCoalition)
         {
+            // Empty
         }
 
         public override IList GenerateLegalMoves(Board board)
         {
+            // Directions that a rook can move in. Stored as vector offset because rooks are sliding pieces.
+            /*
+             *  -  8  -
+             * -1  R  1
+             *  - -8  -
+             */
             int[] vectorOffsets = {-8, -1, 1, 8};
 
             var moves = new List<Move>();
 
             foreach (var vectorOffset in vectorOffsets)
-            {
+            { 
+                // Initialise destination coordinate to piece position
                 var destinationCoordinate = PiecePosition;
+                
+                // While the destination coordinate is within the board range
+                // (we want to check all moves in this direction)
                 while (IsValidTileCoordinate(destinationCoordinate))
                 {
+                    // If rook is on an edge case, skip any further generation of moves in this vector offset
                     if (IsColumnExclusion(destinationCoordinate, vectorOffset)) break;
 
+                    // Step the destination coordinate by the vector offset
                     destinationCoordinate += vectorOffset;
+                    
+                    // Skip if not in board range
                     if (!IsValidTileCoordinate(destinationCoordinate)) continue;
                     var tile = board.GetTile(destinationCoordinate);
+                    
+                    // If tile is empty, add normal move
                     if (!tile.IsOccupied())
                     {
                         // Move move
@@ -38,6 +55,7 @@ namespace Engine.Pieces
                     }
                     else
                     {
+                        // If enemy at tile, add attacking move
                         if (IsEnemyPieceAtTile(tile))
                             // Attack Move
                             moves.Add(CreateAttackMove(board, destinationCoordinate, tile.Piece));
@@ -49,11 +67,16 @@ namespace Engine.Pieces
             return moves;
         }
 
+        // TODO: Implement this
         public override Piece MovePiece(Move move)
         {
             throw new NotImplementedException();
         }
 
+        // Rook is on special edge case when its position is on the first file
+        // AND the offset is -1 (going left).
+        // The second special edge case is when its position is on the eighth file
+        // AND the offset is 1 (going right)
         protected override bool IsColumnExclusion(int currentPosition, int offset)
         {
             return IsInArray(currentPosition, FirstFile)

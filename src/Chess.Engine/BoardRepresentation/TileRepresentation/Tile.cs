@@ -46,7 +46,9 @@ namespace Engine.BoardRepresentation.TileRepresentation
         private static IDictionary<int, Tile> InitialiseEmptyTiles()
         {
             var emptyTileDictionary = new Dictionary<int, Tile>();
-            for (var i = 0; i < 64; i++) emptyTileDictionary[i] = new Tile(i);
+            
+            // Loop through 64 times and create empty tiles.
+            for (var i = 0; i < BoardUtilities.NumTiles; i++) emptyTileDictionary[i] = new Tile(i);
 
             return emptyTileDictionary;
         }
@@ -70,6 +72,8 @@ namespace Engine.BoardRepresentation.TileRepresentation
         /// </returns>
         public static Tile CreateTile(int tileCoordinate, Piece piece)
         {
+            // Create an occupied tile if their is a piece.
+            // otherwise return the lookup reference in the empty tiles dictionary.
             return piece != null ? new Tile(tileCoordinate, piece) : EmptyTiles[tileCoordinate];
         }
     }

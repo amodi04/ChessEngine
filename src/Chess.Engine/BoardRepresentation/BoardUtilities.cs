@@ -68,19 +68,21 @@ namespace Engine.BoardRepresentation
         /// <returns>True if the value is between 0 and 64 inclusive.</returns>
         public static bool IsValidTileCoordinate(int tileCoordinate)
         {
-            return tileCoordinate is >= 0 and <= 64;
+            // Tiles should be within the board so 0 to 63 inclusive.
+            return tileCoordinate is >= 0 and <= 63;
         }
 
         /// <summary>
         /// Checks whether a value is in a given array.
         /// </summary>
         /// <param name="value">Value to check.</param>
-        /// <param name="array">IEnumerable array to check in.</param>
+        /// <param name="arr">IEnumerable array to check in.</param>
         /// <returns>True if value is in array.</returns>
         /// TODO: Check inefficiencies
-        public static bool IsInArray(int value, IEnumerable<int> array)
+        public static bool IsInArray(int value, IEnumerable<int> arr)
         {
-            return array.Any(i => value == i);
+            // LINQ expression for checking if value is in array
+            return arr.Any(i => value == i);
         }
     }
 }

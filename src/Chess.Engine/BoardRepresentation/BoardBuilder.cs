@@ -28,6 +28,7 @@ namespace Engine.BoardRepresentation
         /// <returns>A board builder instance containing board configuration. Useful for chaining method calls.</returns>
         public BoardBuilder SetPieceAtTile(Piece piece)
         {
+            // Updates board config with a new piece at position
             BoardConfiguration[piece.PiecePosition] = piece;
             return this;
         }
@@ -50,6 +51,7 @@ namespace Engine.BoardRepresentation
         /// <returns>The created board object.</returns>
         public Board BuildBoard()
         {
+            // Create a new board, passing in the board builder object to the board constructor.
             return new Board(this);
         }
     }

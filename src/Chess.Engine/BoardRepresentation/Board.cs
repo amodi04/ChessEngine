@@ -36,10 +36,14 @@ namespace Engine.BoardRepresentation
         {
             // TODO: Test LINQ performance
             var pieces = new List<Piece>();
+            
+            // Loop through each tile
             foreach (var tile in board)
             {
+                // If empty, skip to next tile
                 if (!tile.IsOccupied()) continue;
                 var piece = tile.Piece;
+                // If piece is ally to passed in colour, then add it.
                 if (piece.PieceCoalition == coalition) pieces.Add(piece);
             }
 
@@ -54,6 +58,7 @@ namespace Engine.BoardRepresentation
         private Tile[] InitialiseBoard(BoardBuilder boardBuilder)
         {
             var tiles = new Tile[BoardUtilities.NumTiles];
+            // Create board by looping through and setting tile based on board builder config
             for (var i = 0; i < BoardUtilities.NumTiles; i++)
                 tiles[i] = Tile.CreateTile(i, boardBuilder.BoardConfiguration[i]);
 
@@ -70,10 +75,14 @@ namespace Engine.BoardRepresentation
             int[] boardConstants = {0, 56};
             var boardBuilder = new BoardBuilder();
             var coalition = Coalition.White;
+            // Loop twice
             for (var i = 0; i <= 1; i++)
             {
+                // i = 0, white
+                // i = 1, black
                 if (i != 0) coalition = Coalition.Black;
 
+                // Set pieces based i value for colour and positional values from boardConstants
                 int index;
                 for (index = boardConstants[i]; index <= boardConstants[i] + 7; index++)
                     if (index == boardConstants[i] || index == boardConstants[i] + 7)
@@ -88,9 +97,11 @@ namespace Engine.BoardRepresentation
 
                 // coalition == coalition.WHITE
                 if (i == 0)
+                    // Set white pawns
                     for (index = boardConstants[0] + 8; index <= 15; index++)
                         boardBuilder.SetPieceAtTile(new Pawn(index, coalition));
                 else
+                    // Set black pawns
                     for (index = boardConstants[1] - 8; index <= 55; index++)
                         boardBuilder.SetPieceAtTile(new Pawn(index, coalition));
             }
@@ -105,6 +116,7 @@ namespace Engine.BoardRepresentation
         /// <returns>Tile data at given position.</returns>
         public Tile GetTile(int tileCoordinate)
         {
+            // Return the tile at passed in index
             return _board[tileCoordinate];
         }
     }

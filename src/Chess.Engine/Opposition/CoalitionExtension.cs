@@ -12,6 +12,8 @@
         /// <returns>Positive 1 if white and negative 1 if black.</returns>
         public static int GetDirection(this Coalition coalition)
         {
+            // white, +1 because traversing towards the 64th tile
+            // black, -1 because traversing towards the 0th tile
             return coalition == Coalition.White ? 1 : -1;
         }
 
