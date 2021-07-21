@@ -63,6 +63,11 @@ namespace Engine.Pieces
         {
             throw new NotImplementedException();
         }
+        
+        public override string ToString()
+        {
+            return PieceCoalition.IsWhite() ? PieceType.King.ToAbbreviation() : PieceType.King.ToAbbreviation().ToLower();
+        }
 
         protected override bool IsColumnExclusion(int currentPosition, int offset)
         {

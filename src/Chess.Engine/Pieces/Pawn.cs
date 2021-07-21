@@ -68,7 +68,7 @@ namespace Engine.Pieces
                         {
                             var tile = board.GetTile(destinationCoordinate);
                             // Pawns can only attack diagonally forward so we check for enemy at tile and then create an attacking move if there is.
-                            if (!tile.IsOccupied())
+                            if (tile.IsOccupied())
                                 if (IsEnemyPieceAtTile(tile))
                                     // TODO: Check for promotion
                                     moves.Add(CreateAttackMove(board, destinationCoordinate, tile.Piece));
@@ -86,6 +86,11 @@ namespace Engine.Pieces
         public override Piece MovePiece(Move move)
         {
             throw new NotImplementedException();
+        }
+        
+        public override string ToString()
+        {
+            return PieceCoalition.IsWhite() ? PieceType.Pawn.ToAbbreviation() : PieceType.Pawn.ToAbbreviation().ToLower();
         }
         
         // Pawn is on special edge case when its position is on the eighth file

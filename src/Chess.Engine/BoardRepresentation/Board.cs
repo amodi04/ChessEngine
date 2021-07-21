@@ -1,5 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
 using Engine.BoardRepresentation.TileRepresentation;
+using Engine.MoveRepresentation;
 using Engine.Opposition;
 using Engine.Pieces;
 
@@ -22,8 +25,43 @@ namespace Engine.BoardRepresentation
         internal Board(BoardBuilder boardBuilder)
         {
             _board = InitialiseBoard(boardBuilder);
+            
+            // Calculate each colour's pieces for any board instance
             _whitePieces = CalculateActivePieces(_board, Coalition.White);
             _blackPieces = CalculateActivePieces(_board, Coalition.Black);
+
+            // Calculate each colour's legal moves for any board instance
+            IEnumerable<Move> whiteLegalMoves = CalculateLegalMoves(_whitePieces);
+            IEnumerable<Move> blackLegalMoves = CalculateLegalMoves(_blackPieces);
+        }
+
+        /// <summary>
+        /// Converts the board object to a useful string.
+        /// </summary>
+        /// <returns>A string of letters and dashed representing the current board layout from white's perspective.</returns>
+        public override string ToString()
+        {
+            var stringBuilder = new StringBuilder();
+            for (int i = 0; i < BoardUtilities.NumTiles; i++)
+            {
+                // Get the string of the tile at current index
+                var tile = _board[i].ToString();
+                
+                // Append the tile string with a padding of 3
+                stringBuilder.Append(tile.PadRight(3));
+                
+                // If the current index + 1 (because of zero offset) mod 8 (tiles per rank) is 0 then create new line
+                // This represents a new rank on the board
+                if ((i + 1) % BoardUtilities.NumTilesPerRank == 0)
+                {
+                    stringBuilder.Append('\n');
+                }
+            }
+
+            // Reverse string so that it is from white's perspective
+            var charArray = stringBuilder.ToString().ToCharArray();
+            Array.Reverse(charArray);
+            return new string(charArray);
         }
 
         /// <summary>
@@ -31,7 +69,7 @@ namespace Engine.BoardRepresentation
         /// </summary>
         /// <param name="board">The array of tile data which may contain pieces.</param>
         /// <param name="coalition">Tile state that depicts what colour pieces are returned.</param>
-        /// <returns>Returns an iterable collection so that it cannot be modified.</returns>
+        /// <returns>Returns an iterable collection so that it cannot be modified without casting to list.</returns>
         private IEnumerable<Piece> CalculateActivePieces(Tile[] board, Coalition coalition)
         {
             // TODO: Test LINQ performance
@@ -51,17 +89,38 @@ namespace Engine.BoardRepresentation
         }
 
         /// <summary>
+        /// Calculates the legal moves from an enumerable collection of pieces.
+        /// </summary>
+        /// <param name="pieces">The pieces to iterate over.</param>
+        /// <returns>An IEnumerable collection of legal moves generated from each piece passed in.</returns>
+        private IEnumerable<Move> CalculateLegalMoves(IEnumerable<Piece> pieces)
+        {
+            var legalMoves = new List<Move>();
+            foreach (var piece in pieces)
+            {
+                foreach (Move legalMove in piece.GenerateLegalMoves(this))
+                {
+                    legalMoves.Add(legalMove);
+                }
+            }
+
+            return legalMoves;
+        }
+
+        /// <summary>
         /// Creates the board based on the BoardBuilder configuration.
         /// </summary>
         /// <param name="boardBuilder">The board builder containing the current board configuration.</param>
         /// <returns>A length 64 array of tiles.</returns>
-        private Tile[] InitialiseBoard(BoardBuilder boardBuilder)
+        private static Tile[] InitialiseBoard(BoardBuilder boardBuilder)
         {
             var tiles = new Tile[BoardUtilities.NumTiles];
             // Create board by looping through and setting tile based on board builder config
             for (var i = 0; i < BoardUtilities.NumTiles; i++)
+            {
                 tiles[i] = Tile.CreateTile(i, boardBuilder.BoardConfiguration[i]);
-
+                Console.WriteLine(tiles[i]);
+            }
             return tiles;
         }
 
@@ -72,40 +131,33 @@ namespace Engine.BoardRepresentation
         /// <returns>Returns a board object containing tiles with pieces at their starting positions.</returns>
         public static Board CreateStandardBoard()
         {
-            int[] boardConstants = {0, 56};
             var boardBuilder = new BoardBuilder();
-            var coalition = Coalition.White;
-            // Loop twice
-            for (var i = 0; i <= 1; i++)
+            boardBuilder.SetPieceAtTile(new Rook(0, Coalition.White));
+            boardBuilder.SetPieceAtTile(new Knight(1, Coalition.White));
+            boardBuilder.SetPieceAtTile(new Bishop(2, Coalition.White));
+            boardBuilder.SetPieceAtTile(new Queen(3, Coalition.White));
+            boardBuilder.SetPieceAtTile(new King(4, Coalition.White));
+            boardBuilder.SetPieceAtTile(new Bishop(5, Coalition.White));
+            boardBuilder.SetPieceAtTile(new Knight(6, Coalition.White));
+            boardBuilder.SetPieceAtTile(new Rook(7, Coalition.White));
+            for (var i = 8; i < 16; i++)
             {
-                // i = 0, white
-                // i = 1, black
-                if (i != 0) coalition = Coalition.Black;
-
-                // Set pieces based i value for colour and positional values from boardConstants
-                int index;
-                for (index = boardConstants[i]; index <= boardConstants[i] + 7; index++)
-                    if (index == boardConstants[i] || index == boardConstants[i] + 7)
-                        boardBuilder.SetPieceAtTile(new Rook(index, coalition));
-                    else if (index == boardConstants[i] + 1 || index == boardConstants[i] + 6)
-                        boardBuilder.SetPieceAtTile(new Knight(index, coalition));
-                    else if (index == boardConstants[i] + 2 || index == boardConstants[i] + 5)
-                        boardBuilder.SetPieceAtTile(new Bishop(index, coalition));
-                    else if (index == boardConstants[i] + 3)
-                        boardBuilder.SetPieceAtTile(new Queen(index, coalition));
-                    else if (index == boardConstants[i] + 4) boardBuilder.SetPieceAtTile(new King(index, coalition));
-
-                // coalition == coalition.WHITE
-                if (i == 0)
-                    // Set white pawns
-                    for (index = boardConstants[0] + 8; index <= 15; index++)
-                        boardBuilder.SetPieceAtTile(new Pawn(index, coalition));
-                else
-                    // Set black pawns
-                    for (index = boardConstants[1] - 8; index <= 55; index++)
-                        boardBuilder.SetPieceAtTile(new Pawn(index, coalition));
+                boardBuilder.SetPieceAtTile(new Pawn(i, Coalition.White));
             }
 
+            for (var i = 48; i < 56; i++)
+            {
+                boardBuilder.SetPieceAtTile(new Pawn(i, Coalition.Black));
+            }
+            boardBuilder.SetPieceAtTile(new Rook(56, Coalition.Black));
+            boardBuilder.SetPieceAtTile(new Knight(57, Coalition.Black));
+            boardBuilder.SetPieceAtTile(new Bishop(58, Coalition.Black));
+            boardBuilder.SetPieceAtTile(new Queen(59, Coalition.Black));
+            boardBuilder.SetPieceAtTile(new King(60, Coalition.Black));
+            boardBuilder.SetPieceAtTile(new Bishop(61, Coalition.Black));
+            boardBuilder.SetPieceAtTile(new Knight(62, Coalition.Black));
+            boardBuilder.SetPieceAtTile(new Rook(63, Coalition.Black));
+            
             return boardBuilder.BuildBoard();
         }
 

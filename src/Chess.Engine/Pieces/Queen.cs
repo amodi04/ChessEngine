@@ -72,6 +72,11 @@ namespace Engine.Pieces
         {
             throw new NotImplementedException();
         }
+        
+        public override string ToString()
+        {
+            return PieceCoalition.IsWhite() ? PieceType.Queen.ToAbbreviation() : PieceType.Queen.ToAbbreviation().ToLower();
+        }
 
         // Queen is on special edge case when its position is on the first file
         // AND the offset is -9, -1 or 7 (going left).

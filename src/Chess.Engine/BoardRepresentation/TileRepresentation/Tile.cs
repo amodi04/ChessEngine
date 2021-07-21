@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Engine.Pieces;
 
 namespace Engine.BoardRepresentation.TileRepresentation
@@ -40,6 +41,21 @@ namespace Engine.BoardRepresentation.TileRepresentation
         }
 
         /// <summary>
+        /// Gets the string representation of the tile object.
+        /// </summary>
+        /// <returns>"-" if tile is empty. If occupied, the string representation of the piece is returned.</returns>
+        /// <exception cref="ArgumentOutOfRangeException">Called when an unknown tile state is passed in.</exception>
+        public override string ToString()
+        {
+            return _tileType switch
+            {
+                TileType.Empty => "-",
+                TileType.Occupied => Piece.ToString(),
+                _ => throw new ArgumentOutOfRangeException()
+            };
+        }
+
+        /// <summary>
         /// Loops from 0 to 64 to generate 64 empty tiles.
         /// </summary>
         /// <returns>An IDictionary containing references to the 64 empty tiles.</returns>
@@ -48,8 +64,11 @@ namespace Engine.BoardRepresentation.TileRepresentation
             var emptyTileDictionary = new Dictionary<int, Tile>();
             
             // Loop through 64 times and create empty tiles.
-            for (var i = 0; i < BoardUtilities.NumTiles; i++) emptyTileDictionary[i] = new Tile(i);
-
+            for (var i = 0; i < BoardUtilities.NumTiles; i++)
+            {
+                emptyTileDictionary[i] = new Tile(i);
+            }
+            
             return emptyTileDictionary;
         }
 

@@ -72,6 +72,11 @@ namespace Engine.Pieces
         {
             throw new NotImplementedException();
         }
+        
+        public override string ToString()
+        {
+            return PieceCoalition.IsWhite() ? PieceType.Rook.ToAbbreviation() : PieceType.Rook.ToAbbreviation().ToLower();
+        }
 
         // Rook is on special edge case when its position is on the first file
         // AND the offset is -1 (going left).

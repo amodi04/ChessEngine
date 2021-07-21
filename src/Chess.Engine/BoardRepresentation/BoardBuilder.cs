@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Engine.BoardRepresentation.TileRepresentation;
 using Engine.Opposition;
 using Engine.Pieces;
 
@@ -10,7 +11,7 @@ namespace Engine.BoardRepresentation
     public class BoardBuilder
     {
         // Member fields
-        public Dictionary<int, Piece> BoardConfiguration { get; }
+        public Piece[] BoardConfiguration { get; }
         public Coalition CoalitionToMove { get; private set; }
         
         /// <summary>
@@ -18,7 +19,7 @@ namespace Engine.BoardRepresentation
         /// </summary>
         public BoardBuilder()
         {
-            BoardConfiguration = new Dictionary<int, Piece>();
+            BoardConfiguration = new Piece[BoardUtilities.NumTiles];
         }
 
         /// <summary>

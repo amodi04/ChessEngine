@@ -77,6 +77,12 @@ namespace Engine.Pieces
         public abstract Piece MovePiece(Move move);
         
         /// <summary>
+        /// Gets the string representation of the piece.
+        /// </summary>
+        /// <returns>A letter which is uppercase if white or lowercase if black. The letters are defined in PieceTypeExtension.</returns>
+        public abstract override string ToString();
+        
+        /// <summary>
         /// This method checks for pieces being on certain columns where considerations must be taken into account.
         /// This is so that the correct destination location is computed and the piece does not go off the board.
         /// </summary>

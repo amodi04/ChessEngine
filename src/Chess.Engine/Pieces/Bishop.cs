@@ -72,6 +72,11 @@ namespace Engine.Pieces
         {
             throw new NotImplementedException();
         }
+        
+        public override string ToString()
+        {
+            return PieceCoalition.IsWhite() ? PieceType.Bishop.ToAbbreviation() : PieceType.Bishop.ToAbbreviation().ToLower();
+        }
 
         protected override bool IsColumnExclusion(int currentPosition, int offset)
         {
