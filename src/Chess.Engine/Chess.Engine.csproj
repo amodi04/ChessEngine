@@ -5,8 +5,4 @@
         <RootNamespace>Engine</RootNamespace>
     </PropertyGroup>
 
-    <ItemGroup>
-      <Folder Include="PlayerRepresentation" />
-    </ItemGroup>
-
 </Project>

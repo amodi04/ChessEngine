@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 using Engine.BoardRepresentation.TileRepresentation;
 using Engine.MoveRepresentation;
 using Engine.Opposition;
 using Engine.Pieces;
+using Engine.PlayerRepresentation;
 
 namespace Engine.BoardRepresentation
 {
@@ -15,8 +17,10 @@ namespace Engine.BoardRepresentation
     {
         // Member fields
         private readonly Tile[] _board;
-        private IEnumerable<Piece> _blackPieces;
-        private IEnumerable<Piece> _whitePieces;
+        public IEnumerable<Piece> BlackPieces { get; }
+        public IEnumerable<Piece> WhitePieces { get; }
+        private Player _whitePlayer;
+        private Player _blackPlayer;
 
         /// <summary>
         /// Internal constructor - only used by board builder.
@@ -27,13 +31,17 @@ namespace Engine.BoardRepresentation
             _board = InitialiseBoard(boardBuilder);
             
             // Calculate each colour's pieces for any board instance
-            _whitePieces = CalculateActivePieces(_board, Coalition.White);
-            _blackPieces = CalculateActivePieces(_board, Coalition.Black);
+            WhitePieces = CalculateActivePieces(_board, Coalition.White);
+            BlackPieces = CalculateActivePieces(_board, Coalition.Black);
 
             // Calculate each colour's legal moves for any board instance
-            IEnumerable<Move> whiteLegalMoves = CalculateLegalMoves(_whitePieces);
-            IEnumerable<Move> blackLegalMoves = CalculateLegalMoves(_blackPieces);
+            var whiteLegalMoves = CalculateLegalMoves(WhitePieces);
+            var blackLegalMoves = CalculateLegalMoves(BlackPieces);
             
+            // Initialise players
+            _whitePlayer = new Player(Coalition.White, this, whiteLegalMoves, blackLegalMoves);
+            _blackPlayer = new Player(Coalition.Black, this, blackLegalMoves, whiteLegalMoves);
+
         }
 
         /// <summary>
