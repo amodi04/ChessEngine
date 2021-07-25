@@ -1,4 +1,5 @@
 ﻿using System;
+using Engine.Opposition;
 
 namespace Engine.Pieces
 {
@@ -11,18 +12,19 @@ namespace Engine.Pieces
         /// Gets the string representation of a piece type.
         /// </summary>
         /// <param name="pieceType">The piece type to get the string representation for.</param>
+        /// <param name="coalition">The colour of the piece will change the case output of the string.</param>
         /// <returns>A letter which is usually the first letter of the piece. Knights return "N" (only difference).</returns>
-        public static string ToAbbreviation(this PieceType pieceType)
+        public static string ToAbbreviation(this PieceType pieceType, Coalition coalition)
         {
             return pieceType switch
             {
-                PieceType.Pawn => "P",
-                PieceType.Knight => "N",
-                PieceType.Bishop => "B",
-                PieceType.Rook => "R",
-                PieceType.Queen => "Q",
-                PieceType.King => "K",
-                // The default case should not occur.
+                PieceType.Pawn => coalition.IsWhite() ? "P" : "p",
+                PieceType.Bishop => coalition.IsWhite() ? "B" : "b",
+                PieceType.Knight => coalition.IsWhite() ? "N" : "n",
+                PieceType.Rook => coalition.IsWhite() ? "R" : "r",
+                PieceType.Queen => coalition.IsWhite() ? "Q" : "q",
+                PieceType.King => coalition.IsWhite() ? "K" : "k",
+                // Default case will never be processed
                 _ => "-"
             };
         }

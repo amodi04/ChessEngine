@@ -11,7 +11,8 @@ namespace Engine.Pieces
     public class Pawn : Piece
     {
         /// <inheritdoc cref="Piece"/>
-        public Pawn(int piecePosition, Coalition pieceCoalition) : base(piecePosition, pieceCoalition)
+        public Pawn(int piecePosition, Coalition pieceCoalition) :
+            base(PieceType.Pawn, piecePosition, pieceCoalition)
         {
             // Empty
         }
@@ -86,11 +87,6 @@ namespace Engine.Pieces
         public override Piece MovePiece(Move move)
         {
             throw new NotImplementedException();
-        }
-        
-        public override string ToString()
-        {
-            return PieceCoalition.IsWhite() ? PieceType.Pawn.ToAbbreviation() : PieceType.Pawn.ToAbbreviation().ToLower();
         }
         
         // Pawn is on special edge case when its position is on the eighth file

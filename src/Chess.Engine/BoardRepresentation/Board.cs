@@ -33,35 +33,7 @@ namespace Engine.BoardRepresentation
             // Calculate each colour's legal moves for any board instance
             IEnumerable<Move> whiteLegalMoves = CalculateLegalMoves(_whitePieces);
             IEnumerable<Move> blackLegalMoves = CalculateLegalMoves(_blackPieces);
-        }
-
-        /// <summary>
-        /// Converts the board object to a useful string.
-        /// </summary>
-        /// <returns>A string of letters and dashed representing the current board layout from white's perspective.</returns>
-        public override string ToString()
-        {
-            var stringBuilder = new StringBuilder();
-            for (int i = 0; i < BoardUtilities.NumTiles; i++)
-            {
-                // Get the string of the tile at current index
-                var tile = _board[i].ToString();
-                
-                // Append the tile string with a padding of 3
-                stringBuilder.Append(tile.PadRight(3));
-                
-                // If the current index + 1 (because of zero offset) mod 8 (tiles per rank) is 0 then create new line
-                // This represents a new rank on the board
-                if ((i + 1) % BoardUtilities.NumTilesPerRank == 0)
-                {
-                    stringBuilder.Append('\n');
-                }
-            }
-
-            // Reverse string so that it is from white's perspective
-            var charArray = stringBuilder.ToString().ToCharArray();
-            Array.Reverse(charArray);
-            return new string(charArray);
+            
         }
 
         /// <summary>
@@ -119,7 +91,6 @@ namespace Engine.BoardRepresentation
             for (var i = 0; i < BoardUtilities.NumTiles; i++)
             {
                 tiles[i] = Tile.CreateTile(i, boardBuilder.BoardConfiguration[i]);
-                Console.WriteLine(tiles[i]);
             }
             return tiles;
         }
@@ -170,6 +141,35 @@ namespace Engine.BoardRepresentation
         {
             // Return the tile at passed in index
             return _board[tileCoordinate];
+        }
+        
+        /// <summary>
+        /// Converts the board object to a useful string.
+        /// </summary>
+        /// <returns>A string of letters and dashed representing the current board layout from white's perspective.</returns>
+        public override string ToString()
+        {
+            var stringBuilder = new StringBuilder();
+            for (int i = 0; i < BoardUtilities.NumTiles; i++)
+            {
+                // Get the string of the tile at current index
+                var tile = _board[i].ToString();
+                
+                // Append the tile string with a padding of 3
+                stringBuilder.Append(tile.PadRight(3));
+                
+                // If the current index + 1 (because of zero offset) mod 8 (tiles per rank) is 0 then create new line
+                // This represents a new rank on the board
+                if ((i + 1) % BoardUtilities.NumTilesPerRank == 0)
+                {
+                    stringBuilder.Append('\n');
+                }
+            }
+
+            // Reverse string so that it is from white's perspective
+            var charArray = stringBuilder.ToString().ToCharArray();
+            Array.Reverse(charArray);
+            return new string(charArray);
         }
     }
 }

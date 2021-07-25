@@ -11,7 +11,8 @@ namespace Engine.Pieces
     /// <inheritdoc cref="Piece"/>
     public class Knight : Piece
     {
-        public Knight(int piecePosition, Coalition pieceCoalition) : base(piecePosition, pieceCoalition)
+        public Knight(int piecePosition, Coalition pieceCoalition) :
+            base(PieceType.Knight,piecePosition, pieceCoalition)
         {
             // Empty
         }
@@ -62,11 +63,6 @@ namespace Engine.Pieces
         public override Piece MovePiece(Move move)
         {
             throw new NotImplementedException();
-        }
-        
-        public override string ToString()
-        {
-            return PieceCoalition.IsWhite() ? PieceType.Knight.ToAbbreviation() : PieceType.Knight.ToAbbreviation().ToLower();
         }
 
         protected override bool IsColumnExclusion(int currentPosition, int offset)

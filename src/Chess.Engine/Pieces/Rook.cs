@@ -11,7 +11,8 @@ namespace Engine.Pieces
     public class Rook : Piece
     {
         /// <inheritdoc cref="Piece"/>
-        public Rook(int piecePosition, Coalition pieceCoalition) : base(piecePosition, pieceCoalition)
+        public Rook(int piecePosition, Coalition pieceCoalition) :
+            base(PieceType.Rook, piecePosition, pieceCoalition)
         {
             // Empty
         }
@@ -73,11 +74,6 @@ namespace Engine.Pieces
             throw new NotImplementedException();
         }
         
-        public override string ToString()
-        {
-            return PieceCoalition.IsWhite() ? PieceType.Rook.ToAbbreviation() : PieceType.Rook.ToAbbreviation().ToLower();
-        }
-
         // Rook is on special edge case when its position is on the first file
         // AND the offset is -1 (going left).
         // The second special edge case is when its position is on the eighth file

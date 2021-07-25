@@ -12,6 +12,7 @@ namespace Engine.Pieces
     public abstract class Piece
     {
         // Member fields
+        public PieceType PieceType { get; }
         public int PiecePosition { get; }
         public Coalition PieceCoalition { get; }
         public bool IsFirstMove { get; }
@@ -19,10 +20,12 @@ namespace Engine.Pieces
         /// <summary>
         /// Constructor to create a piece. This class is abstract so this constructor can only be called from inheriting classes.
         /// </summary>
+        /// <param name="pieceType">The type of piece to create.</param>
         /// <param name="piecePosition">The position on the board to create the piece at.</param>
         /// <param name="pieceCoalition">The colour of the piece.</param>
-        protected Piece(int piecePosition, Coalition pieceCoalition)
+        protected Piece(PieceType pieceType, int piecePosition, Coalition pieceCoalition)
         {
+            PieceType = pieceType;
             PiecePosition = piecePosition;
             PieceCoalition = pieceCoalition;
         }
@@ -62,6 +65,15 @@ namespace Engine.Pieces
         }
 
         /// <summary>
+        /// Gets the string representation of the piece.
+        /// </summary>
+        /// <returns>A letter which is uppercase if white or lowercase if black. The letters are defined in PieceTypeExtension.</returns>
+        public override string ToString()
+        {
+            return PieceType.ToAbbreviation(PieceCoalition);
+        }
+
+        /// <summary>
         /// This method generates the legal moves for the piece, given the board.
         /// Each piece will have it's own implementation.
         /// </summary>
@@ -75,13 +87,7 @@ namespace Engine.Pieces
         /// <param name="move">The move struct containing the data needed to make a move.</param>
         /// <returns>A piece at the destination location.</returns>
         public abstract Piece MovePiece(Move move);
-        
-        /// <summary>
-        /// Gets the string representation of the piece.
-        /// </summary>
-        /// <returns>A letter which is uppercase if white or lowercase if black. The letters are defined in PieceTypeExtension.</returns>
-        public abstract override string ToString();
-        
+
         /// <summary>
         /// This method checks for pieces being on certain columns where considerations must be taken into account.
         /// This is so that the correct destination location is computed and the piece does not go off the board.
