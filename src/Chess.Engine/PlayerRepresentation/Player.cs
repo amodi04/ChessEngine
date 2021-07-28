@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Engine.BoardRepresentation;
 using Engine.MoveRepresentation;
 using Engine.Opposition;
@@ -15,9 +16,10 @@ namespace Engine.PlayerRepresentation
     {
         // Member fields
         private readonly Board _board;
-        private King _king;
-        private IEnumerable<Move> _moves;
-        private readonly Coalition _coalition;
+        public King King { get; }
+        public IEnumerable<Move> Moves { get; }
+        private Coalition _coalition;
+        private bool _isInCheck;
 
         /// <summary>
         /// Constructor to create a player
@@ -30,8 +32,31 @@ namespace Engine.PlayerRepresentation
         {
             _coalition = coalition;
             _board = board;
-            _king = GetKingOnBoard();
-            _moves = moves;
+            King = GetKingOnBoard();
+            Moves = moves;
+            // TODO: Check LINQ performance
+            // True if there are any elements in the collection
+            _isInCheck = CalculateAttacksOnTile(King.PiecePosition, opponentMoves).Any();
+        }
+
+        /// <summary>
+        /// Gets all the moves that are attacking the tile passed in.
+        /// </summary>
+        /// <param name="tilePosition">The tile to check.</param>
+        /// <param name="opponentMoves">All the possible moves that the opponent can make.</param>
+        /// <returns>An iterable collection of attacking moves on the tile.</returns>
+        private IEnumerable<Move> CalculateAttacksOnTile(int tilePosition, IEnumerable<Move> opponentMoves)
+        {
+            var attackMoves = new List<Move>();
+            foreach (var opponentMove in opponentMoves)
+            {
+                if (tilePosition == opponentMove.ToCoordinate)
+                {
+                    attackMoves.Add(opponentMove);
+                }
+            }
+
+            return attackMoves;
         }
 
         /// <summary>
@@ -56,12 +81,107 @@ namespace Engine.PlayerRepresentation
         }
 
         /// <summary>
+        /// Checks whether the player is in check.
+        /// </summary>
+        /// <returns>True if the king is in check, false otherwise.</returns>
+        public bool IsInCheck()
+        {
+            return _isInCheck;
+        }
+
+        /// <summary>
+        /// Checks whether the player is in checkmate.
+        /// </summary>
+        /// <returns>True if the king is in check and there are no possible escape moves to be made.</returns>
+        public bool IsInCheckmate()
+        {
+            return _isInCheck && !HasEscapeMoves();
+        }
+
+        /// <summary>
+        /// Checks whether the player is in stalemate
+        /// </summary>
+        /// <returns>True if the king is not in check and there are no possible escape moves to be made.</returns>
+        public bool IsInStalemate()
+        {
+            return !_isInCheck && !HasEscapeMoves();
+        }
+        
+        /// <summary>
+        /// Checks whether the player has escape moves for the king.
+        /// </summary>
+        /// <returns>True if there are available moves, false otherwise.</returns>
+        private bool HasEscapeMoves()
+        {
+            // Loop through each available move
+            foreach (var move in Moves)
+            {
+                // Make the move
+                BoardTransition transition = MakeMove(move);
+                // If the move completed successfully, return true
+                if (transition.Status == MoveStatus.Done)
+                {
+                    return true;
+                }
+            }
+            // Return false because no moves completed successfully
+            return false;
+        }
+        
+        /// <summary>
+        /// Gets the board transition data to be passed between boards.
+        /// </summary>
+        /// <param name="move">The move to be made.</param>
+        /// <returns>A board transition struct containing relevant data for the next board.</returns>
+        private BoardTransition MakeMove(Move move)
+        {
+            // If the move is illegal, return the current board data.
+            if (!IsMoveLegal(move))
+            {
+                return new BoardTransition(_board, _board, move, MoveStatus.Illegal);
+            }
+
+            // Make the move
+            var toBoard = move.ExecuteMove();
+            // Calculate all attacking moves on the current player king
+            var attacksOnKing =
+                CalculateAttacksOnTile(toBoard.CurrentPlayer.King.PiecePosition, toBoard.CurrentPlayer.Moves);
+
+            // If there are any attacking moves on the king, return the current board as the move made would leave the
+            // player in check. Otherwise return the new board because the move is valid.
+            return !attacksOnKing.Any() ?
+                new BoardTransition(_board, _board, move, MoveStatus.PlayerInCheck) :
+                new BoardTransition(_board, toBoard, move, MoveStatus.Done);
+        }
+        
+        /// <summary>
+        /// Checks whether a move is legal or not.
+        /// </summary>
+        /// <param name="move">The move to check.</param>
+        /// <returns>True if legal, false otherwise.</returns>
+        private bool IsMoveLegal(Move move)
+        {
+            // TODO: Check LINQ performance
+            // True if the member field Moves contains the move passed in
+            // All moves in the member field are legal
+            return Moves.Contains(move);
+        }
+
+        /// <summary>
         /// Gets the current active allied piece
         /// </summary>
         /// <returns>Active white pieces if the player is white and active black pieces if the player is black.</returns>
         private IEnumerable<Piece> GetActiveAlliedPieces()
         {
+            // If white return white pieces, else return black pieces
             return _coalition.IsWhite() ? _board.WhitePieces : _board.BlackPieces;
+        }
+
+        // TODO: Implement this
+        private Player GetOpponent()
+        {
+            // If white return black, else white,
+            return _coalition.IsWhite() ? _board.BlackPlayer : _board.WhitePlayer;
         }
     }
 }

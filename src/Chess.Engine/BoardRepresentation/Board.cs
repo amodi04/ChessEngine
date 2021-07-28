@@ -19,8 +19,9 @@ namespace Engine.BoardRepresentation
         private readonly Tile[] _board;
         public IEnumerable<Piece> BlackPieces { get; }
         public IEnumerable<Piece> WhitePieces { get; }
-        private Player _whitePlayer;
-        private Player _blackPlayer;
+        public Player WhitePlayer { get; }
+        public Player BlackPlayer { get; }
+        public Player CurrentPlayer { get; }
 
         /// <summary>
         /// Internal constructor - only used by board builder.
@@ -39,9 +40,9 @@ namespace Engine.BoardRepresentation
             var blackLegalMoves = CalculateLegalMoves(BlackPieces);
             
             // Initialise players
-            _whitePlayer = new Player(Coalition.White, this, whiteLegalMoves, blackLegalMoves);
-            _blackPlayer = new Player(Coalition.Black, this, blackLegalMoves, whiteLegalMoves);
-
+            WhitePlayer = new Player(Coalition.White, this, whiteLegalMoves, blackLegalMoves);
+            BlackPlayer = new Player(Coalition.Black, this, blackLegalMoves, whiteLegalMoves);
+            CurrentPlayer = null;
         }
 
         /// <summary>

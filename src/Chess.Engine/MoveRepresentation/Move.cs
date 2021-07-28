@@ -55,5 +55,11 @@ namespace Engine.MoveRepresentation
             MovedPiece = movedPiece;
             CapturedPiece = capturedPiece;
         }
+
+        // TODO: Implement this
+        public Board ExecuteMove()
+        {
+            return null;
+        }
     }
 }
