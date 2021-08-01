@@ -11,12 +11,13 @@ namespace Engine.MoveRepresentation
         /// <summary>
         /// Move Data
         /// </summary>
-        public MoveType MoveType { get; }
-        public Board Board { get; }
-        public int FromCoordinate { get; }
-        public int ToCoordinate { get; }
-        public Piece MovedPiece { get; }
-        public Piece CapturedPiece { get; }
+        public readonly MoveType MoveType;
+
+        public readonly Board Board;
+        public readonly int FromCoordinate;
+        public readonly int ToCoordinate;
+        public readonly Piece MovedPiece;
+        public readonly Piece CapturedPiece;
 
         /// <summary>
         /// Constructor creates a non capture move.
@@ -56,10 +57,37 @@ namespace Engine.MoveRepresentation
             CapturedPiece = capturedPiece;
         }
 
-        // TODO: Implement this
+        /// <summary>
+        /// Creates a new board with the moved piece.
+        /// </summary>
+        /// <returns>A new board with the piece moved.</returns>
         public Board ExecuteMove()
         {
-            return null;
+            var boardBuilder = new BoardBuilder();
+
+            // Set all pieces except the moved piece for the current player
+            foreach (var piece in Board.CurrentPlayer.GetActiveAlliedPieces())
+            {
+                if (!MovedPiece.Equals(piece))
+                {
+                    boardBuilder.SetPieceAtTile(piece);
+                }
+            }
+
+            // Set all the pieces for the opponent player
+            foreach (var piece in Board.CurrentPlayer.GetOpponent().GetActiveAlliedPieces())
+            {
+                boardBuilder.SetPieceAtTile(piece);
+            }
+            
+            // Move the moved piece
+            boardBuilder.SetPieceAtTile(null);
+            
+            // Set next player to move
+            boardBuilder.SetCoalitionToMove(Board.CurrentPlayer.GetOpponent().Coalition);
+            
+            // Build the board
+            return boardBuilder.BuildBoard();
         }
     }
 }

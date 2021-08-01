@@ -18,7 +18,7 @@ namespace Engine.PlayerRepresentation
         private readonly Board _board;
         public King King { get; }
         public IEnumerable<Move> Moves { get; }
-        private Coalition _coalition;
+        public Coalition Coalition { get; }
         private bool _isInCheck;
 
         /// <summary>
@@ -30,7 +30,7 @@ namespace Engine.PlayerRepresentation
         /// <param name="opponentMoves">An iterable collection of opponent moves available to the player.</param>
         public Player(Coalition coalition, Board board, IEnumerable<Move> moves, IEnumerable<Move> opponentMoves)
         {
-            _coalition = coalition;
+            Coalition = coalition;
             _board = board;
             King = GetKingOnBoard();
             Moves = moves;
@@ -171,17 +171,16 @@ namespace Engine.PlayerRepresentation
         /// Gets the current active allied piece
         /// </summary>
         /// <returns>Active white pieces if the player is white and active black pieces if the player is black.</returns>
-        private IEnumerable<Piece> GetActiveAlliedPieces()
+        public IEnumerable<Piece> GetActiveAlliedPieces()
         {
             // If white return white pieces, else return black pieces
-            return _coalition.IsWhite() ? _board.WhitePieces : _board.BlackPieces;
+            return Coalition.IsWhite() ? _board.WhitePieces : _board.BlackPieces;
         }
-
-        // TODO: Implement this
-        private Player GetOpponent()
+        
+        public Player GetOpponent()
         {
             // If white return black, else white,
-            return _coalition.IsWhite() ? _board.BlackPlayer : _board.WhitePlayer;
+            return Coalition.IsWhite() ? _board.BlackPlayer : _board.WhitePlayer;
         }
     }
 }

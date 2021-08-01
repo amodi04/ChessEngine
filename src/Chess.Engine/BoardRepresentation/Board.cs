@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using Engine.BoardRepresentation.TileRepresentation;
 using Engine.MoveRepresentation;
@@ -42,7 +43,7 @@ namespace Engine.BoardRepresentation
             // Initialise players
             WhitePlayer = new Player(Coalition.White, this, whiteLegalMoves, blackLegalMoves);
             BlackPlayer = new Player(Coalition.Black, this, blackLegalMoves, whiteLegalMoves);
-            CurrentPlayer = null;
+            CurrentPlayer = boardBuilder.CoalitionToMove.ChoosePlayer(WhitePlayer, BlackPlayer);
         }
 
         /// <summary>

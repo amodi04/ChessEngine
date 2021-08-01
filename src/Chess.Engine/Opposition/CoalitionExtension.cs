@@ -1,4 +1,6 @@
-﻿namespace Engine.Opposition
+﻿using Engine.PlayerRepresentation;
+
+namespace Engine.Opposition
 {
     /// <summary>
     /// This extension class contains methods for dealing with coalition state.
@@ -14,7 +16,7 @@
         {
             // white, +1 because traversing towards the 64th tile
             // black, -1 because traversing towards the 0th tile
-            return coalition == Coalition.White ? 1 : -1;
+            return coalition.IsWhite() ? 1 : -1;
         }
 
         /// <summary>
@@ -25,6 +27,18 @@
         public static bool IsWhite(this Coalition coalition)
         {
             return coalition == Coalition.White;
+        }
+
+        /// <summary>
+        /// Utility method for choosing the player based on a coalition.
+        /// </summary>
+        /// <param name="coalition">The coalition used to select the player.</param>
+        /// <param name="whitePlayer">The white player on the current board in play.</param>
+        /// <param name="blackPlayer">The black player on the current board in play.</param>
+        /// <returns>A white player if the coalition is white, otherwise the black player is returned.</returns>
+        public static Player ChoosePlayer(this Coalition coalition, Player whitePlayer, Player blackPlayer)
+        {
+            return coalition.IsWhite() ? whitePlayer : blackPlayer;
         }
     }
 }
