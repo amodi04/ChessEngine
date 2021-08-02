@@ -3,12 +3,12 @@ using Engine.BoardRepresentation;
 
 namespace OutputTest
 {
-    class Program
+    internal class Program
     {
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
-            Board board = Board.CreateStandardBoard();
-            
+            var board = Board.CreateStandardBoard();
+
             Console.WriteLine(board);
         }
     }

@@ -1,16 +1,17 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using Engine.BoardRepresentation;
-using Engine.MoveRepresentation;
+using Engine.Enums;
+using Engine.MoveGeneration;
 using Engine.Opposition;
-using static Engine.BoardRepresentation.BoardUtilities;
+using Engine.Util;
+using static Engine.Util.BoardUtilities;
 
 namespace Engine.Pieces
 {
     public class Rook : Piece
     {
-        /// <inheritdoc cref="Piece"/>
+        /// <inheritdoc cref="Piece" />
         public Rook(int piecePosition, Coalition pieceCoalition) :
             base(PieceType.Rook, piecePosition, pieceCoalition)
         {
@@ -30,10 +31,10 @@ namespace Engine.Pieces
             var moves = new List<Move>();
 
             foreach (var vectorOffset in vectorOffsets)
-            { 
+            {
                 // Initialise destination coordinate to piece position
                 var destinationCoordinate = PiecePosition;
-                
+
                 // While the destination coordinate is within the board range
                 // (we want to check all moves in this direction)
                 while (IsValidTileCoordinate(destinationCoordinate))
@@ -43,11 +44,11 @@ namespace Engine.Pieces
 
                     // Step the destination coordinate by the vector offset
                     destinationCoordinate += vectorOffset;
-                    
+
                     // Skip if not in board range
                     if (!IsValidTileCoordinate(destinationCoordinate)) continue;
                     var tile = board.GetTile(destinationCoordinate);
-                    
+
                     // If tile is empty, add normal move
                     if (!tile.IsOccupied())
                     {
@@ -68,12 +69,11 @@ namespace Engine.Pieces
             return moves;
         }
 
-        // TODO: Implement this
         public override Piece MovePiece(Move move)
         {
-            throw new NotImplementedException();
+            return PieceUtilities.RookLookup[move.MovedPiece.PiecePosition, move.MovedPiece.PieceCoalition];
         }
-        
+
         // Rook is on special edge case when its position is on the first file
         // AND the offset is -1 (going left).
         // The second special edge case is when its position is on the eighth file

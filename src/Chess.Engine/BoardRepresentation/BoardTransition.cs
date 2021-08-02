@@ -1,9 +1,10 @@
-﻿using Engine.MoveRepresentation;
+﻿using Engine.Enums;
+using Engine.MoveGeneration;
 
 namespace Engine.BoardRepresentation
 {
     /// <summary>
-    /// This struct holds data for moving between immutable boards.
+    ///     This struct holds data for moving between immutable boards.
     /// </summary>
     public readonly struct BoardTransition
     {
@@ -14,7 +15,7 @@ namespace Engine.BoardRepresentation
         public MoveStatus Status { get; }
 
         /// <summary>
-        /// Constructor
+        ///     Constructor
         /// </summary>
         /// <param name="fromBoard">The previous board to move from.</param>
         /// <param name="toBoard">The board to move to.</param>

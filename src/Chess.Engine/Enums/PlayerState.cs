@@ -1,8 +1,8 @@
-﻿namespace Engine.PlayerRepresentation
+﻿namespace Engine.Enums
 {
     // TODO: Check if this is actually needed
     /// <summary>
-    /// Enum for handling player state.
+    ///     Enum for handling player state.
     /// </summary>
     public enum PlayerState
     {

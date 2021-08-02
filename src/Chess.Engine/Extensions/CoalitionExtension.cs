@@ -1,14 +1,15 @@
-﻿using Engine.PlayerRepresentation;
+﻿using Engine.Opposition;
+using Engine.PlayerRepresentation;
 
-namespace Engine.Opposition
+namespace Engine.Extensions
 {
     /// <summary>
-    /// This extension class contains methods for dealing with coalition state.
+    ///     This extension class contains methods for dealing with coalition state.
     /// </summary>
     public static class CoalitionExtension
     {
         /// <summary>
-        /// Gets the direction that a coalition moves in.
+        ///     Gets the direction that a coalition moves in.
         /// </summary>
         /// <param name="coalition">The colour that the direction is going to be returned for.</param>
         /// <returns>Positive 1 if white and negative 1 if black.</returns>
@@ -20,7 +21,7 @@ namespace Engine.Opposition
         }
 
         /// <summary>
-        /// Checks whether the argument is white.
+        ///     Checks whether the argument is white.
         /// </summary>
         /// <param name="coalition">The colour to check.</param>
         /// <returns>True if white. False if black.</returns>
@@ -30,7 +31,7 @@ namespace Engine.Opposition
         }
 
         /// <summary>
-        /// Utility method for choosing the player based on a coalition.
+        ///     Utility method for choosing the player based on a coalition.
         /// </summary>
         /// <param name="coalition">The coalition used to select the player.</param>
         /// <param name="whitePlayer">The white player on the current board in play.</param>

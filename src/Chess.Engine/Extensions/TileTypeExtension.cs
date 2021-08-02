@@ -1,14 +1,15 @@
 ﻿using System;
+using Engine.Enums;
 
-namespace Engine.BoardRepresentation.TileRepresentation
+namespace Engine.Extensions
 {
     /// <summary>
-    /// This extension class contains methods for dealing with tile state.
+    ///     This extension class contains methods for dealing with tile state.
     /// </summary>
     public static class TileTypeExtension
     {
         /// <summary>
-        /// Gets the occupancy status which is either true or false. 
+        ///     Gets the occupancy status which is either true or false.
         /// </summary>
         /// <param name="tileType">The current tile state.</param>
         /// <returns>A boolean which is decided based on the tile state. True if tile is occupied.</returns>

@@ -1,7 +1,7 @@
-﻿namespace Engine.MoveRepresentation
+﻿namespace Engine.Enums
 {
     /// <summary>
-    /// Enumeration to keep track of move type.
+    ///     Enumeration to keep track of move type.
     /// </summary>
     public enum MoveType
     {

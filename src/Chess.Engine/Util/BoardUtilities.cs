@@ -1,24 +1,26 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace Engine.BoardRepresentation
+namespace Engine.Util
 {
     /// <summary>
-    /// A class containing useful values and methods that may be used across the entire class library.
+    ///     A class containing useful values and methods that may be used across the entire class library.
     /// </summary>
     public static class BoardUtilities
     {
         /// <summary>
-        /// Constants that are used to reduce the use of magic numbers/values.
+        ///     Constants that are used to reduce the use of magic numbers/values.
         /// </summary>
         public const uint NumTiles = 64;
+
         public const uint NumTilesPerRank = 8;
         public const uint NumTilesPerFile = 8;
-        
+
         /// <summary>
-        /// Lookup array containing the tile coordinate values of the tiles in the respective rank.
+        ///     Lookup array containing the tile coordinate values of the tiles in the respective rank.
         /// </summary>
         public static readonly int[] FirstRank = CreateRank(0);
+
         public static readonly int[] SecondRank = CreateRank(8);
         public static readonly int[] ThirdRank = CreateRank(16);
         public static readonly int[] FourthRank = CreateRank(24);
@@ -28,9 +30,10 @@ namespace Engine.BoardRepresentation
         public static readonly int[] EighthRank = CreateRank(56);
 
         /// <summary>
-        /// Lookup array containing the tile coordinate values of the tiles in the respective file.
+        ///     Lookup array containing the tile coordinate values of the tiles in the respective file.
         /// </summary>
         public static readonly int[] FirstFile = CreateFile(0);
+
         public static readonly int[] SecondFile = CreateFile(1);
         public static readonly int[] ThirdFile = CreateFile(2);
         public static readonly int[] FourthFile = CreateFile(3);
@@ -40,7 +43,7 @@ namespace Engine.BoardRepresentation
         public static readonly int[] EighthFile = CreateFile(7);
 
         /// <summary>
-        /// Populates the useful lookup arrays based on the starting tile number.
+        ///     Populates the useful lookup arrays based on the starting tile number.
         /// </summary>
         /// <param name="startingTileNumber">The the left most tile coordinate in a rank.</param>
         /// <returns>An array containing the tile coordinates in the rank.</returns>
@@ -51,7 +54,7 @@ namespace Engine.BoardRepresentation
         }
 
         /// <summary>
-        /// Populates the useful lookup arrays based on the starting tile number.
+        ///     Populates the useful lookup arrays based on the starting tile number.
         /// </summary>
         /// <param name="startingFileNumber">The the bottom most tile coordinate in a file.</param>
         /// <returns>An array containing the tile coordinates in the file.</returns>
@@ -62,7 +65,7 @@ namespace Engine.BoardRepresentation
         }
 
         /// <summary>
-        /// Checks whether a tile is in bounds.
+        ///     Checks whether a tile is in bounds.
         /// </summary>
         /// <param name="tileCoordinate">Tile coordinate to check.</param>
         /// <returns>True if the value is between 0 and 64 inclusive.</returns>
@@ -73,7 +76,7 @@ namespace Engine.BoardRepresentation
         }
 
         /// <summary>
-        /// Checks whether a value is in a given array.
+        ///     Checks whether a value is in a given array.
         /// </summary>
         /// <param name="value">Value to check.</param>
         /// <param name="arr">IEnumerable array to check in.</param>

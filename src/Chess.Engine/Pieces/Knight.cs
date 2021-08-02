@@ -1,18 +1,19 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using Engine.BoardRepresentation;
-using Engine.MoveRepresentation;
+using Engine.Enums;
+using Engine.MoveGeneration;
 using Engine.Opposition;
-using static Engine.BoardRepresentation.BoardUtilities;
+using Engine.Util;
+using static Engine.Util.BoardUtilities;
 
 namespace Engine.Pieces
 {
-    /// <inheritdoc cref="Piece"/>
+    /// <inheritdoc cref="Piece" />
     public class Knight : Piece
     {
         public Knight(int piecePosition, Coalition pieceCoalition) :
-            base(PieceType.Knight,piecePosition, pieceCoalition)
+            base(PieceType.Knight, piecePosition, pieceCoalition)
         {
             // Empty
         }
@@ -35,7 +36,7 @@ namespace Engine.Pieces
             {
                 // Initialise destination to piece position plus position offset
                 var destinationCoordinate = PiecePosition + positionOffset;
-                
+
                 // If tile not in board or is on an edge case, skip offset.
                 if (!IsValidTileCoordinate(destinationCoordinate) ||
                     IsColumnExclusion(PiecePosition, positionOffset))
@@ -51,7 +52,7 @@ namespace Engine.Pieces
                 {
                     // If enemy at tile, create attacking move
                     if (IsEnemyPieceAtTile(tile))
-                        
+
                         moves.Add(CreateAttackMove(board, destinationCoordinate, tile.Piece));
                 }
             }
@@ -59,10 +60,9 @@ namespace Engine.Pieces
             return moves;
         }
 
-        // TODO: Implement this
         public override Piece MovePiece(Move move)
         {
-            throw new NotImplementedException();
+            return PieceUtilities.KnightLookup[move.MovedPiece.PiecePosition, move.MovedPiece.PieceCoalition];
         }
 
         protected override bool IsColumnExclusion(int currentPosition, int offset)

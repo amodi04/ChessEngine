@@ -1,15 +1,15 @@
-﻿using System;
+﻿using Engine.Enums;
 using Engine.Opposition;
 
-namespace Engine.Pieces
+namespace Engine.Extensions
 {
     /// <summary>
-    /// This extension class contains methods for dealing with piece types.
+    ///     This extension class contains methods for dealing with piece types.
     /// </summary>
     public static class PieceTypeExtension
     {
         /// <summary>
-        /// Gets the string representation of a piece type.
+        ///     Gets the string representation of a piece type.
         /// </summary>
         /// <param name="pieceType">The piece type to get the string representation for.</param>
         /// <param name="coalition">The colour of the piece will change the case output of the string.</param>

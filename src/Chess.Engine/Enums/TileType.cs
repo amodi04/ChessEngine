@@ -1,7 +1,7 @@
-﻿namespace Engine.BoardRepresentation.TileRepresentation
+﻿namespace Engine.Enums
 {
     /// <summary>
-    /// Enumeration to keep track of tile state. 
+    ///     Enumeration to keep track of tile state.
     /// </summary>
     public enum TileType
     {

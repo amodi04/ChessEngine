@@ -1,15 +1,15 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using Engine.BoardRepresentation;
-using Engine.MoveRepresentation;
+using Engine.Enums;
+using Engine.MoveGeneration;
 using Engine.Opposition;
-using static Engine.BoardRepresentation.BoardUtilities;
+using Engine.Util;
+using static Engine.Util.BoardUtilities;
 
 namespace Engine.Pieces
 {
-
-    /// <inheritdoc cref="Piece"/>
+    /// <inheritdoc cref="Piece" />
     public class Bishop : Piece
     {
         public Bishop(int piecePosition, Coalition pieceCoalition) :
@@ -17,6 +17,7 @@ namespace Engine.Pieces
         {
             // Empty
         }
+
         public override IList GenerateLegalMoves(Board board)
         {
             // Directions that a bishop can move in. Stored as vector offsets because bishops are sliding pieces.
@@ -26,14 +27,14 @@ namespace Engine.Pieces
              * -9    -7
              */
             int[] vectorOffsets = {-9, -7, 7, 9};
-            
+
             var moves = new List<Move>();
-            
+
             foreach (var vectorOffset in vectorOffsets)
             {
                 // Initialise destination coordinate to piece position
                 var destinationCoordinate = PiecePosition;
-                
+
                 // While the destination coordinate is within the board range
                 // (we want to check all moves in this direction)
                 while (IsValidTileCoordinate(destinationCoordinate))
@@ -43,13 +44,13 @@ namespace Engine.Pieces
 
                     // Step the destination coordinate by the offset
                     destinationCoordinate += vectorOffset;
-                    
+
                     // If outside of board, then skip to next offset.
                     // This will be when all valid diagonals in one direction has been covered.
                     if (!IsValidTileCoordinate(destinationCoordinate)) continue;
 
                     var tile = board.GetTile(destinationCoordinate);
-                    
+
                     // Tile is empty, add a normal move
                     if (!tile.IsOccupied())
                     {
@@ -68,10 +69,9 @@ namespace Engine.Pieces
             return moves;
         }
 
-        // TODO: Implement this
         public override Piece MovePiece(Move move)
         {
-            throw new NotImplementedException();
+            return PieceUtilities.BishopLookup[move.MovedPiece.PiecePosition, move.MovedPiece.PieceCoalition];
         }
 
         protected override bool IsColumnExclusion(int currentPosition, int offset)

@@ -1,16 +1,18 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using Engine.BoardRepresentation;
-using Engine.MoveRepresentation;
+using Engine.Enums;
+using Engine.Extensions;
+using Engine.MoveGeneration;
 using Engine.Opposition;
-using static Engine.BoardRepresentation.BoardUtilities;
+using Engine.Util;
+using static Engine.Util.BoardUtilities;
 
 namespace Engine.Pieces
 {
     public class Pawn : Piece
     {
-        /// <inheritdoc cref="Piece"/>
+        /// <inheritdoc cref="Piece" />
         public Pawn(int piecePosition, Coalition pieceCoalition) :
             base(PieceType.Pawn, piecePosition, pieceCoalition)
         {
@@ -35,12 +37,9 @@ namespace Engine.Pieces
                 // Initialise destination coordinate to piece position plus the direction * position offset.
                 // Multiplied by direction because pawns are unidirectional pieces
                 var destinationCoordinate = PiecePosition + PieceCoalition.GetDirection() * positionOffset;
-                
+
                 // If not in range, skip offset
-                if (!IsValidTileCoordinate(destinationCoordinate))
-                {
-                    continue;
-                }
+                if (!IsValidTileCoordinate(destinationCoordinate)) continue;
 
                 // There are many cases for a pawn to move so a switch statement is more efficient
                 switch (positionOffset)
@@ -83,17 +82,16 @@ namespace Engine.Pieces
             return moves;
         }
 
-        // TODO: Implement this
         public override Piece MovePiece(Move move)
         {
-            throw new NotImplementedException();
+            return PieceUtilities.PawnLookup[move.MovedPiece.PiecePosition, move.MovedPiece.PieceCoalition];
         }
-        
+
         // Pawn is on special edge case when its position is on the eighth file
         // AND the offset is 7 AND it is white (going left).
         // The second special edge case is when its position is on the first file
         // AND the offset is 7 AND it is black (going left)
-        
+
         // Pawn is on special edge case when its position is on the first file
         // AND the offset is 9 AND it is white (going right).
         // The second special edge case is when its position is on the eighth file

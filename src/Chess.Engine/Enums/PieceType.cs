@@ -1,7 +1,7 @@
-﻿namespace Engine.Pieces
+﻿namespace Engine.Enums
 {
     /// <summary>
-    /// Enumeration to keep track of piece types.
+    ///     Enumeration to keep track of piece types.
     /// </summary>
     public enum PieceType
     {

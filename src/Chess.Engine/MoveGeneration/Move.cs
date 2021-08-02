@@ -1,15 +1,16 @@
 ﻿using Engine.BoardRepresentation;
+using Engine.Enums;
 using Engine.Pieces;
 
-namespace Engine.MoveRepresentation
+namespace Engine.MoveGeneration
 {
     /// <summary>
-    /// This struct stores Move Data.
+    ///     This struct stores Move Data.
     /// </summary>
     public readonly struct Move
     {
         /// <summary>
-        /// Move Data
+        ///     Move Data
         /// </summary>
         public readonly MoveType MoveType;
 
@@ -20,7 +21,7 @@ namespace Engine.MoveRepresentation
         public readonly Piece CapturedPiece;
 
         /// <summary>
-        /// Constructor creates a non capture move.
+        ///     Constructor creates a non capture move.
         /// </summary>
         /// <param name="moveType">This will be confined to non-capturing states.</param>
         /// <param name="board">The current board that the move is to be executed on.</param>
@@ -38,7 +39,7 @@ namespace Engine.MoveRepresentation
         }
 
         /// <summary>
-        /// Constructor creates a capture move.
+        ///     Constructor creates a capture move.
         /// </summary>
         /// <param name="moveType">This will be confined to capturing states.</param>
         /// <param name="board">The current board that the move is to be executed on.</param>
@@ -58,7 +59,7 @@ namespace Engine.MoveRepresentation
         }
 
         /// <summary>
-        /// Creates a new board with the moved piece.
+        ///     Creates a new board with the moved piece.
         /// </summary>
         /// <returns>A new board with the piece moved.</returns>
         public Board ExecuteMove()
@@ -67,25 +68,19 @@ namespace Engine.MoveRepresentation
 
             // Set all pieces except the moved piece for the current player
             foreach (var piece in Board.CurrentPlayer.GetActiveAlliedPieces())
-            {
                 if (!MovedPiece.Equals(piece))
-                {
                     boardBuilder.SetPieceAtTile(piece);
-                }
-            }
 
             // Set all the pieces for the opponent player
             foreach (var piece in Board.CurrentPlayer.GetOpponent().GetActiveAlliedPieces())
-            {
                 boardBuilder.SetPieceAtTile(piece);
-            }
-            
+
             // Move the moved piece
             boardBuilder.SetPieceAtTile(null);
-            
+
             // Set next player to move
             boardBuilder.SetCoalitionToMove(Board.CurrentPlayer.GetOpponent().Coalition);
-            
+
             // Build the board
             return boardBuilder.BuildBoard();
         }

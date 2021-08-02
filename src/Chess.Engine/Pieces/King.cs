@@ -1,14 +1,14 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using Engine.BoardRepresentation;
-using Engine.MoveRepresentation;
+using Engine.Enums;
+using Engine.MoveGeneration;
 using Engine.Opposition;
-using static Engine.BoardRepresentation.BoardUtilities;
+using static Engine.Util.BoardUtilities;
 
 namespace Engine.Pieces
 {
-    /// <inheritdoc cref="Piece"/>
+    /// <inheritdoc cref="Piece" />
     public class King : Piece
     {
         public King(int piecePosition, Coalition pieceCoalition) :
@@ -28,7 +28,7 @@ namespace Engine.Pieces
             int[] positionOffsets = {-9, -8, -7, -1, 1, 7, 8, 9};
 
             var moves = new List<Move>();
-            
+
             foreach (var positionOffset in positionOffsets)
             {
                 // Initialise destination coordinate to piece position plus it's position offset
@@ -38,9 +38,9 @@ namespace Engine.Pieces
                 if (!IsValidTileCoordinate(destinationCoordinate) ||
                     IsColumnExclusion(PiecePosition, positionOffset))
                     continue;
-                
+
                 var tile = board.GetTile(destinationCoordinate);
-                    
+
                 // If empty, create normal move
                 if (!tile.IsOccupied())
                 {
@@ -49,20 +49,16 @@ namespace Engine.Pieces
                 else
                 {
                     // If enemy at tile, create attack move
-                    if (IsEnemyPieceAtTile(tile))
-                    {
-                        moves.Add(CreateAttackMove(board, destinationCoordinate, tile.Piece));
-                    }
+                    if (IsEnemyPieceAtTile(tile)) moves.Add(CreateAttackMove(board, destinationCoordinate, tile.Piece));
                 }
             }
 
             return moves;
         }
 
-        // TODO: Implement this
         public override Piece MovePiece(Move move)
         {
-            throw new NotImplementedException();
+            return new King(move.MovedPiece.PiecePosition, move.MovedPiece.PieceCoalition);
         }
 
         protected override bool IsColumnExclusion(int currentPosition, int offset)
