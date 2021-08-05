@@ -76,7 +76,7 @@ namespace Engine.MoveGeneration
                 boardBuilder.SetPieceAtTile(piece);
 
             // Move the moved piece
-            boardBuilder.SetPieceAtTile(null);
+            boardBuilder.SetPieceAtTile(MovedPiece.MovePiece(this));
 
             // Set next player to move
             boardBuilder.SetCoalitionToMove(Board.CurrentPlayer.GetOpponent().Coalition);
