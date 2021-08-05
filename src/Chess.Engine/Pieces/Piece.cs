@@ -47,18 +47,18 @@ namespace Engine.Pieces
         /// <summary>
         /// Checks if the current object is equal to the object passed in.
         /// </summary>
-        /// <param name="other">The object to compare against.</param>
+        /// <param name="obj">The object to compare against.</param>
         /// <returns>True if equal, false if not.</returns>
-        public override bool Equals(object? other)
+        public override bool Equals(object? obj)
         {
             // If the hash codes are equal, return true
-            if (this == other)
+            if (this == obj)
             {
                 return true;
             }
 
             // If the other piece is not of type Piece, return false
-            if (other is not Piece piece)
+            if (obj is not Piece piece)
             {
                 return false; 
             }
