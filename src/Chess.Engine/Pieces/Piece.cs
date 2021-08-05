@@ -28,6 +28,7 @@ namespace Engine.Pieces
         }
 
         // Member fields
+        private int HashCode { get; set; }
         public PieceType PieceType { get; }
         public int PiecePosition { get; }
         public Coalition PieceCoalition { get; }
@@ -41,6 +42,64 @@ namespace Engine.Pieces
         protected bool IsEnemyPieceAtTile(Tile tile)
         {
             return PieceCoalition != tile.Piece.PieceCoalition;
+        }
+
+        /// <summary>
+        /// Checks if the current object is equal to the object passed in.
+        /// </summary>
+        /// <param name="other">The object to compare against.</param>
+        /// <returns>True if equal, false if not.</returns>
+        public override bool Equals(object? other)
+        {
+            // If the hash codes are equal, return true
+            if (this == other)
+            {
+                return true;
+            }
+
+            // If the other piece is not of type Piece, return false
+            if (other is not Piece piece)
+            {
+                return false; 
+            }
+            
+            // Return true if member field hash codes are equal
+            return PieceType == piece.PieceType && PiecePosition == piece.PiecePosition &&
+                   PieceCoalition == piece.PieceCoalition && IsFirstMove == piece.IsFirstMove;
+        }
+
+        /// <summary>
+        /// Gets the hashcode of this object.
+        /// </summary>
+        /// <returns>An integer hashcode of the object.</returns>
+        public override int GetHashCode()
+        {
+            // Overflow is fine, just wrap around
+            unchecked
+            {
+                var hash = HashCode;
+                
+                // If hash == 0, the hash code hasn't been computed yet, so compute it
+                if (hash != 0) return HashCode;
+                
+                // Initialise hash to prime number. Here it is 17
+                hash = 17;
+                
+                // Multiply each previous has by 31 and add the member fields.
+                // 31 is used because it is odd and prime thus reducing collisions
+                // Multiplying by 31 is very fast as it is just a shift and then a subtraction of 1
+                // This algorithm is an implementation of Joshua Bloch's Effective Java hash code algorithm
+                hash = 31 * hash + PieceType.GetHashCode();
+                hash = 31 * hash + PiecePosition.GetHashCode();
+                hash = 31 * hash + PieceCoalition.GetHashCode();
+                hash = 31 * hash + IsFirstMove.GetHashCode();
+                
+                // Store the computed value in the field
+                HashCode = hash;
+
+                // Return the hash code field.
+                return HashCode;
+            }
         }
 
         /// <summary>
