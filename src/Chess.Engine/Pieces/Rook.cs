@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Engine.BoardRepresentation;
 using Engine.Enums;
+using Engine.Factories;
 using Engine.MoveGeneration;
 using Engine.Opposition;
 using Engine.Util;
@@ -9,7 +10,7 @@ using static Engine.Util.BoardUtilities;
 
 namespace Engine.Pieces
 {
-    public class Rook : Piece
+    public sealed class Rook : Piece
     {
         /// <inheritdoc cref="Piece" />
         public Rook(int piecePosition, Coalition pieceCoalition) :
@@ -53,14 +54,14 @@ namespace Engine.Pieces
                     if (!tile.IsOccupied())
                     {
                         // Move move
-                        moves.Add(CreateNormalMove(board, destinationCoordinate));
+                        moves.Add(MoveFactory.CreateNormalMove(board, this, destinationCoordinate));
                     }
                     else
                     {
                         // If enemy at tile, add attacking move
                         if (IsEnemyPieceAtTile(tile))
                             // Attack Move
-                            moves.Add(CreateAttackMove(board, destinationCoordinate, tile.Piece));
+                            moves.Add(MoveFactory.CreateAttackMove(board, this, destinationCoordinate, tile.Piece));
                         break;
                     }
                 }
@@ -73,13 +74,14 @@ namespace Engine.Pieces
         {
             return PieceUtilities.RookLookup[move.MovedPiece.PiecePosition, move.MovedPiece.PieceCoalition];
         }
-
-        // Rook is on special edge case when its position is on the first file
-        // AND the offset is -1 (going left).
-        // The second special edge case is when its position is on the eighth file
-        // AND the offset is 1 (going right)
-        protected virtual bool IsColumnExclusion(int currentPosition, int offset)
+        
+        
+        private static bool IsColumnExclusion(int currentPosition, int offset)
         {
+            // Rook is on special edge case when its position is on the first file
+            // AND the offset is -1 (going left).
+            // The second special edge case is when its position is on the eighth file
+            // AND the offset is 1 (going right)
             return IsInArray(currentPosition, FirstFile)
                    && offset is -1 ||
                    IsInArray(currentPosition, EighthFile)

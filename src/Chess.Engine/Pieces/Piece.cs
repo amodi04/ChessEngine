@@ -34,14 +34,6 @@ namespace Engine.Pieces
         public Coalition PieceCoalition { get; }
         public bool IsFirstMove { get; }
 
-        public bool Equals(Piece other)
-        {
-            if (ReferenceEquals(null, other)) return false;
-            if (ReferenceEquals(this, other)) return true;
-            return PieceType == other.PieceType && PiecePosition == other.PiecePosition &&
-                   PieceCoalition == other.PieceCoalition && IsFirstMove == other.IsFirstMove;
-        }
-
         /// <summary>
         ///     Checks if there is an enemy piece at a given tile.
         /// </summary>
@@ -50,30 +42,6 @@ namespace Engine.Pieces
         protected bool IsEnemyPieceAtTile(Tile tile)
         {
             return PieceCoalition != tile.Piece.PieceCoalition;
-        }
-
-        /// <summary>
-        ///     Helper method to create a normal move for all pieces.
-        /// </summary>
-        /// <param name="board">The current board state.</param>
-        /// <param name="toCoordinate">The destination coordinate of the move.</param>
-        /// <returns>A move containing the passed in move data.</returns>
-        protected Move CreateNormalMove(Board board, int toCoordinate)
-        {
-            return new(MoveType.NormalMove, board, PiecePosition,
-                toCoordinate, this);
-        }
-
-        /// <summary>
-        ///     Helper method to create a capture move for all pieces.
-        /// </summary>
-        /// <param name="board">The current board state.</param>
-        /// <param name="toCoordinate">The destination coordinate of the move.</param>
-        /// <param name="capturedPiece">The piece being captured.</param>
-        /// <returns>A move containing the passed in move data.</returns>
-        protected Move CreateAttackMove(Board board, int toCoordinate, Piece capturedPiece)
-        {
-            return new(board, PiecePosition, toCoordinate, this, capturedPiece);
         }
 
         /// <summary>
@@ -99,12 +67,20 @@ namespace Engine.Pieces
         /// <param name="move">The move struct containing the data needed to make a move.</param>
         /// <returns>A piece at the destination location.</returns>
         public abstract Piece MovePiece(Move move);
-
+        
         public override bool Equals(object obj)
         {
             if (ReferenceEquals(null, obj)) return false;
             if (ReferenceEquals(this, obj)) return true;
             return obj.GetType() == GetType() && Equals((Piece) obj);
+        }
+        
+        public bool Equals(Piece other)
+        {
+            if (ReferenceEquals(null, other)) return false;
+            if (ReferenceEquals(this, other)) return true;
+            return PieceType == other.PieceType && PiecePosition == other.PiecePosition &&
+                   PieceCoalition == other.PieceCoalition && IsFirstMove == other.IsFirstMove;
         }
 
         public override int GetHashCode()

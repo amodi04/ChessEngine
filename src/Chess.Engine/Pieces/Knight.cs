@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Engine.BoardRepresentation;
 using Engine.Enums;
+using Engine.Factories;
 using Engine.MoveGeneration;
 using Engine.Opposition;
 using Engine.Util;
@@ -10,7 +11,7 @@ using static Engine.Util.BoardUtilities;
 namespace Engine.Pieces
 {
     /// <inheritdoc cref="Piece" />
-    public class Knight : Piece
+    public sealed class Knight : Piece
     {
         public Knight(int piecePosition, Coalition pieceCoalition) :
             base(PieceType.Knight, piecePosition, pieceCoalition)
@@ -46,14 +47,14 @@ namespace Engine.Pieces
                 // If tile is empty, add normal move
                 if (!tile.IsOccupied())
                 {
-                    moves.Add(CreateNormalMove(board, destinationCoordinate));
+                    moves.Add(MoveFactory.CreateNormalMove(board, this, destinationCoordinate));
                 }
                 else
                 {
                     // If enemy at tile, create attacking move
                     if (IsEnemyPieceAtTile(tile))
 
-                        moves.Add(CreateAttackMove(board, destinationCoordinate, tile.Piece));
+                        moves.Add(MoveFactory.CreateAttackMove(board, this, destinationCoordinate, tile.Piece));
                 }
             }
 
@@ -65,7 +66,7 @@ namespace Engine.Pieces
             return PieceUtilities.KnightLookup[move.MovedPiece.PiecePosition, move.MovedPiece.PieceCoalition];
         }
 
-        protected virtual bool IsColumnExclusion(int currentPosition, int offset)
+        private static bool IsColumnExclusion(int currentPosition, int offset)
         {
             // Knight is on special edge case when its position is on the first file
             // AND the offset is -17, -10, 6 or 15 (going left).

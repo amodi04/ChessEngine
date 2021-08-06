@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Engine.BoardRepresentation;
 using Engine.Enums;
 using Engine.Extensions;
+using Engine.Factories;
 using Engine.MoveGeneration;
 using Engine.Opposition;
 using Engine.Util;
@@ -10,7 +11,7 @@ using static Engine.Util.BoardUtilities;
 
 namespace Engine.Pieces
 {
-    public class Pawn : Piece
+    public sealed class Pawn : Piece
     {
         /// <inheritdoc cref="Piece" />
         public Pawn(int piecePosition, Coalition pieceCoalition) :
@@ -57,7 +58,7 @@ namespace Engine.Pieces
                         // If neither of the tiles are occupied, then add a normal move
                         if (!board.GetTile(behindDestinationCoordinate).IsOccupied() &&
                             !board.GetTile(destinationCoordinate).IsOccupied())
-                            moves.Add(CreateNormalMove(board, destinationCoordinate));
+                            moves.Add(MoveFactory.CreateNormalMove(board, this, destinationCoordinate));
                         break;
                     }
                     // If the position offset is neither 16 or 8, then generate moves like other pieces.
@@ -71,7 +72,7 @@ namespace Engine.Pieces
                             if (tile.IsOccupied())
                                 if (IsEnemyPieceAtTile(tile))
                                     // TODO: Check for promotion
-                                    moves.Add(CreateAttackMove(board, destinationCoordinate, tile.Piece));
+                                    moves.Add(MoveFactory.CreateAttackMove(board, this, destinationCoordinate, tile.Piece));
                         }
 
                         break;
@@ -86,18 +87,18 @@ namespace Engine.Pieces
         {
             return PieceUtilities.PawnLookup[move.MovedPiece.PiecePosition, move.MovedPiece.PieceCoalition];
         }
-
-        // Pawn is on special edge case when its position is on the eighth file
-        // AND the offset is 7 AND it is white (going left).
-        // The second special edge case is when its position is on the first file
-        // AND the offset is 7 AND it is black (going left)
-
-        // Pawn is on special edge case when its position is on the first file
-        // AND the offset is 9 AND it is white (going right).
-        // The second special edge case is when its position is on the eighth file
-        // AND the offset is 9 AND it is black (going right) 
-        protected virtual bool IsColumnExclusion(int currentPosition, int offset)
+        
+        private bool IsColumnExclusion(int currentPosition, int offset)
         {
+            // Pawn is on special edge case when its position is on the eighth file
+            // AND the offset is 7 AND it is white (going left).
+            // The second special edge case is when its position is on the first file
+            // AND the offset is 7 AND it is black (going left)
+
+            // Pawn is on special edge case when its position is on the first file
+            // AND the offset is 9 AND it is white (going right).
+            // The second special edge case is when its position is on the eighth file
+            // AND the offset is 9 AND it is black (going right) 
             return IsInArray(currentPosition, EighthFile) && PieceCoalition.IsWhite() && offset is 7 ||
                    IsInArray(currentPosition, FirstFile) && !PieceCoalition.IsWhite() && offset is 7 ||
                    IsInArray(currentPosition, FirstFile) && PieceCoalition.IsWhite() && offset is 9 ||

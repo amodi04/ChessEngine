@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Engine.BoardRepresentation;
 using Engine.Enums;
+using Engine.Factories;
 using Engine.MoveGeneration;
 using Engine.Opposition;
 using Engine.Util;
@@ -9,7 +10,7 @@ using static Engine.Util.BoardUtilities;
 
 namespace Engine.Pieces
 {
-    public class Queen : Piece
+    public sealed class Queen : Piece
     {
         /// <inheritdoc cref="Piece" />
         public Queen(int piecePosition, Coalition pieceCoalition) :
@@ -53,14 +54,14 @@ namespace Engine.Pieces
                     if (!tile.IsOccupied())
                     {
                         // Move move
-                        moves.Add(CreateNormalMove(board, destinationCoordinate));
+                        moves.Add(MoveFactory.CreateNormalMove(board, this, destinationCoordinate));
                     }
                     else
                     {
                         // If enemy at tile, add attacking move
                         if (IsEnemyPieceAtTile(tile))
                             // Attack Move
-                            moves.Add(CreateAttackMove(board, destinationCoordinate, tile.Piece));
+                            moves.Add(MoveFactory.CreateAttackMove(board, this, destinationCoordinate, tile.Piece));
                         break;
                     }
                 }
@@ -75,12 +76,13 @@ namespace Engine.Pieces
             return PieceUtilities.QueenLookup[move.MovedPiece.PiecePosition, move.MovedPiece.PieceCoalition];
         }
 
-        // Queen is on special edge case when its position is on the first file
-        // AND the offset is -9, -1 or 7 (going left).
-        // The second special edge case is when its position is on the eighth file
-        // AND the offset is -7, 1 or 9 (going right) 
-        protected virtual bool IsColumnExclusion(int currentPosition, int offset)
+        private static bool IsColumnExclusion(int currentPosition, int offset)
         {
+            
+            // Queen is on special edge case when its position is on the first file
+            // AND the offset is -9, -1 or 7 (going left).
+            // The second special edge case is when its position is on the eighth file
+            // AND the offset is -7, 1 or 9 (going right) 
             return IsInArray(currentPosition, FirstFile)
                    && offset is -9 or -1 or 7 ||
                    IsInArray(currentPosition, EighthFile)
