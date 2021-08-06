@@ -13,7 +13,7 @@ namespace Engine.Pieces
     {
         /// <inheritdoc cref="Piece" />
         public Queen(int piecePosition, Coalition pieceCoalition) :
-            base(PieceType.King, piecePosition, pieceCoalition)
+            base(PieceType.Queen, piecePosition, pieceCoalition)
         {
             // Empty
         }

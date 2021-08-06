@@ -68,8 +68,10 @@ namespace Engine.PlayerRepresentation
             foreach (var activePiece in GetActiveAlliedPieces())
                 // If the piece is a king, return it.
                 if (activePiece.PieceType == PieceType.King)
+                {
                     return (King) activePiece;
-
+                }
+            
             // No king is found
             throw new Exception("Not a valid board because the player must always have a king!");
         }
