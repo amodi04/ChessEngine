@@ -65,7 +65,7 @@ namespace Engine.Pieces
             return PieceUtilities.KnightLookup[move.MovedPiece.PiecePosition, move.MovedPiece.PieceCoalition];
         }
 
-        protected override bool IsColumnExclusion(int currentPosition, int offset)
+        protected virtual bool IsColumnExclusion(int currentPosition, int offset)
         {
             // Knight is on special edge case when its position is on the first file
             // AND the offset is -17, -10, 6 or 15 (going left).

@@ -61,7 +61,7 @@ namespace Engine.Pieces
             return new King(move.MovedPiece.PiecePosition, move.MovedPiece.PieceCoalition);
         }
 
-        protected override bool IsColumnExclusion(int currentPosition, int offset)
+        protected virtual bool IsColumnExclusion(int currentPosition, int offset)
         {
             // King is on special edge case when its position is on the first file
             // AND the offset is -9, -1 or 7 (going left).

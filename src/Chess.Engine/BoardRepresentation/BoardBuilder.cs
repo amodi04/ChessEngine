@@ -53,7 +53,7 @@ namespace Engine.BoardRepresentation
         public Board BuildBoard()
         {
             // Create a new board, passing in the board builder object to the board constructor.
-            return new(this);
+            return new Board(this);
         }
     }
 }

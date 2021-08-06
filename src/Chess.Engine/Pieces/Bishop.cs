@@ -74,7 +74,7 @@ namespace Engine.Pieces
             return PieceUtilities.BishopLookup[move.MovedPiece.PiecePosition, move.MovedPiece.PieceCoalition];
         }
 
-        protected override bool IsColumnExclusion(int currentPosition, int offset)
+        protected virtual bool IsColumnExclusion(int currentPosition, int offset)
         {
             // Bishop is on special edge case when its position is on the first file
             // AND the offset is -9 or 7 (going left).

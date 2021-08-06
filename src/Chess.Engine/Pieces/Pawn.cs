@@ -96,7 +96,7 @@ namespace Engine.Pieces
         // AND the offset is 9 AND it is white (going right).
         // The second special edge case is when its position is on the eighth file
         // AND the offset is 9 AND it is black (going right) 
-        protected override bool IsColumnExclusion(int currentPosition, int offset)
+        protected virtual bool IsColumnExclusion(int currentPosition, int offset)
         {
             return IsInArray(currentPosition, EighthFile) && PieceCoalition.IsWhite() && offset is 7 ||
                    IsInArray(currentPosition, FirstFile) && !PieceCoalition.IsWhite() && offset is 7 ||

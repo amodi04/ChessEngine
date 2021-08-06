@@ -78,7 +78,7 @@ namespace Engine.Pieces
         // AND the offset is -1 (going left).
         // The second special edge case is when its position is on the eighth file
         // AND the offset is 1 (going right)
-        protected override bool IsColumnExclusion(int currentPosition, int offset)
+        protected virtual bool IsColumnExclusion(int currentPosition, int offset)
         {
             return IsInArray(currentPosition, FirstFile)
                    && offset is -1 ||
