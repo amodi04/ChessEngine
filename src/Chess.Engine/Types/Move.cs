@@ -85,29 +85,58 @@ namespace Engine.MoveGeneration
             return boardBuilder.BuildBoard();
         }
 
+        /// <summary>
+        /// IEquatable Implementation of Equals.
+        /// </summary>
+        /// <param name="other">The Move struct to compare to.</param>
+        /// <returns>True if equal, false if not.</returns>
         public bool Equals(Move other)
         {
+            // Return true if all value types are equal
             return Type == other.Type && Equals(Board, other.Board) && FromCoordinate == other.FromCoordinate &&
                    ToCoordinate == other.ToCoordinate && Equals(MovedPiece, other.MovedPiece) &&
                    Equals(CapturedPiece, other.CapturedPiece);
         }
 
+        /// <summary>
+        /// Checks if two objects are equal.
+        /// </summary>
+        /// <param name="obj">The object to compare to.</param>
+        /// <returns>True if equal, false if not.</returns>
         public override bool Equals(object obj)
         {
+            // Return true if object is of type move and they are equal
             return obj is Move other && Equals(other);
         }
 
+        /// <summary>
+        /// Gets the hash code of the current move struct in memory.
+        /// </summary>
+        /// <returns>The hash code combination of all value types within the struct.</returns>
         public override int GetHashCode()
         {
+            // Combine hash codes of all value types
             return HashCode.Combine((int) Type, Board, FromCoordinate, ToCoordinate, MovedPiece, CapturedPiece);
         }
 
-        public static bool operator ==(Move left, Move right)
+        /// <summary>
+        /// Shorthand operator for equal comparison.
+        /// </summary>
+        /// <param name="left">The object to compare.</param>
+        /// <param name="right">The object to compare against.</param>
+        /// <returns>True if equal, false if not.</returns>
+        public static bool operator == (Move left, Move right)
         {
             return left.Equals(right);
         }
 
-        public static bool operator !=(Move left, Move right)
+        /// <summary>
+        /// Shorthand operator for not equal comparison.
+        /// </summary>
+        /// <param name="left">The object to compare.</param>
+        /// <param name="right">The object to compare against.</param>
+        /// <returns>True if not equal, false if equal.</returns>
+        public static bool operator != (Move left, Move right)
         {
             return !left.Equals(right);
         }

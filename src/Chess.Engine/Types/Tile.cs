@@ -5,7 +5,7 @@ using Engine.Extensions;
 using Engine.Pieces;
 using Engine.Util;
 
-namespace Engine.BoardRepresentation.TileRepresentation
+namespace Engine.BoardRepresentation
 {
     /// <summary>
     ///     This class contains tile data which will be used for determining relative positions in a game.

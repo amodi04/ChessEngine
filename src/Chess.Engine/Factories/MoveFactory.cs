@@ -5,7 +5,7 @@ using Engine.Pieces;
 
 namespace Engine.Factories
 {
-    public class MoveFactory
+    public static class MoveFactory
     {
         /// <summary>
         ///     Factory method to create a normal move for all pieces.

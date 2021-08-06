@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using Engine.BoardRepresentation.TileRepresentation;
 using Engine.Extensions;
 using Engine.MoveGeneration;
 using Engine.Opposition;

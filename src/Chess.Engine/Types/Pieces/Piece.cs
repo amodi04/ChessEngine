@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections;
 using Engine.BoardRepresentation;
-using Engine.BoardRepresentation.TileRepresentation;
 using Engine.Enums;
 using Engine.Extensions;
 using Engine.MoveGeneration;
@@ -68,31 +67,64 @@ namespace Engine.Pieces
         /// <returns>A piece at the destination location.</returns>
         public abstract Piece MovePiece(Move move);
         
-        public override bool Equals(object obj)
-        {
-            if (ReferenceEquals(null, obj)) return false;
-            if (ReferenceEquals(this, obj)) return true;
-            return obj.GetType() == GetType() && Equals((Piece) obj);
-        }
-        
+        /// <summary>
+        /// IEquatable Implementation of Equals.
+        /// </summary>
+        /// <param name="other">The Piece object to compare to.</param>
+        /// <returns>True if equal, false if not.</returns>
         public bool Equals(Piece other)
         {
+            // Referential equality checks
             if (ReferenceEquals(null, other)) return false;
             if (ReferenceEquals(this, other)) return true;
+            
+            // Return true if all value types are equal
             return PieceType == other.PieceType && PiecePosition == other.PiecePosition &&
                    PieceCoalition == other.PieceCoalition && IsFirstMove == other.IsFirstMove;
         }
+        
+        /// <summary>
+        /// Checks if two objects are equal.
+        /// </summary>
+        /// <param name="obj">The object to compare to.</param>
+        /// <returns>True if equal, false if not.</returns>
+        public override bool Equals(object obj)
+        {
+            // Referential equality checks
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            
+            // If both types are equal and they are equal then return true
+            return obj.GetType() == GetType() && Equals((Piece) obj);
+        }
 
+        /// <summary>
+        /// Gets the hash code of the current move struct in memory.
+        /// </summary>
+        /// <returns>The hash code combination of all value types within the struct.</returns>
         public override int GetHashCode()
         {
+            // Combine hash codes of all value types
             return HashCode.Combine((int) PieceType, PiecePosition, (int) PieceCoalition, IsFirstMove);
         }
 
+        /// <summary>
+        /// Shorthand operator for equal comparison.
+        /// </summary>
+        /// <param name="left">The object to compare.</param>
+        /// <param name="right">The object to compare against.</param>
+        /// <returns>True if equal, false if not.</returns>
         public static bool operator ==(Piece left, Piece right)
         {
             return Equals(left, right);
         }
 
+        /// <summary>
+        /// Shorthand operator for not equal comparison.
+        /// </summary>
+        /// <param name="left">The object to compare.</param>
+        /// <param name="right">The object to compare against.</param>
+        /// <returns>True if not equal, false if equal.</returns>
         public static bool operator !=(Piece left, Piece right)
         {
             return !Equals(left, right);
