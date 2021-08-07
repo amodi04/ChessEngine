@@ -1,14 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Engine.Builders;
+using Engine.Enums;
 using Engine.Extensions;
-using Engine.MoveGeneration;
-using Engine.Opposition;
-using Engine.Pieces;
-using Engine.PlayerRepresentation;
+using Engine.Types.Pieces;
 using Engine.Util;
 
-namespace Engine.BoardRepresentation
+namespace Engine.Types
 {
     /// <summary>
     ///     This class stores current game state in form of the chess board.

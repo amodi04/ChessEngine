@@ -1,14 +1,11 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using Engine.BoardRepresentation;
 using Engine.Enums;
 using Engine.Factories;
-using Engine.MoveGeneration;
-using Engine.Opposition;
 using Engine.Util;
 using static Engine.Util.BoardUtilities;
 
-namespace Engine.Pieces
+namespace Engine.Types.Pieces
 {
     public sealed class Queen : Piece
     {
@@ -78,7 +75,6 @@ namespace Engine.Pieces
 
         private static bool IsColumnExclusion(int currentPosition, int offset)
         {
-            
             // Queen is on special edge case when its position is on the first file
             // AND the offset is -9, -1 or 7 (going left).
             // The second special edge case is when its position is on the eighth file

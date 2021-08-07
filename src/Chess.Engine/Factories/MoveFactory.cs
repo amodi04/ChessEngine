@@ -1,7 +1,6 @@
-﻿using Engine.BoardRepresentation;
-using Engine.Enums;
-using Engine.MoveGeneration;
-using Engine.Pieces;
+﻿using Engine.Enums;
+using Engine.Types;
+using Engine.Types.Pieces;
 
 namespace Engine.Factories
 {
@@ -16,7 +15,7 @@ namespace Engine.Factories
         /// <returns>A move containing the passed in move data.</returns>
         public static Move CreateNormalMove(Board board, Piece movedPiece, int toCoordinate)
         {
-            return new Move(MoveType.NormalMove, board, movedPiece.PiecePosition, toCoordinate, movedPiece);
+            return new(MoveType.NormalMove, board, movedPiece.PiecePosition, toCoordinate, movedPiece);
         }
 
         /// <summary>
@@ -29,7 +28,7 @@ namespace Engine.Factories
         /// <returns>A move containing the passed in move data.</returns>
         public static Move CreateAttackMove(Board board, Piece movedPiece, int toCoordinate, Piece capturedPiece)
         {
-            return new Move(board, movedPiece.PiecePosition, toCoordinate, movedPiece, capturedPiece);
+            return new(board, movedPiece.PiecePosition, toCoordinate, movedPiece, capturedPiece);
         }
     }
 }

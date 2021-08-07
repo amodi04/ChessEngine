@@ -1,13 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using Engine.BoardRepresentation;
 using Engine.Enums;
 using Engine.Factories;
-using Engine.MoveGeneration;
-using Engine.Opposition;
 using static Engine.Util.BoardUtilities;
 
-namespace Engine.Pieces
+namespace Engine.Types.Pieces
 {
     /// <inheritdoc cref="Piece" />
     public sealed class King : Piece
@@ -50,7 +47,8 @@ namespace Engine.Pieces
                 else
                 {
                     // If enemy at tile, create attack move
-                    if (IsEnemyPieceAtTile(tile)) moves.Add(MoveFactory.CreateAttackMove(board, this, destinationCoordinate, tile.Piece));
+                    if (IsEnemyPieceAtTile(tile))
+                        moves.Add(MoveFactory.CreateAttackMove(board, this, destinationCoordinate, tile.Piece));
                 }
             }
 

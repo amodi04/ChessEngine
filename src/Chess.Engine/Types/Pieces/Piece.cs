@@ -1,12 +1,9 @@
 ﻿using System;
 using System.Collections;
-using Engine.BoardRepresentation;
 using Engine.Enums;
 using Engine.Extensions;
-using Engine.MoveGeneration;
-using Engine.Opposition;
 
-namespace Engine.Pieces
+namespace Engine.Types.Pieces
 {
     /// <summary>
     ///     This class contains piece data and methods that it can make such as moving and calculating legal moves.
@@ -32,6 +29,22 @@ namespace Engine.Pieces
         public int PiecePosition { get; }
         public Coalition PieceCoalition { get; }
         public bool IsFirstMove { get; }
+
+        /// <summary>
+        ///     IEquatable Implementation of Equals.
+        /// </summary>
+        /// <param name="other">The Piece object to compare to.</param>
+        /// <returns>True if equal, false if not.</returns>
+        public bool Equals(Piece other)
+        {
+            // Referential equality checks
+            if (ReferenceEquals(null, other)) return false;
+            if (ReferenceEquals(this, other)) return true;
+
+            // Return true if all value types are equal
+            return PieceType == other.PieceType && PiecePosition == other.PiecePosition &&
+                   PieceCoalition == other.PieceCoalition && IsFirstMove == other.IsFirstMove;
+        }
 
         /// <summary>
         ///     Checks if there is an enemy piece at a given tile.
@@ -66,25 +79,9 @@ namespace Engine.Pieces
         /// <param name="move">The move struct containing the data needed to make a move.</param>
         /// <returns>A piece at the destination location.</returns>
         public abstract Piece MovePiece(Move move);
-        
+
         /// <summary>
-        /// IEquatable Implementation of Equals.
-        /// </summary>
-        /// <param name="other">The Piece object to compare to.</param>
-        /// <returns>True if equal, false if not.</returns>
-        public bool Equals(Piece other)
-        {
-            // Referential equality checks
-            if (ReferenceEquals(null, other)) return false;
-            if (ReferenceEquals(this, other)) return true;
-            
-            // Return true if all value types are equal
-            return PieceType == other.PieceType && PiecePosition == other.PiecePosition &&
-                   PieceCoalition == other.PieceCoalition && IsFirstMove == other.IsFirstMove;
-        }
-        
-        /// <summary>
-        /// Checks if two objects are equal.
+        ///     Checks if two objects are equal.
         /// </summary>
         /// <param name="obj">The object to compare to.</param>
         /// <returns>True if equal, false if not.</returns>
@@ -93,13 +90,13 @@ namespace Engine.Pieces
             // Referential equality checks
             if (ReferenceEquals(null, obj)) return false;
             if (ReferenceEquals(this, obj)) return true;
-            
+
             // If both types are equal and they are equal then return true
             return obj.GetType() == GetType() && Equals((Piece) obj);
         }
 
         /// <summary>
-        /// Gets the hash code of the current move struct in memory.
+        ///     Gets the hash code of the current move struct in memory.
         /// </summary>
         /// <returns>The hash code combination of all value types within the struct.</returns>
         public override int GetHashCode()
@@ -109,7 +106,7 @@ namespace Engine.Pieces
         }
 
         /// <summary>
-        /// Shorthand operator for equal comparison.
+        ///     Shorthand operator for equal comparison.
         /// </summary>
         /// <param name="left">The object to compare.</param>
         /// <param name="right">The object to compare against.</param>
@@ -120,7 +117,7 @@ namespace Engine.Pieces
         }
 
         /// <summary>
-        /// Shorthand operator for not equal comparison.
+        ///     Shorthand operator for not equal comparison.
         /// </summary>
         /// <param name="left">The object to compare.</param>
         /// <param name="right">The object to compare against.</param>

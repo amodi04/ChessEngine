@@ -1,8 +1,9 @@
-﻿using Engine.Opposition;
-using Engine.Pieces;
+﻿using Engine.Enums;
+using Engine.Types;
+using Engine.Types.Pieces;
 using Engine.Util;
 
-namespace Engine.BoardRepresentation
+namespace Engine.Builders
 {
     /// <summary>
     ///     This class enables the building of board and board data.
@@ -53,7 +54,7 @@ namespace Engine.BoardRepresentation
         public Board BuildBoard()
         {
             // Create a new board, passing in the board builder object to the board constructor.
-            return new Board(this);
+            return new(this);
         }
     }
 }

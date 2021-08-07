@@ -1,5 +1,5 @@
-﻿using Engine.Opposition;
-using Engine.PlayerRepresentation;
+﻿using Engine.Enums;
+using Engine.Types;
 
 namespace Engine.Extensions
 {

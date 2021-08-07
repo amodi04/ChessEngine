@@ -4,7 +4,7 @@ using System.Collections.Generic;
 namespace Engine.Util
 {
     /// <summary>
-    /// This utility class allows for the implementation of double ke dictionaries to obtain values.
+    ///     This utility class allows for the implementation of double ke dictionaries to obtain values.
     /// </summary>
     /// <typeparam name="TKey1">The first key.</typeparam>
     /// <typeparam name="TKey2">The second key.</typeparam>
@@ -12,7 +12,7 @@ namespace Engine.Util
     public class DoubleKeyDictionary<TKey1, TKey2, TValue> : Dictionary<Tuple<TKey1, TKey2>, TValue>
     {
         /// <summary>
-        /// Gets and sets the value at passed in keys. Implementation of a lookup but with 2 key indexes rather than one.
+        ///     Gets and sets the value at passed in keys. Implementation of a lookup but with 2 key indexes rather than one.
         /// </summary>
         /// <param name="key1">The first key.</param>
         /// <param name="key2">The second key.</param>
@@ -25,7 +25,7 @@ namespace Engine.Util
         }
 
         /// <summary>
-        /// Inserts a value into the dictionary at passed in key indexes.
+        ///     Inserts a value into the dictionary at passed in key indexes.
         /// </summary>
         /// <param name="key1">The first key.</param>
         /// <param name="key2">The second key.</param>
@@ -37,7 +37,7 @@ namespace Engine.Util
         }
 
         /// <summary>
-        /// Checks if the combination key is in the dictionary.
+        ///     Checks if the combination key is in the dictionary.
         /// </summary>
         /// <param name="key1">The first key.</param>
         /// <param name="key2">The second key.</param>

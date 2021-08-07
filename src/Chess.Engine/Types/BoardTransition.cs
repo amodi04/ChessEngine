@@ -1,7 +1,6 @@
 ﻿using Engine.Enums;
-using Engine.MoveGeneration;
 
-namespace Engine.BoardRepresentation
+namespace Engine.Types
 {
     /// <summary>
     ///     This struct holds data for moving between immutable boards.

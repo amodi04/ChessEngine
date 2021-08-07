@@ -1,14 +1,11 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using Engine.BoardRepresentation;
 using Engine.Enums;
 using Engine.Factories;
-using Engine.MoveGeneration;
-using Engine.Opposition;
 using Engine.Util;
 using static Engine.Util.BoardUtilities;
 
-namespace Engine.Pieces
+namespace Engine.Types.Pieces
 {
     public sealed class Rook : Piece
     {
@@ -74,8 +71,8 @@ namespace Engine.Pieces
         {
             return PieceUtilities.RookLookup[move.MovedPiece.PiecePosition, move.MovedPiece.PieceCoalition];
         }
-        
-        
+
+
         private static bool IsColumnExclusion(int currentPosition, int offset)
         {
             // Rook is on special edge case when its position is on the first file

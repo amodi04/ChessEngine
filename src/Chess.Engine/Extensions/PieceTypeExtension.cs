@@ -1,5 +1,4 @@
 ﻿using Engine.Enums;
-using Engine.Opposition;
 
 namespace Engine.Extensions
 {

@@ -1,15 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using Engine.BoardRepresentation;
 using Engine.Enums;
 using Engine.Extensions;
 using Engine.Factories;
-using Engine.MoveGeneration;
-using Engine.Opposition;
 using Engine.Util;
 using static Engine.Util.BoardUtilities;
 
-namespace Engine.Pieces
+namespace Engine.Types.Pieces
 {
     public sealed class Pawn : Piece
     {
@@ -72,7 +69,8 @@ namespace Engine.Pieces
                             if (tile.IsOccupied())
                                 if (IsEnemyPieceAtTile(tile))
                                     // TODO: Check for promotion
-                                    moves.Add(MoveFactory.CreateAttackMove(board, this, destinationCoordinate, tile.Piece));
+                                    moves.Add(MoveFactory.CreateAttackMove(board, this, destinationCoordinate,
+                                        tile.Piece));
                         }
 
                         break;
@@ -87,7 +85,7 @@ namespace Engine.Pieces
         {
             return PieceUtilities.PawnLookup[move.MovedPiece.PiecePosition, move.MovedPiece.PieceCoalition];
         }
-        
+
         private bool IsColumnExclusion(int currentPosition, int offset)
         {
             // Pawn is on special edge case when its position is on the eighth file

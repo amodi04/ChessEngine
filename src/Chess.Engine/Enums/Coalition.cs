@@ -1,4 +1,4 @@
-﻿namespace Engine.Opposition
+﻿namespace Engine.Enums
 {
     /// <summary>
     ///     Enumeration to keep track of opposition.

@@ -1,9 +1,9 @@
 ﻿using System;
-using Engine.BoardRepresentation;
+using Engine.Builders;
 using Engine.Enums;
-using Engine.Pieces;
+using Engine.Types.Pieces;
 
-namespace Engine.MoveGeneration
+namespace Engine.Types
 {
     /// <summary>
     ///     This struct stores Move Data.
@@ -86,7 +86,7 @@ namespace Engine.MoveGeneration
         }
 
         /// <summary>
-        /// IEquatable Implementation of Equals.
+        ///     IEquatable Implementation of Equals.
         /// </summary>
         /// <param name="other">The Move struct to compare to.</param>
         /// <returns>True if equal, false if not.</returns>
@@ -99,7 +99,7 @@ namespace Engine.MoveGeneration
         }
 
         /// <summary>
-        /// Checks if two objects are equal.
+        ///     Checks if two objects are equal.
         /// </summary>
         /// <param name="obj">The object to compare to.</param>
         /// <returns>True if equal, false if not.</returns>
@@ -110,7 +110,7 @@ namespace Engine.MoveGeneration
         }
 
         /// <summary>
-        /// Gets the hash code of the current move struct in memory.
+        ///     Gets the hash code of the current move struct in memory.
         /// </summary>
         /// <returns>The hash code combination of all value types within the struct.</returns>
         public override int GetHashCode()
@@ -120,23 +120,23 @@ namespace Engine.MoveGeneration
         }
 
         /// <summary>
-        /// Shorthand operator for equal comparison.
+        ///     Shorthand operator for equal comparison.
         /// </summary>
         /// <param name="left">The object to compare.</param>
         /// <param name="right">The object to compare against.</param>
         /// <returns>True if equal, false if not.</returns>
-        public static bool operator == (Move left, Move right)
+        public static bool operator ==(Move left, Move right)
         {
             return left.Equals(right);
         }
 
         /// <summary>
-        /// Shorthand operator for not equal comparison.
+        ///     Shorthand operator for not equal comparison.
         /// </summary>
         /// <param name="left">The object to compare.</param>
         /// <param name="right">The object to compare against.</param>
         /// <returns>True if not equal, false if equal.</returns>
-        public static bool operator != (Move left, Move right)
+        public static bool operator !=(Move left, Move right)
         {
             return !left.Equals(right);
         }

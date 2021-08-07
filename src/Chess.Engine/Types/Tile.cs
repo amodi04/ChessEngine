@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using Engine.Enums;
 using Engine.Extensions;
-using Engine.Pieces;
+using Engine.Types.Pieces;
 using Engine.Util;
 
-namespace Engine.BoardRepresentation
+namespace Engine.Types
 {
     /// <summary>
     ///     This class contains tile data which will be used for determining relative positions in a game.

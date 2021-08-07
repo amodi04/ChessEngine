@@ -1,14 +1,11 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using Engine.BoardRepresentation;
 using Engine.Enums;
 using Engine.Factories;
-using Engine.MoveGeneration;
-using Engine.Opposition;
 using Engine.Util;
 using static Engine.Util.BoardUtilities;
 
-namespace Engine.Pieces
+namespace Engine.Types.Pieces
 {
     /// <inheritdoc cref="Piece" />
     public sealed class Knight : Piece
