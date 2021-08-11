@@ -1,8 +1,11 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Engine.Enums;
 using Engine.Extensions;
+using Engine.Factories;
+using Engine.Types.MoveGeneration;
 using Engine.Types.Pieces;
 
 namespace Engine.Types
@@ -23,7 +26,7 @@ namespace Engine.Types
         /// <param name="board">The current board in play.</param>
         /// <param name="moves">An iterable collection of moves available to the player.</param>
         /// <param name="opponentMoves">An iterable collection of opponent moves available to the player.</param>
-        public Player(Coalition coalition, Board board, IEnumerable<Move> moves, IEnumerable<Move> opponentMoves)
+        public Player(Coalition coalition, Board board, IEnumerable<IMove> moves, IEnumerable<IMove> opponentMoves)
         {
             Coalition = coalition;
             _board = board;
@@ -35,7 +38,7 @@ namespace Engine.Types
         }
 
         public King King { get; }
-        public IEnumerable<Move> Moves { get; }
+        public IEnumerable<IMove> Moves { get; }
         public Coalition Coalition { get; }
 
         /// <summary>
@@ -44,9 +47,9 @@ namespace Engine.Types
         /// <param name="tilePosition">The tile to check.</param>
         /// <param name="opponentMoves">All the possible moves that the opponent can make.</param>
         /// <returns>An iterable collection of attacking moves on the tile.</returns>
-        private IEnumerable<Move> CalculateAttacksOnTile(int tilePosition, IEnumerable<Move> opponentMoves)
+        private IEnumerable<IMove> CalculateAttacksOnTile(int tilePosition, IEnumerable<IMove> opponentMoves)
         {
-            var attackMoves = new List<Move>();
+            var attackMoves = new List<IMove>();
             foreach (var opponentMove in opponentMoves)
                 if (tilePosition == opponentMove.ToCoordinate)
                     attackMoves.Add(opponentMove);
@@ -122,7 +125,7 @@ namespace Engine.Types
         /// </summary>
         /// <param name="move">The move to be made.</param>
         /// <returns>A board transition struct containing relevant data for the next board.</returns>
-        private BoardTransition MakeMove(Move move)
+        private BoardTransition MakeMove(IMove move)
         {
             // If the move is illegal, return the current board data.
             if (!IsMoveLegal(move)) return new BoardTransition(_board, _board, move, MoveStatus.Illegal);
@@ -145,7 +148,7 @@ namespace Engine.Types
         /// </summary>
         /// <param name="move">The move to check.</param>
         /// <returns>True if legal, false otherwise.</returns>
-        private bool IsMoveLegal(Move move)
+        private bool IsMoveLegal(IMove move)
         {
             // TODO: Check LINQ performance
             // True if the member field Moves contains the move passed in
@@ -163,10 +166,86 @@ namespace Engine.Types
             return Coalition.IsWhite() ? _board.WhitePieces : _board.BlackPieces;
         }
 
+        /// <summary>
+        /// Gets the player's opponent.
+        /// </summary>
+        /// <returns>If player is white, get the black player, otherwise get the white player.</returns>
         public Player GetOpponent()
         {
             // If white return black, else white,
             return Coalition.IsWhite() ? _board.BlackPlayer : _board.WhitePlayer;
+        }
+        
+        /// <summary>
+        /// Calculates the potential castling moves for the player.
+        /// </summary>
+        /// <param name="playerMoves">The moves that the player can make.</param>
+        /// <param name="opponentMoves">The moves that the opponent player can make.</param>
+        /// <returns>An IEnumerable of castling moves.</returns>
+        private IEnumerable<IMove> ComputeCastleMoves(IEnumerable<IMove> playerMoves, IEnumerable<IMove> opponentMoves)
+        {
+            // Initialise list
+            var castleMoves = new List<IMove>();
+
+            // Set the king position depending on if the player is white or black
+            var kingPosition = Coalition.IsWhite() ? 4 : 60;
+
+            // If the king has moved or the king is in check, no castling moves can be made so an empty list is returned
+            if (!King.IsFirstMove || _isInCheck) return castleMoves;
+            
+            // Convert the IEnumerable to an array to reduce multiple enumerations
+            var opponentMovesArray = opponentMoves as IMove[] ?? opponentMoves.ToArray();
+            
+            // King side castle
+            // If the adjacent tile next to the king is empty and the 2nd consecutive adjacent tile is empty
+            if (!_board.GetTile(kingPosition + 1).IsOccupied() && !_board.GetTile(kingPosition + 2).IsOccupied())
+            {
+                // Get the rook on the king side. Position is dependent on coalition
+                var rookTile = _board.GetTile(Coalition.IsWhite() ? 7 : 63);
+                
+                // If the rook tile is occupied and it is the pieces first move
+                if (rookTile.IsOccupied() && rookTile.Piece.IsFirstMove)
+                {
+                    // If there are no opponent attacks on the empty tiles between the rook and the king
+                    // and the piece is a rook
+                    if (!CalculateAttacksOnTile(kingPosition + 1, opponentMovesArray).Any() &&
+                        !CalculateAttacksOnTile(kingPosition + 2, opponentMovesArray).Any() &&
+                        rookTile.Piece.PieceType == PieceType.Rook)
+                    {
+                        // TODO: Add castling move
+                        castleMoves.Add(new CastlingMove());
+                    }
+                }
+            }
+
+            // Queen side castle
+            // If the adjacent tile next to the king is occupied or the 2nd consecutive adjacent tile is occupied or
+            // the 3rd consecutive adjacent tile is occupied,
+            // return the current list of castling moves because queen side castling is invalid here.
+            if (_board.GetTile(kingPosition - 1).IsOccupied() || _board.GetTile(kingPosition - 2).IsOccupied() ||
+                !_board.GetTile(kingPosition - 3).IsOccupied()) return castleMoves;
+            {
+                // Get the rook on the queen side. Position is dependent on coalition
+                // TODO: Change hard coding rooks
+                var rookTile = _board.GetTile(Coalition.IsWhite() ? 0 : 56);
+                
+                // If the rook tile is not occupied or the rook has moved, castling is invalid so return the calculated 
+                // moves so far.
+                if (!rookTile.IsOccupied() || !rookTile.Piece.IsFirstMove) return castleMoves;
+                
+                // If there are no opponent attacks on the empty tiles between the rook and the king
+                // and the piece is a rook
+                if (!CalculateAttacksOnTile(kingPosition - 1, opponentMovesArray).Any() &&
+                    !CalculateAttacksOnTile(kingPosition - 2, opponentMovesArray).Any() &&
+                    !CalculateAttacksOnTile(kingPosition - 3, opponentMovesArray).Any() &&
+                    rookTile.Piece.PieceType == PieceType.Rook)
+                {
+                    // TODO: Add castling move
+                    castleMoves.Add(new CastlingMove());
+                }
+            }
+
+            return castleMoves;
         }
     }
 }

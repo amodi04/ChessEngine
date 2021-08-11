@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Engine.Enums;
 using Engine.Extensions;
 using Engine.Factories;
+using Engine.Types.MoveGeneration;
 using Engine.Util;
 using static Engine.Util.BoardUtilities;
 
@@ -17,7 +18,7 @@ namespace Engine.Types.Pieces
             // Empty
         }
 
-        public override IList GenerateLegalMoves(Board board)
+        public override IEnumerable<IMove> GenerateLegalMoves(Board board)
         {
             // Directions that a pawn can move in. Stored as position offsets because pawns are non-sliding pieces.
             /*
@@ -28,7 +29,7 @@ namespace Engine.Types.Pieces
              */
             int[] positionOffsets = {7, 8, 9, 16};
 
-            var moves = new List<Move>();
+            var moves = new List<IMove>();
 
             foreach (var positionOffset in positionOffsets)
             {
@@ -45,7 +46,7 @@ namespace Engine.Types.Pieces
                     // If the position offset is 8 and the tile is empty, create a normal move
                     case 8 when !board.GetTile(destinationCoordinate).IsOccupied():
                         // TODO: Check for promotion
-                        moves.Add(new Move());
+                        moves.Add(MoveFactory.CreateMove(board, this, destinationCoordinate));
                         break;
                     // If the position offset is 16 and it is the pawns first move (pawn jump move),
                     case 16 when IsFirstMove:
@@ -55,7 +56,7 @@ namespace Engine.Types.Pieces
                         // If neither of the tiles are occupied, then add a normal move
                         if (!board.GetTile(behindDestinationCoordinate).IsOccupied() &&
                             !board.GetTile(destinationCoordinate).IsOccupied())
-                            moves.Add(MoveFactory.CreateNormalMove(board, this, destinationCoordinate));
+                            moves.Add(MoveFactory.CreateMove(board, this, destinationCoordinate));
                         break;
                     }
                     // If the position offset is neither 16 or 8, then generate moves like other pieces.
@@ -69,8 +70,8 @@ namespace Engine.Types.Pieces
                             if (tile.IsOccupied())
                                 if (IsEnemyPieceAtTile(tile))
                                     // TODO: Check for promotion
-                                    moves.Add(MoveFactory.CreateAttackMove(board, this, destinationCoordinate,
-                                        tile.Piece));
+                                    moves.Add(MoveFactory.CreateMove(board, this, destinationCoordinate,
+                                        MoveType.CaptureMove, tile.Piece));
                         }
 
                         break;
@@ -81,7 +82,7 @@ namespace Engine.Types.Pieces
             return moves;
         }
 
-        public override Piece MovePiece(Move move)
+        public override Piece MovePiece(IMove move)
         {
             return PieceUtilities.PawnLookup[move.MovedPiece.PiecePosition, move.MovedPiece.PieceCoalition];
         }

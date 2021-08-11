@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Engine.Enums;
 using Engine.Factories;
+using Engine.Types.MoveGeneration;
 using static Engine.Util.BoardUtilities;
 
 namespace Engine.Types.Pieces
@@ -15,7 +16,7 @@ namespace Engine.Types.Pieces
             // Empty
         }
 
-        public override IList GenerateLegalMoves(Board board)
+        public override IEnumerable<IMove> GenerateLegalMoves(Board board)
         {
             // Directions that a king can move in. Stored as position offsets because kings are non-sliding pieces.
             /*
@@ -25,7 +26,7 @@ namespace Engine.Types.Pieces
              */
             int[] positionOffsets = {-9, -8, -7, -1, 1, 7, 8, 9};
 
-            var moves = new List<Move>();
+            var moves = new List<IMove>();
 
             foreach (var positionOffset in positionOffsets)
             {
@@ -42,20 +43,20 @@ namespace Engine.Types.Pieces
                 // If empty, create normal move
                 if (!tile.IsOccupied())
                 {
-                    moves.Add(MoveFactory.CreateNormalMove(board, this, destinationCoordinate));
+                    moves.Add(MoveFactory.CreateMove(board, this, destinationCoordinate));
                 }
                 else
                 {
                     // If enemy at tile, create attack move
                     if (IsEnemyPieceAtTile(tile))
-                        moves.Add(MoveFactory.CreateAttackMove(board, this, destinationCoordinate, tile.Piece));
+                        moves.Add(MoveFactory.CreateMove(board, this, destinationCoordinate, MoveType.CaptureMove, tile.Piece));
                 }
             }
 
             return moves;
         }
 
-        public override Piece MovePiece(Move move)
+        public override Piece MovePiece(IMove move)
         {
             return new King(move.MovedPiece.PiecePosition, move.MovedPiece.PieceCoalition);
         }

@@ -1,9 +1,12 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using Engine.Builders;
 using Engine.Enums;
 using Engine.Extensions;
+using Engine.Types.MoveGeneration;
 using Engine.Types.Pieces;
 using Engine.Util;
 
@@ -28,6 +31,7 @@ namespace Engine.Types
             // Calculate each colour's pieces for any board instance
             WhitePieces = CalculateActivePieces(_board, Coalition.White);
             BlackPieces = CalculateActivePieces(_board, Coalition.Black);
+            AllPieces = WhitePieces.Concat(BlackPieces);
 
             // Calculate each colour's legal moves for any board instance
             var whiteLegalMoves = CalculateLegalMoves(WhitePieces);
@@ -41,6 +45,7 @@ namespace Engine.Types
 
         public IEnumerable<Piece> BlackPieces { get; }
         public IEnumerable<Piece> WhitePieces { get; }
+        public IEnumerable<Piece> AllPieces { get; }
         public Player WhitePlayer { get; }
         public Player BlackPlayer { get; }
         public Player CurrentPlayer { get; }
@@ -74,11 +79,11 @@ namespace Engine.Types
         /// </summary>
         /// <param name="pieces">The pieces to iterate over.</param>
         /// <returns>An IEnumerable collection of legal moves generated from each piece passed in.</returns>
-        private IEnumerable<Move> CalculateLegalMoves(IEnumerable<Piece> pieces)
+        private IEnumerable<IMove> CalculateLegalMoves(IEnumerable<Piece> pieces)
         {
-            var legalMoves = new List<Move>();
+            var legalMoves = new List<IMove>();
             foreach (var piece in pieces)
-            foreach (Move legalMove in piece.GenerateLegalMoves(this))
+            foreach (IMove legalMove in piece.GenerateLegalMoves(this))
                 legalMoves.Add(legalMove);
 
             return legalMoves;

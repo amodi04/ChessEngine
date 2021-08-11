@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using Engine.Enums;
 using Engine.Extensions;
+using Engine.Types.MoveGeneration;
 
 namespace Engine.Types.Pieces
 {
@@ -71,14 +73,14 @@ namespace Engine.Types.Pieces
         /// </summary>
         /// <param name="board">The current board state.</param>
         /// <returns>An IList of moves that can be made.</returns>
-        public abstract IList GenerateLegalMoves(Board board);
+        public abstract IEnumerable<IMove> GenerateLegalMoves(Board board);
 
         /// <summary>
         ///     This method moves the piece by utilising passed in move data. Each piece will have it's own implementation.
         /// </summary>
         /// <param name="move">The move struct containing the data needed to make a move.</param>
         /// <returns>A piece at the destination location.</returns>
-        public abstract Piece MovePiece(Move move);
+        public abstract Piece MovePiece(IMove move);
 
         /// <summary>
         ///     Checks if two objects are equal.

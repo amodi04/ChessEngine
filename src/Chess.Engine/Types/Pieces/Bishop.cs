@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Engine.Enums;
 using Engine.Factories;
+using Engine.Types.MoveGeneration;
 using Engine.Util;
 using static Engine.Util.BoardUtilities;
 
@@ -16,7 +17,7 @@ namespace Engine.Types.Pieces
             // Empty
         }
 
-        public override IList GenerateLegalMoves(Board board)
+        public override IEnumerable<IMove> GenerateLegalMoves(Board board)
         {
             // Directions that a bishop can move in. Stored as vector offsets because bishops are sliding pieces.
             /*
@@ -26,7 +27,7 @@ namespace Engine.Types.Pieces
              */
             int[] vectorOffsets = {-9, -7, 7, 9};
 
-            var moves = new List<Move>();
+            var moves = new List<IMove>();
 
             foreach (var vectorOffset in vectorOffsets)
             {
@@ -52,13 +53,13 @@ namespace Engine.Types.Pieces
                     // Tile is empty, add a normal move
                     if (!tile.IsOccupied())
                     {
-                        moves.Add(MoveFactory.CreateNormalMove(board, this, destinationCoordinate));
+                        moves.Add(MoveFactory.CreateMove(board, this, destinationCoordinate));
                     }
                     else
                     {
                         // If enemy at tile, add attacking move
                         if (IsEnemyPieceAtTile(tile))
-                            moves.Add(MoveFactory.CreateAttackMove(board, this, destinationCoordinate, tile.Piece));
+                            moves.Add(MoveFactory.CreateMove(board, this, destinationCoordinate, MoveType.CaptureMove, tile.Piece));
                         break;
                     }
                 }
@@ -67,7 +68,7 @@ namespace Engine.Types.Pieces
             return moves;
         }
 
-        public override Piece MovePiece(Move move)
+        public override Piece MovePiece(IMove move)
         {
             return PieceUtilities.BishopLookup[move.MovedPiece.PiecePosition, move.MovedPiece.PieceCoalition];
         }

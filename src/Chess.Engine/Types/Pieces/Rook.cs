@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Engine.Enums;
 using Engine.Factories;
+using Engine.Types.MoveGeneration;
 using Engine.Util;
 using static Engine.Util.BoardUtilities;
 
@@ -16,7 +17,7 @@ namespace Engine.Types.Pieces
             // Empty
         }
 
-        public override IList GenerateLegalMoves(Board board)
+        public override IEnumerable<IMove> GenerateLegalMoves(Board board)
         {
             // Directions that a rook can move in. Stored as vector offset because rooks are sliding pieces.
             /*
@@ -26,7 +27,7 @@ namespace Engine.Types.Pieces
              */
             int[] vectorOffsets = {-8, -1, 1, 8};
 
-            var moves = new List<Move>();
+            var moves = new List<IMove>();
 
             foreach (var vectorOffset in vectorOffsets)
             {
@@ -51,14 +52,15 @@ namespace Engine.Types.Pieces
                     if (!tile.IsOccupied())
                     {
                         // Move move
-                        moves.Add(MoveFactory.CreateNormalMove(board, this, destinationCoordinate));
+                        moves.Add(MoveFactory.CreateMove(board, this, destinationCoordinate));
                     }
                     else
                     {
                         // If enemy at tile, add attacking move
                         if (IsEnemyPieceAtTile(tile))
                             // Attack Move
-                            moves.Add(MoveFactory.CreateAttackMove(board, this, destinationCoordinate, tile.Piece));
+                            moves.Add(MoveFactory.CreateMove(board, this, destinationCoordinate,
+                                MoveType.CaptureMove, tile.Piece));
                         break;
                     }
                 }
@@ -67,7 +69,7 @@ namespace Engine.Types.Pieces
             return moves;
         }
 
-        public override Piece MovePiece(Move move)
+        public override Piece MovePiece(IMove move)
         {
             return PieceUtilities.RookLookup[move.MovedPiece.PiecePosition, move.MovedPiece.PieceCoalition];
         }
