@@ -9,7 +9,7 @@ namespace Engine.Factories
     public static class MoveFactory
     {
         /// <summary>
-        /// Factory method for handling the creation of different moves.
+        ///     Factory method for handling the creation of different moves.
         /// </summary>
         /// <param name="board">The board that the move is executed on.</param>
         /// <param name="movedPiece">The piece to be moved.</param>
@@ -28,12 +28,14 @@ namespace Engine.Factories
             {
                 MoveType.NormalMove => CreateNormalMove(board, movedPiece, toCoordinate),
                 MoveType.CaptureMove => CreateAttackMove(board, movedPiece, toCoordinate, capturedPiece),
-                MoveType.CastleMove => CreateCastlingMove(board, movedPiece, toCoordinate, castlingRook, castlingRookEndPosition),
+                MoveType.CastleMove => CreateCastlingMove(board, movedPiece, toCoordinate, castlingRook,
+                    castlingRookEndPosition),
                 MoveType.PromotionMove => null,
                 MoveType.EnPassantMove => null,
                 _ => throw new ArgumentOutOfRangeException(nameof(moveType), moveType, null)
             };
         }
+
         /// <summary>
         ///     Factory method to create a normal move.
         /// </summary>
@@ -60,7 +62,7 @@ namespace Engine.Factories
         }
 
         /// <summary>
-        /// Factory method to create a castling move.
+        ///     Factory method to create a castling move.
         /// </summary>
         /// <param name="board">The current board state.</param>
         /// <param name="movedPiece">The piece to be moved. In this case it will be a king.</param>

@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Engine.Enums;
 using Engine.Factories;
 using Engine.Types.MoveGeneration;
@@ -59,7 +58,8 @@ namespace Engine.Types.Pieces
                     {
                         // If enemy at tile, add attacking move
                         if (IsEnemyPieceAtTile(tile))
-                            moves.Add(MoveFactory.CreateMove(board, this, destinationCoordinate, MoveType.CaptureMove, tile.Piece));
+                            moves.Add(MoveFactory.CreateMove(board, this, destinationCoordinate, MoveType.CaptureMove,
+                                tile.Piece));
                         break;
                     }
                 }

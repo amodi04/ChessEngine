@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -83,7 +82,7 @@ namespace Engine.Types
         {
             var legalMoves = new List<IMove>();
             foreach (var piece in pieces)
-            foreach (IMove legalMove in piece.GenerateLegalMoves(this))
+            foreach (var legalMove in piece.GenerateLegalMoves(this))
                 legalMoves.Add(legalMove);
 
             return legalMoves;

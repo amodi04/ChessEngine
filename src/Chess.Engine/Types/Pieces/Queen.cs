@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Engine.Enums;
 using Engine.Factories;
 using Engine.Types.MoveGeneration;

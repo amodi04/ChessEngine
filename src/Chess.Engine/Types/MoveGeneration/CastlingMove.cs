@@ -8,9 +8,10 @@ namespace Engine.Types.MoveGeneration
     public readonly struct CastlingMove : IMove, IEquatable<CastlingMove>
     {
         /// <summary>
-        /// Move Data
+        ///     Move Data
         /// </summary>
         public Board Board { get; }
+
         public int FromCoordinate { get; }
         public int ToCoordinate { get; }
         public Piece MovedPiece { get; }
@@ -39,7 +40,7 @@ namespace Engine.Types.MoveGeneration
             CastlingRookStartPosition = castlingRookStartPosition;
             CastlingRookEndPosition = castlingRookEndPosition;
         }
-        
+
         public Board ExecuteMove()
         {
             var boardBuilder = new BoardBuilder();
@@ -51,7 +52,7 @@ namespace Engine.Types.MoveGeneration
 
             // Move the king piece
             boardBuilder.SetPieceAtTile(MovedPiece.MovePiece(this));
-            
+
             // Move the rook piece
             boardBuilder.SetPieceAtTile(PieceUtilities.RookLookup[CastlingRookEndPosition,
                 CastlingRook.PieceCoalition]);
@@ -77,25 +78,25 @@ namespace Engine.Types.MoveGeneration
                    CastlingRookStartPosition == other.CastlingRookStartPosition &&
                    CastlingRookEndPosition == other.CastlingRookEndPosition;
         }
-        
+
         public override bool Equals(object obj)
         {
             // Return true if object is of type CaptureMove and they are equal
             return obj is CastlingMove other && Equals(other);
         }
-        
+
         public override int GetHashCode()
         {
             // Combine the hash codes of all value types stored
             return HashCode.Combine(Board, FromCoordinate, ToCoordinate, MovedPiece, CastlingRook,
                 CastlingRookStartPosition, CastlingRookEndPosition);
         }
-        
+
         public static bool operator ==(CastlingMove left, CastlingMove right)
         {
             return left.Equals(right);
         }
-        
+
         public static bool operator !=(CastlingMove left, CastlingMove right)
         {
             return !left.Equals(right);

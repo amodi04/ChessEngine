@@ -4,16 +4,17 @@ using Engine.Types.Pieces;
 
 namespace Engine.Types.MoveGeneration
 {
-    /// <inheritdoc cref="IMove"/>
+    /// <inheritdoc cref="IMove" />
     /// <summary>
-    /// This struct stores capture move data
+    ///     This struct stores capture move data
     /// </summary>
     public readonly struct CaptureMove : IMove, IEquatable<CaptureMove>
     {
         /// <summary>
-        /// Move Data
+        ///     Move Data
         /// </summary>
         public Board Board { get; }
+
         public int FromCoordinate { get; }
         public int ToCoordinate { get; }
         public Piece MovedPiece { get; }
@@ -68,24 +69,24 @@ namespace Engine.Types.MoveGeneration
                    ToCoordinate == other.ToCoordinate && Equals(MovedPiece, other.MovedPiece) &&
                    Equals(CapturedPiece, other.CapturedPiece);
         }
-        
+
         public override bool Equals(object obj)
         {
             // Return true if object is of type CaptureMove and they are equal
             return obj is CaptureMove other && Equals(other);
         }
-        
+
         public override int GetHashCode()
         {
             // Combine the hash codes of all value types stored
             return HashCode.Combine(Board, FromCoordinate, ToCoordinate, MovedPiece, CapturedPiece);
         }
-        
+
         public static bool operator ==(CaptureMove left, CaptureMove right)
         {
             return left.Equals(right);
         }
-        
+
         public static bool operator !=(CaptureMove left, CaptureMove right)
         {
             return !left.Equals(right);

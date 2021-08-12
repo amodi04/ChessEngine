@@ -1,20 +1,20 @@
 ﻿using System;
 using Engine.Builders;
-using Engine.Enums;
 using Engine.Types.Pieces;
 
 namespace Engine.Types.MoveGeneration
 {
-    /// <inheritdoc cref="IMove"/>
+    /// <inheritdoc cref="IMove" />
     /// <summary>
-    /// This struct stores normal move data
+    ///     This struct stores normal move data
     /// </summary>
     public readonly struct NormalMove : IMove, IEquatable<NormalMove>
     {
         /// <summary>
-        /// Move Data
+        ///     Move Data
         /// </summary>
         public Board Board { get; }
+
         public int FromCoordinate { get; }
         public int ToCoordinate { get; }
         public Piece MovedPiece { get; }
@@ -33,7 +33,7 @@ namespace Engine.Types.MoveGeneration
             ToCoordinate = toCoordinate;
             MovedPiece = movedPiece;
         }
-        
+
         public Board ExecuteMove()
         {
             var boardBuilder = new BoardBuilder();
@@ -64,24 +64,24 @@ namespace Engine.Types.MoveGeneration
             return Equals(Board, other.Board) && FromCoordinate == other.FromCoordinate &&
                    ToCoordinate == other.ToCoordinate && Equals(MovedPiece, other.MovedPiece);
         }
-        
+
         public override bool Equals(object obj)
         {
             // Return true if object is of type NormalMove and they are equal
             return obj is NormalMove other && Equals(other);
         }
-        
+
         public override int GetHashCode()
         {
             // Combine the hash codes of all value types stored
             return HashCode.Combine(Board, FromCoordinate, ToCoordinate, MovedPiece);
         }
-        
+
         public static bool operator ==(NormalMove left, NormalMove right)
         {
             return left.Equals(right);
         }
-        
+
         public static bool operator !=(NormalMove left, NormalMove right)
         {
             return !left.Equals(right);
