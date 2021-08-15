@@ -4,6 +4,9 @@
     <option name="projectPerEditor">
       <map>
         <entry key="src/Chess.GUI/App.axaml" value="src/Chess.GUI/Chess.GUI.csproj" />
+        <entry key="src/Chess.GUI/Views/MainWindow.axaml" value="src/Chess.GUI/Chess.GUI.csproj" />
+        <entry key="src/Chess.GUI/Views/MenuView.axaml" value="src/Chess.GUI/Chess.GUI.csproj" />
+        <entry key="src/Chess.GUI/Views/TodoListView.axaml" value="src/Chess.GUI/Chess.GUI.csproj" />
       </map>
     </option>
   </component>

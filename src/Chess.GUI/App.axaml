@@ -1,7 +1,12 @@
 <Application xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             x:Class="GUI.App">
+             xmlns:local="using:Chess.GUI"
+             x:Class="Chess.GUI.App">
+    <Application.DataTemplates>
+        <local:ViewLocator/>
+    </Application.DataTemplates>
+
     <Application.Styles>
-        <FluentTheme Mode="Light" />
+        <FluentTheme Mode="Dark"/>
     </Application.Styles>
 </Application>

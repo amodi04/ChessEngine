@@ -1,0 +1,142 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:Chess.GUI.ViewModels"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="Chess.GUI.Views.MainWindow"
+        Icon="/Assets/avalonia-logo.ico"
+        Title="Chess.GUI">
+
+    <Design.DataContext>
+        <vm:MainWindowViewModel/>
+    </Design.DataContext>
+    <Panel>
+        <ExperimentalAcrylicBorder IsHitTestVisible="False">
+            <ExperimentalAcrylicBorder.Material>
+                <ExperimentalAcrylicMaterial 
+                    BackgroundSource="Digger"
+                    TintColor="Black"
+                    TintOpacity="1"
+                    MaterialOpacity="0.65" />
+            </ExperimentalAcrylicBorder.Material>
+        </ExperimentalAcrylicBorder>
+        <DockPanel>
+            <Menu DockPanel.Dock="Top">
+                <Menu.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <DockPanel HorizontalAlignment="Stretch"/>
+                    </ItemsPanelTemplate>
+                </Menu.ItemsPanel>
+                <MenuItem Header="Game">
+                    <MenuItem Header="New" InputGesture="Ctrl+N"/>
+                    <MenuItem Header="Load">
+                        <MenuItem Header="From FEN"/>
+                        <MenuItem Header="From PGN"/>
+                    </MenuItem>
+                    <MenuItem Header="Save">
+                        <MenuItem Header="To FEN"/>
+                        <MenuItem Header="To PGN"/>
+                    </MenuItem>
+                    <Separator/>
+                    <MenuItem Header="_Exit"/>
+                </MenuItem>
+                <MenuItem Header="Edit">
+                    <MenuItem Header="Preferences">
+                        <MenuItem Header="Change Tile Colours"/>
+                        <MenuItem Header="Flip Board"/>
+                        <MenuItem Header="Highlight Legal Moves"/>
+                    </MenuItem>
+                    <Separator/>
+                    <MenuItem Header="Configure AI settings"/>
+                </MenuItem>
+                <MenuItem Header="About">
+                    <MenuItem Header="Version"/>
+                    <MenuItem Header="Author"/>
+                </MenuItem>
+                <MenuItem HorizontalAlignment="Right">
+                    <MenuItem.Header>
+                        <TextBlock Text="Chess Status"></TextBlock>
+                    </MenuItem.Header>
+                </MenuItem>
+            </Menu>
+            <Viewbox Margin="20">
+                <Border BorderThickness="0.1" BorderBrush="White">
+                    <UniformGrid Rows="8" Columns="8" Width="160" Height="160">
+                        <Rectangle Stroke="White" Fill="White"></Rectangle>
+                        <Rectangle Stroke="Black" Fill="Black"></Rectangle>
+                        <Rectangle Stroke="White" Fill="White"></Rectangle>
+                        <Rectangle Stroke="Black" Fill="Black"></Rectangle>
+                        <Rectangle Stroke="White" Fill="White"></Rectangle>
+                        <Rectangle Stroke="Black" Fill="Black"></Rectangle>
+                        <Rectangle Stroke="White" Fill="White"></Rectangle>
+                        <Rectangle Stroke="Black" Fill="Black"></Rectangle>
+                        
+                        <Rectangle Stroke="Black" Fill="Black"></Rectangle>
+                        <Rectangle Stroke="White" Fill="White"></Rectangle>
+                        <Rectangle Stroke="Black" Fill="Black"></Rectangle>
+                        <Rectangle Stroke="White" Fill="White"></Rectangle>
+                        <Rectangle Stroke="Black" Fill="Black"></Rectangle>
+                        <Rectangle Stroke="White" Fill="White"></Rectangle>
+                        <Rectangle Stroke="Black" Fill="Black"></Rectangle>
+                        <Rectangle Stroke="White" Fill="White"></Rectangle>
+                        
+                        <Rectangle Stroke="White" Fill="White"></Rectangle>
+                        <Rectangle Stroke="Black" Fill="Black"></Rectangle>
+                        <Rectangle Stroke="White" Fill="White"></Rectangle>
+                        <Rectangle Stroke="Black" Fill="Black"></Rectangle>
+                        <Rectangle Stroke="White" Fill="White"></Rectangle>
+                        <Rectangle Stroke="Black" Fill="Black"></Rectangle>
+                        <Rectangle Stroke="White" Fill="White"></Rectangle>
+                        <Rectangle Stroke="Black" Fill="Black"></Rectangle>
+                        
+                        <Rectangle Stroke="Black" Fill="Black"></Rectangle>
+                        <Rectangle Stroke="White" Fill="White"></Rectangle>
+                        <Rectangle Stroke="Black" Fill="Black"></Rectangle>
+                        <Rectangle Stroke="White" Fill="White"></Rectangle>
+                        <Rectangle Stroke="Black" Fill="Black"></Rectangle>
+                        <Rectangle Stroke="White" Fill="White"></Rectangle>
+                        <Rectangle Stroke="Black" Fill="Black"></Rectangle>
+                        <Rectangle Stroke="White" Fill="White"></Rectangle>
+                        
+                        <Rectangle Stroke="White" Fill="White"></Rectangle>
+                        <Rectangle Stroke="Black" Fill="Black"></Rectangle>
+                        <Rectangle Stroke="White" Fill="White"></Rectangle>
+                        <Rectangle Stroke="Black" Fill="Black"></Rectangle>
+                        <Rectangle Stroke="White" Fill="White"></Rectangle>
+                        <Rectangle Stroke="Black" Fill="Black"></Rectangle>
+                        <Rectangle Stroke="White" Fill="White"></Rectangle>
+                        <Rectangle Stroke="Black" Fill="Black"></Rectangle>
+                        
+                        <Rectangle Stroke="Black" Fill="Black"></Rectangle>
+                        <Rectangle Stroke="White" Fill="White"></Rectangle>
+                        <Rectangle Stroke="Black" Fill="Black"></Rectangle>
+                        <Rectangle Stroke="White" Fill="White"></Rectangle>
+                        <Rectangle Stroke="Black" Fill="Black"></Rectangle>
+                        <Rectangle Stroke="White" Fill="White"></Rectangle>
+                        <Rectangle Stroke="Black" Fill="Black"></Rectangle>
+                        <Rectangle Stroke="White" Fill="White"></Rectangle>
+                        
+                        <Rectangle Stroke="White" Fill="White"></Rectangle>
+                        <Rectangle Stroke="Black" Fill="Black"></Rectangle>
+                        <Rectangle Stroke="White" Fill="White"></Rectangle>
+                        <Rectangle Stroke="Black" Fill="Black"></Rectangle>
+                        <Rectangle Stroke="White" Fill="White"></Rectangle>
+                        <Rectangle Stroke="Black" Fill="Black"></Rectangle>
+                        <Rectangle Stroke="White" Fill="White"></Rectangle>
+                        <Rectangle Stroke="Black" Fill="Black"></Rectangle>
+                        
+                        <Rectangle Stroke="Black" Fill="Black"></Rectangle>
+                        <Rectangle Stroke="White" Fill="White"></Rectangle>
+                        <Rectangle Stroke="Black" Fill="Black"></Rectangle>
+                        <Rectangle Stroke="White" Fill="White"></Rectangle>
+                        <Rectangle Stroke="Black" Fill="Black"></Rectangle>
+                        <Rectangle Stroke="White" Fill="White"></Rectangle>
+                        <Rectangle Stroke="Black" Fill="Black"></Rectangle>
+                        <Rectangle Stroke="White" Fill="White"></Rectangle>
+                    </UniformGrid>
+                </Border>
+            </Viewbox>
+        </DockPanel>
+    </Panel>
+</Window>

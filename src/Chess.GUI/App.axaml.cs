@@ -1,8 +1,10 @@
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
+using Chess.GUI.ViewModels;
+using Chess.GUI.Views;
 
-namespace GUI
+namespace Chess.GUI
 {
     public class App : Application
     {
@@ -14,7 +16,12 @@ namespace GUI
         public override void OnFrameworkInitializationCompleted()
         {
             if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
-                desktop.MainWindow = new MainWindow();
+            {
+                desktop.MainWindow = new MainWindow
+                {
+                    DataContext = new MainWindowViewModel(),
+                };
+            }
 
             base.OnFrameworkInitializationCompleted();
         }
