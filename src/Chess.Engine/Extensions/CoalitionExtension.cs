@@ -41,5 +41,15 @@ namespace Engine.Extensions
         {
             return coalition.IsWhite() ? whitePlayer : blackPlayer;
         }
+
+        /// <summary>
+        /// Utility method for converting the enum to strings.
+        /// </summary>
+        /// <param name="coalition">The coalition to get an abbreviation for.</param>
+        /// <returns>A single character, either "W" or "B" depending on coalition.</returns>
+        public static string ToAbbreviation(this Coalition coalition)
+        {
+            return coalition.IsWhite() ? "W" : "B";
+        }
     }
 }

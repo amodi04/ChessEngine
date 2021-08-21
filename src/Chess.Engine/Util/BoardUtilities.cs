@@ -11,10 +11,10 @@ namespace Engine.Util
         /// <summary>
         ///     Constants that are used to reduce the use of magic numbers/values.
         /// </summary>
-        public const uint NumTiles = 64;
+        public const int NumTiles = 64;
 
-        public const uint NumTilesPerRank = 8;
-        public const uint NumTilesPerFile = 8;
+        public const int NumTilesPerRank = 8;
+        public const int NumTilesPerFile = 8;
 
         /// <summary>
         ///     Lookup array containing the tile coordinate values of the tiles in the respective rank.

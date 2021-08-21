@@ -83,7 +83,7 @@ namespace Engine.Types.Pieces
 
         public override Piece MovePiece(IMove move)
         {
-            return PieceUtilities.PawnLookup[move.MovedPiece.PiecePosition, move.MovedPiece.PieceCoalition];
+            return PieceUtilities.PawnLookup[move.ToCoordinate, move.MovedPiece.PieceCoalition];
         }
 
         private bool IsColumnExclusion(int currentPosition, int offset)

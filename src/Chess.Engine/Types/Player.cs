@@ -128,7 +128,7 @@ namespace Engine.Types
         /// </summary>
         /// <param name="move">The move to be made.</param>
         /// <returns>A board transition struct containing relevant data for the next board.</returns>
-        private BoardTransition MakeMove(IMove move)
+        public BoardTransition MakeMove(IMove move)
         {
             // If the move is illegal, return the current board data.
             if (!IsMoveLegal(move)) return new BoardTransition(_board, _board, move, MoveStatus.Illegal);
@@ -141,7 +141,7 @@ namespace Engine.Types
 
             // If there are any attacking moves on the king, return the current board as the move made would leave the
             // player in check. Otherwise return the new board because the move is valid.
-            return !attacksOnKing.Any()
+            return attacksOnKing.Any()
                 ? new BoardTransition(_board, _board, move, MoveStatus.PlayerInCheck)
                 : new BoardTransition(_board, toBoard, move, MoveStatus.Done);
         }

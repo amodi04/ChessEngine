@@ -70,7 +70,7 @@ namespace Engine.Types.Pieces
 
         public override Piece MovePiece(IMove move)
         {
-            return PieceUtilities.RookLookup[move.MovedPiece.PiecePosition, move.MovedPiece.PieceCoalition];
+            return PieceUtilities.RookLookup[move.ToCoordinate, move.MovedPiece.PieceCoalition];
         }
 
 

@@ -37,6 +37,29 @@ namespace Engine.Factories
         }
 
         /// <summary>
+        /// Factory method for getting a piece from the current available moves on the board.
+        /// </summary>
+        /// <param name="board">The board to get the move from.</param>
+        /// <param name="fromCoordinate">The initial piece position.</param>
+        /// <param name="toCoordinate">The destination of the piece.</param>
+        /// <returns>A move that contains the passed in data. If it isn't a valid move, a null move is returned.</returns>
+        public static IMove GetMove(Board board, int fromCoordinate, int toCoordinate)
+        {
+            // Loop through all moves available
+            foreach (var move in board.AllMoves)
+            {
+                // If the passed in data matches a valid move, return that move
+                if (move.FromCoordinate == fromCoordinate && move.ToCoordinate == toCoordinate)
+                {
+                    return move;
+                }
+            }
+
+            // Else, return a null move
+            return new NormalMove(null, -1, -1, null);
+        }
+
+        /// <summary>
         ///     Factory method to create a normal move.
         /// </summary>
         /// <param name="board">The current board state.</param>

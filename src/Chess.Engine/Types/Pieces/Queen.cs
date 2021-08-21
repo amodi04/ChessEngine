@@ -71,7 +71,7 @@ namespace Engine.Types.Pieces
         // TODO: Implement this
         public override Piece MovePiece(IMove move)
         {
-            return PieceUtilities.QueenLookup[move.MovedPiece.PiecePosition, move.MovedPiece.PieceCoalition];
+            return PieceUtilities.QueenLookup[move.ToCoordinate, move.MovedPiece.PieceCoalition];
         }
 
         private static bool IsColumnExclusion(int currentPosition, int offset)

@@ -58,7 +58,7 @@ namespace Engine.Types.Pieces
 
         public override Piece MovePiece(IMove move)
         {
-            return new King(move.MovedPiece.PiecePosition, move.MovedPiece.PieceCoalition);
+            return new King(move.ToCoordinate, move.MovedPiece.PieceCoalition);
         }
 
         private static bool IsColumnExclusion(int currentPosition, int offset)

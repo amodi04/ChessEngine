@@ -1,0 +1,81 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:gui="clr-namespace:Chess.GUI"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="Chess.GUI.MainWindow"
+        Icon="/Assets/avalonia-logo.ico"
+        Title="Chess.GUI">
+    <!-->
+    This file defines static gui which can call events and methods in the code-behind
+    <!-->
+    <Panel>
+        <!-- Sets the background of the window -->
+        <ExperimentalAcrylicBorder IsHitTestVisible="False">
+            <ExperimentalAcrylicBorder.Material>
+                <ExperimentalAcrylicMaterial 
+                    BackgroundSource="Digger"
+                    TintColor="Black"
+                    TintOpacity="1"
+                    MaterialOpacity="0.65" />
+            </ExperimentalAcrylicBorder.Material>
+        </ExperimentalAcrylicBorder>
+        <!-- Dock panel allows for controls to be docked to the edges of the window -->
+        <DockPanel>
+            <!-- Dock the menu to the top -->
+            <Menu DockPanel.Dock="Top">
+                <Menu.ItemsPanel>
+                    <!-- Allow items in menu to take up the entire width of the window -->
+                    <ItemsPanelTemplate>
+                        <DockPanel HorizontalAlignment="Stretch"/>
+                    </ItemsPanelTemplate>
+                </Menu.ItemsPanel>
+                <!-- Defines the game menu -->
+                <MenuItem Header="Game">
+                    <MenuItem Header="New" InputGesture="Ctrl+N"/>
+                    <MenuItem Header="Load">
+                        <MenuItem Header="From FEN"/>
+                        <MenuItem Header="From PGN"/>
+                    </MenuItem>
+                    <MenuItem Header="Save">
+                        <MenuItem Header="To FEN"/>
+                        <MenuItem Header="To PGN"/>
+                    </MenuItem>
+                    <Separator/>
+                    <MenuItem Header="_Exit" Click="QuitMenuItem_OnClick"/>
+                </MenuItem>
+                <!-- Defines the edit menu -->
+                <MenuItem Header="Edit">
+                    <MenuItem Header="Preferences">
+                        <MenuItem Header="Change Tile Colours"/>
+                        <MenuItem Header="Flip Board"/>
+                        <MenuItem Header="Highlight Legal Moves"/>
+                    </MenuItem>
+                    <Separator/>
+                    <MenuItem Header="Configure AI settings"/>
+                </MenuItem>
+                <!-- Defines the about menu -->
+                <MenuItem Header="About">
+                    <MenuItem Header="Version"/>
+                    <MenuItem Header="Author"/>
+                </MenuItem>
+                <MenuItem HorizontalAlignment="Right">
+                    <MenuItem.Header>
+                        <TextBlock Text="Chess Status"></TextBlock>
+                    </MenuItem.Header>
+                </MenuItem>
+            </Menu>
+            <!-- A general box to keep the board in with a margin -->
+            <Viewbox Margin="20">
+                <Border BorderThickness="0.1" BorderBrush="Black">
+                    <!--
+                    The main board grid, defined with 8 rows and 8 columns
+                    Grid is keyed with "BoardGrid" so it can be accessed in the code behind
+                     -->
+                    <UniformGrid Rows="8" Columns="8" x:Name="BoardGrid" VerticalAlignment="Bottom" HorizontalAlignment="Left"/>
+                </Border>
+            </Viewbox>
+        </DockPanel>
+    </Panel>
+</Window>
