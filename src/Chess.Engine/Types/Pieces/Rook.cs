@@ -10,8 +10,8 @@ namespace Engine.Types.Pieces
     public sealed class Rook : Piece
     {
         /// <inheritdoc cref="Piece" />
-        public Rook(int piecePosition, Coalition pieceCoalition) :
-            base(PieceType.Rook, piecePosition, pieceCoalition)
+        public Rook(int piecePosition, Coalition pieceCoalition, bool isFirstMove) :
+            base(PieceType.Rook, piecePosition, pieceCoalition, isFirstMove)
         {
             // Empty
         }

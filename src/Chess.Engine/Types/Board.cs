@@ -114,26 +114,26 @@ namespace Engine.Types
             var boardBuilder = new BoardBuilder();
             
             // Set white pieces
-            boardBuilder.SetPieceAtTile(new Rook(0, Coalition.White));
-            boardBuilder.SetPieceAtTile(new Knight(1, Coalition.White));
-            boardBuilder.SetPieceAtTile(new Bishop(2, Coalition.White));
-            boardBuilder.SetPieceAtTile(new Queen(3, Coalition.White));
-            boardBuilder.SetPieceAtTile(new King(4, Coalition.White));
-            boardBuilder.SetPieceAtTile(new Bishop(5, Coalition.White));
-            boardBuilder.SetPieceAtTile(new Knight(6, Coalition.White));
-            boardBuilder.SetPieceAtTile(new Rook(7, Coalition.White));
-            for (var i = 8; i < 16; i++) boardBuilder.SetPieceAtTile(new Pawn(i, Coalition.White));
+            boardBuilder.SetPieceAtTile(new Rook(0, Coalition.White, true));
+            boardBuilder.SetPieceAtTile(new Knight(1, Coalition.White, true));
+            boardBuilder.SetPieceAtTile(new Bishop(2, Coalition.White, true));
+            boardBuilder.SetPieceAtTile(new King(3, Coalition.White, true));
+            boardBuilder.SetPieceAtTile(new Queen(4, Coalition.White, true));
+            boardBuilder.SetPieceAtTile(new Bishop(5, Coalition.White, true));
+            boardBuilder.SetPieceAtTile(new Knight(6, Coalition.White, true));
+            boardBuilder.SetPieceAtTile(new Rook(7, Coalition.White, true));
+            for (var i = 8; i < 16; i++) boardBuilder.SetPieceAtTile(new Pawn(i, Coalition.White, true));
 
             // Set black pieces
-            for (var i = 48; i < 56; i++) boardBuilder.SetPieceAtTile(new Pawn(i, Coalition.Black));
-            boardBuilder.SetPieceAtTile(new Rook(56, Coalition.Black));
-            boardBuilder.SetPieceAtTile(new Knight(57, Coalition.Black));
-            boardBuilder.SetPieceAtTile(new Bishop(58, Coalition.Black));
-            boardBuilder.SetPieceAtTile(new Queen(59, Coalition.Black));
-            boardBuilder.SetPieceAtTile(new King(60, Coalition.Black));
-            boardBuilder.SetPieceAtTile(new Bishop(61, Coalition.Black));
-            boardBuilder.SetPieceAtTile(new Knight(62, Coalition.Black));
-            boardBuilder.SetPieceAtTile(new Rook(63, Coalition.Black));
+            for (var i = 48; i < 56; i++) boardBuilder.SetPieceAtTile(new Pawn(i, Coalition.Black, true));
+            boardBuilder.SetPieceAtTile(new Rook(56, Coalition.Black, true));
+            boardBuilder.SetPieceAtTile(new Knight(57, Coalition.Black, true));
+            boardBuilder.SetPieceAtTile(new Bishop(58, Coalition.Black, true));
+            boardBuilder.SetPieceAtTile(new King(59, Coalition.Black, true));
+            boardBuilder.SetPieceAtTile(new Queen(60, Coalition.Black, true));
+            boardBuilder.SetPieceAtTile(new Bishop(61, Coalition.Black, true));
+            boardBuilder.SetPieceAtTile(new Knight(62, Coalition.Black, true));
+            boardBuilder.SetPieceAtTile(new Rook(63, Coalition.Black, true));
 
             // Set initial turn to white
             boardBuilder.SetCoalitionToMove(Coalition.White);

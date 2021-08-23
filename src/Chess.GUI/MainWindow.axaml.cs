@@ -1,16 +1,15 @@
-using System;
+using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
+using System.Collections.Specialized;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
+using Avalonia.Controls.Shapes;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
-using Avalonia.Media.Imaging;
-using Avalonia.Platform;
-using Engine.Enums;
-using Engine.Extensions;
+using Avalonia.Media;
 using Engine.Types;
+using Engine.Types.MoveGeneration;
 using Engine.Types.Pieces;
 using Engine.Util;
 
@@ -26,8 +25,8 @@ namespace Chess.GUI
         private readonly List<TilePanel> _tilePanels;
         public Board BoardModel { get; set; }
         public Tile? FromTile { get; set; }
-        public Tile? DestinationTile { get; set; }
         public Piece? MovedPiece { get; set; }
+        public bool HighlightLegalMoves { get; private set; }
         
         public MainWindow()
         {
@@ -38,6 +37,8 @@ namespace Chess.GUI
             // Find the grid from the xaml and store it
             _boardView = this.Find<UniformGrid>("BoardGrid");
             GenerateBoard();
+            FlipBoardMenuItem_OnClick(null, null);
+            HighlightLegalMoves = false;
 #if DEBUG
             this.AttachDevTools();
 #endif
@@ -83,6 +84,7 @@ namespace Chess.GUI
             {
                 // Draw the piece for each tile
                 tilePanel.DrawPiece();
+                tilePanel.HighlightLegalMoves();
                 
                 // Re add the tile with the new piece graphics
                 _boardView.Children.Add(tilePanel);
@@ -90,14 +92,40 @@ namespace Chess.GUI
         }
 
         /// <summary>
-        /// Quit button handler method
+        /// Quit button handler method.
         /// </summary>
-        /// <param name="sender">Object that owns the event handler</param>
-        /// <param name="e">The event</param>
+        /// <param name="sender">Object that owns the event handler.</param>
+        /// <param name="e">The event.</param>
         private void QuitMenuItem_OnClick(object? sender, RoutedEventArgs e)
         {
             // Close the application
             Close();
+        }
+
+        /// <summary>
+        /// Flip board button handler method.
+        /// </summary>
+        /// <param name="sender">Object that owns the event handler.</param>
+        /// <param name="e">The event.</param>
+        private void FlipBoardMenuItem_OnClick(object? sender, RoutedEventArgs e)
+        {
+            // Reverse the array of tile panels
+            // This is equal to a 180 degree rotation of the board
+            _tilePanels.Reverse();
+            
+            // Redraw the board
+            DrawBoard();
+        }
+
+        /// <summary>
+        /// Highlight legal moves button handler method.
+        /// </summary>
+        /// <param name="sender">Object that owns the event handler.</param>
+        /// <param name="e">The event.</param>
+        private void HighlightLegalMovesMenuItem_OnClick(object? sender, RoutedEventArgs e)
+        {
+            // Set the boolean to the not of itself. Button therefore acts as a toggle
+            HighlightLegalMoves = !HighlightLegalMoves;
         }
     }
 }

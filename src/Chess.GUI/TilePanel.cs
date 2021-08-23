@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
+using Avalonia.Controls.Shapes;
 using Avalonia.Input;
 using Avalonia.Markup.Xaml.Converters;
 using Avalonia.Media;
@@ -109,10 +111,7 @@ namespace Chess.GUI
                     else
                     {
                         // Handle second click
-                        
-                        // Set the destination tile to the panel
-                        _mainWindow.DestinationTile = _mainWindow.BoardModel.GetTile(_tileIndex);
-                        
+
                         // Get the move that matches the tiles selected
                         IMove move = MoveFactory.GetMove(_mainWindow.BoardModel, _mainWindow.FromTile.TileCoordinate, _tileIndex);
                         
@@ -129,25 +128,50 @@ namespace Chess.GUI
 
                         // Reset tiles and pieces ready for a new move to be made
                         _mainWindow.FromTile = null;
-                        _mainWindow.DestinationTile = null;
                         _mainWindow.MovedPiece = null;
                     }
-                    // Redraw board asynchronously
-                    Dispatcher.UIThread.InvokeAsync(
-                        new Action(() =>
-                        {
-                            _mainWindow.DrawBoard();
-                        })
-                    );
                     break;
                 // If the right button was pressed
                 case PointerUpdateKind.RightButtonPressed:
                     // Reset tiles and pieces. Right mouse button clears current selection
                     _mainWindow.FromTile = null;
-                    _mainWindow.DestinationTile = null;
                     _mainWindow.MovedPiece = null;
                     break;
             }
+            // Redraw board asynchronously
+            Dispatcher.UIThread.InvokeAsync(
+                new Action(() =>
+                {
+                    _mainWindow.DrawBoard();
+                })
+            );
+        }
+
+        public void HighlightLegalMoves()
+        {
+            if (!_mainWindow.HighlightLegalMoves) return;
+            foreach (var move in GetPieceMoves())
+            {
+                if (move.ToCoordinate == _tileIndex)
+                {
+                    Children.Add(new Ellipse()
+                    {
+                        Width = 20,
+                        Height = 20,
+                        Fill = Brushes.Gray,
+                    });
+                }
+            }
+        }
+        
+        private IEnumerable<IMove> GetPieceMoves()
+        {
+            if (_mainWindow.MovedPiece != null && _mainWindow.MovedPiece.PieceCoalition == _mainWindow.BoardModel.CurrentPlayer.Coalition)
+            {
+                return _mainWindow.MovedPiece.GenerateLegalMoves(_mainWindow.BoardModel);
+            }
+
+            return new List<IMove>();
         }
     }
 }

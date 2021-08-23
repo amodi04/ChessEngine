@@ -18,11 +18,13 @@ namespace Engine.Types.Pieces
         /// <param name="pieceType">The type of piece to create.</param>
         /// <param name="piecePosition">The position on the board to create the piece at.</param>
         /// <param name="pieceCoalition">The colour of the piece.</param>
-        protected Piece(PieceType pieceType, int piecePosition, Coalition pieceCoalition)
+        /// <param name="isFirstMove">Sets whether this is the pieces first move.</param>
+        protected Piece(PieceType pieceType, int piecePosition, Coalition pieceCoalition, bool isFirstMove)
         {
             PieceType = pieceType;
             PiecePosition = piecePosition;
             PieceCoalition = pieceCoalition;
+            IsFirstMove = isFirstMove;
         }
 
         // Member fields

@@ -9,8 +9,8 @@ namespace Engine.Types.Pieces
     /// <inheritdoc cref="Piece" />
     public sealed class King : Piece
     {
-        public King(int piecePosition, Coalition pieceCoalition) :
-            base(PieceType.King, piecePosition, pieceCoalition)
+        public King(int piecePosition, Coalition pieceCoalition, bool isFirstMove) :
+            base(PieceType.King, piecePosition, pieceCoalition, isFirstMove)
         {
             // Empty
         }
@@ -58,7 +58,7 @@ namespace Engine.Types.Pieces
 
         public override Piece MovePiece(IMove move)
         {
-            return new King(move.ToCoordinate, move.MovedPiece.PieceCoalition);
+            return new King(move.ToCoordinate, move.MovedPiece.PieceCoalition, false);
         }
 
         private static bool IsColumnExclusion(int currentPosition, int offset)

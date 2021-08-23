@@ -11,8 +11,8 @@ namespace Engine.Types.Pieces
     public sealed class Pawn : Piece
     {
         /// <inheritdoc cref="Piece" />
-        public Pawn(int piecePosition, Coalition pieceCoalition) :
-            base(PieceType.Pawn, piecePosition, pieceCoalition)
+        public Pawn(int piecePosition, Coalition pieceCoalition, bool isFirstMove) :
+            base(PieceType.Pawn, piecePosition, pieceCoalition, isFirstMove)
         {
             // Empty
         }
@@ -59,7 +59,7 @@ namespace Engine.Types.Pieces
                         break;
                     }
                     // If the position offset is neither 16 or 8, then generate moves like other pieces.
-                    default:
+                    case 7 or 9:
                     {
                         // If not in special file case, 
                         if (!IsColumnExclusion(PiecePosition, positionOffset))

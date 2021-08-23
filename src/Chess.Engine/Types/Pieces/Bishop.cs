@@ -10,8 +10,8 @@ namespace Engine.Types.Pieces
     /// <inheritdoc cref="Piece" />
     public sealed class Bishop : Piece
     {
-        public Bishop(int piecePosition, Coalition pieceCoalition) :
-            base(PieceType.Bishop, piecePosition, pieceCoalition)
+        public Bishop(int piecePosition, Coalition pieceCoalition, bool isFirstMove) :
+            base(PieceType.Bishop, piecePosition, pieceCoalition, isFirstMove)
         {
             // Empty
         }

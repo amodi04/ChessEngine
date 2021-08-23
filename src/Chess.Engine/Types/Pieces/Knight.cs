@@ -10,8 +10,8 @@ namespace Engine.Types.Pieces
     /// <inheritdoc cref="Piece" />
     public sealed class Knight : Piece
     {
-        public Knight(int piecePosition, Coalition pieceCoalition) :
-            base(PieceType.Knight, piecePosition, pieceCoalition)
+        public Knight(int piecePosition, Coalition pieceCoalition, bool isFirstMove) :
+            base(PieceType.Knight, piecePosition, pieceCoalition, isFirstMove)
         {
             // Empty
         }

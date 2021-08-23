@@ -10,8 +10,6 @@ namespace Engine.Types.MoveGeneration
         /// <summary>
         ///     Must have struct value types
         /// </summary>
-        public Board Board { get; }
-
         public int FromCoordinate { get; }
         public int ToCoordinate { get; }
         public Piece MovedPiece { get; }
