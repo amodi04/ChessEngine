@@ -1,0 +1,53 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="Chess.GUI.CapturedPiecesPanel">
+    
+    <!-- DockPanel to split white and black captured pieces -->
+    <DockPanel LastChildFill="False">
+        
+        <!-- Example grid until pieces are implemented -->
+        <Grid x:Name="TopGrid" DockPanel.Dock="Top" ShowGridLines="True" RowDefinitions="*,*,*,*,*,*,*,*" ColumnDefinitions="*,*"
+              Background="Azure">
+            <Button Grid.Row="0" Grid.Column="0"></Button>
+            <Button Grid.Row="0" Grid.Column="1"></Button>
+            <Button Grid.Row="1" Grid.Column="0"></Button>
+            <Button Grid.Row="1" Grid.Column="1"></Button>
+            <Button Grid.Row="2" Grid.Column="0"></Button>
+            <Button Grid.Row="2" Grid.Column="1"></Button>
+            <Button Grid.Row="3" Grid.Column="0"></Button>
+            <Button Grid.Row="3" Grid.Column="1"></Button>
+            <Button Grid.Row="4" Grid.Column="0"></Button>
+            <Button Grid.Row="4" Grid.Column="1"></Button>
+            <Button Grid.Row="5" Grid.Column="0"></Button>
+            <Button Grid.Row="5" Grid.Column="1"></Button>
+            <Button Grid.Row="6" Grid.Column="0"></Button>
+            <Button Grid.Row="6" Grid.Column="1"></Button>
+            <Button Grid.Row="7" Grid.Column="0"></Button>
+            <Button Grid.Row="7" Grid.Column="1"></Button>
+        </Grid>
+          
+        <!-- Example grid until pieces are implemented -->
+        <Grid x:Name="BottomGrid" DockPanel.Dock="Bottom" ShowGridLines="True" RowDefinitions="*,*,*,*,*,*,*,*" ColumnDefinitions="*,*"
+              Background="CadetBlue">
+            <Button Grid.Row="0" Grid.Column="0"></Button>
+            <Button Grid.Row="0" Grid.Column="1"></Button>
+            <Button Grid.Row="1" Grid.Column="0"></Button>
+            <Button Grid.Row="1" Grid.Column="1"></Button>
+            <Button Grid.Row="2" Grid.Column="0"></Button>
+            <Button Grid.Row="2" Grid.Column="1"></Button>
+            <Button Grid.Row="3" Grid.Column="0"></Button>
+            <Button Grid.Row="3" Grid.Column="1"></Button>
+            <Button Grid.Row="4" Grid.Column="0"></Button>
+            <Button Grid.Row="4" Grid.Column="1"></Button>
+            <Button Grid.Row="5" Grid.Column="0"></Button>
+            <Button Grid.Row="5" Grid.Column="1"></Button>
+            <Button Grid.Row="6" Grid.Column="0"></Button>
+            <Button Grid.Row="6" Grid.Column="1"></Button>
+            <Button Grid.Row="7" Grid.Column="0"></Button>
+            <Button Grid.Row="7" Grid.Column="1"></Button>
+        </Grid>
+    </DockPanel>
+</UserControl>

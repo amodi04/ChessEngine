@@ -1,4 +1,5 @@
-﻿using Engine.Enums;
+﻿using System;
+using Engine.Enums;
 
 namespace Engine.Extensions
 {
@@ -25,6 +26,26 @@ namespace Engine.Extensions
                 PieceType.King => coalition.IsWhite() ? "K" : "k",
                 // Default case will never be processed
                 _ => "-"
+            };
+        }
+
+        /// <summary>
+        /// Gets the value of the piece.
+        /// </summary>
+        /// <param name="pieceType">The piece type to get the value for.</param>
+        /// <returns>An integer value of the piece type.</returns>
+        /// <exception cref="ArgumentOutOfRangeException">Thrown when an unknown piece type is used</exception>
+        public static int ToValue(this PieceType pieceType)
+        {
+            return pieceType switch
+            {
+                PieceType.Pawn => 1,
+                PieceType.Knight => 3,
+                PieceType.Bishop => 3,
+                PieceType.Rook => 5,
+                PieceType.Queen => 9,
+                PieceType.King => 2147483647,
+                _ => throw new ArgumentOutOfRangeException(nameof(pieceType), pieceType, null)
             };
         }
     }

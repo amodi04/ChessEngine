@@ -53,9 +53,6 @@ namespace Chess.GUI
         /// </summary>
         public void DrawPiece()
         {
-            // Initialise the asset loader which will find assets in the project
-            var assets = AvaloniaLocator.Current.GetService<IAssetLoader>();
-            
             // Clear all children from the current tile panel object
             Children.Clear();
             
@@ -71,7 +68,7 @@ namespace Chess.GUI
                     // Image format: "{Coalition}{Piece}.png"
                     // Example: WB.png => White Bishop
                     // Example: BK => Black King
-                    Source = new Bitmap(assets.Open(new Uri(
+                    Source = new Bitmap(GUIUtilities.AssetLoader.Open(new Uri(
                         $"avares://Chess.GUI/Assets/{piece.PieceCoalition.ToAbbreviation()}{piece.PieceType.ToAbbreviation(Coalition.White)}.png")))
                 };
                 // Add the image to the panel
@@ -147,13 +144,21 @@ namespace Chess.GUI
             );
         }
 
+        /// <summary>
+        /// Highlights legal moves on click.
+        /// </summary>
         public void HighlightLegalMoves()
         {
+            // If the user has not clicked the button, then moves will not be highlighted
             if (!_mainWindow.HighlightLegalMoves) return;
+            
+            // Loop through moves in the current pieces move
             foreach (var move in GetPieceMoves())
             {
+                // If the tile is a potential move
                 if (move.ToCoordinate == _tileIndex)
                 {
+                    // Draw a grey circle above to indicate it is a move
                     Children.Add(new Ellipse()
                     {
                         Width = 20,
@@ -164,13 +169,20 @@ namespace Chess.GUI
             }
         }
         
+        /// <summary>
+        /// Gets the list of moves that the current piece can make.
+        /// </summary>
+        /// <returns>An enumerable list of moves.</returns>
         private IEnumerable<IMove> GetPieceMoves()
         {
+            // If the piece is not null and the clicked piece is the same colour as the player
             if (_mainWindow.MovedPiece != null && _mainWindow.MovedPiece.PieceCoalition == _mainWindow.BoardModel.CurrentPlayer.Coalition)
             {
+                // Generate the moves for the piece and return it
                 return _mainWindow.MovedPiece.GenerateLegalMoves(_mainWindow.BoardModel);
             }
 
+            // Return an empty list if conditions not met
             return new List<IMove>();
         }
     }
