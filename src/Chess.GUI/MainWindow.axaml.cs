@@ -23,10 +23,12 @@ namespace Chess.GUI
         // Member fields
         private readonly UniformGrid _boardView;
         private readonly List<TilePanel> _tilePanels;
+        public CapturedPiecesPanel CapturedPiecesPanel { get; }
         public Board BoardModel { get; set; }
         public Tile? FromTile { get; set; }
         public Piece? MovedPiece { get; set; }
         public bool HighlightLegalMoves { get; private set; }
+        public Stack<IMove> MoveLog { get; }
         
         public MainWindow()
         {
@@ -36,6 +38,8 @@ namespace Chess.GUI
             BoardModel = Board.CreateStandardBoard();
             // Find the grid from the xaml and store it
             _boardView = this.Find<UniformGrid>("BoardGrid");
+            CapturedPiecesPanel = this.Find<CapturedPiecesPanel>("CapturedPiecesPanel");
+            MoveLog = new Stack<IMove>();
             GenerateBoard();
             FlipBoardMenuItem_OnClick(null, null);
             HighlightLegalMoves = false;
@@ -89,6 +93,7 @@ namespace Chess.GUI
                 // Re add the tile with the new piece graphics
                 _boardView.Children.Add(tilePanel);
             }
+            CapturedPiecesPanel.DrawPanels(MoveLog);
         }
 
         /// <summary>

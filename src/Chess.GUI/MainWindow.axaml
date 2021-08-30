@@ -66,8 +66,9 @@
                     </MenuItem.Header>
                 </MenuItem>
             </Menu>
-            <!-- The captured pieces panel will be docked left -->
-            <gui:CapturedPiecesPanel DockPanel.Dock="Left"></gui:CapturedPiecesPanel>
+            
+            <!-- The captured pieces panel is docked left -->
+            <gui:CapturedPiecesPanel DockPanel.Dock="Left" x:Name="CapturedPiecesPanel"/>
             
             <!-- A general box to keep the board in with a margin -->
             <Viewbox Margin="20">

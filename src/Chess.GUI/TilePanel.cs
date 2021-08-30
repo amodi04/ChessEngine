@@ -121,6 +121,7 @@ namespace Chess.GUI
                             // Set the current board in memory to the new board
                             _mainWindow.BoardModel = boardTransition.ToBoard;
                             // Add move to move history log
+                            _mainWindow.MoveLog.Push(move);
                         }
 
                         // Reset tiles and pieces ready for a new move to be made

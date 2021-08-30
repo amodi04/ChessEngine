@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Avalonia.Controls;
+using Avalonia.Controls.Primitives;
 using Avalonia.Markup.Xaml;
 using Avalonia.Media.Imaging;
 using Engine.Enums;
@@ -16,8 +17,8 @@ namespace Chess.GUI
     public class CapturedPiecesPanel : UserControl
     {
         // Member fields
-        private readonly Grid _topGrid;
-        private readonly Grid _bottomGrid;
+        private readonly UniformGrid _topGrid;
+        private readonly UniformGrid _bottomGrid;
         
         /// <summary>
         /// User control constructor initialises components and values.
@@ -25,8 +26,8 @@ namespace Chess.GUI
         public CapturedPiecesPanel()
         {
             InitializeComponent();
-            _topGrid = this.Find<Grid>("TopGrid");
-            _bottomGrid = this.Find<Grid>("BottomGrid");
+            _topGrid = this.Find<UniformGrid>("TopGrid");
+            _bottomGrid = this.Find<UniformGrid>("BottomGrid");
         }
 
         /// <summary>
@@ -63,10 +64,10 @@ namespace Chess.GUI
             var capturedPieces = PopulateCapturedPiecesList(moveStack, isWhite);
             
             // Sort the list based on piece value. This allows same value pieces to be placed together in ascending order
-            capturedPieces.Sort((piece, piece1) => piece.PieceType.ToValue().CompareTo(piece1.PieceType.ToValue()));
+            capturedPieces.Sort((piece, piece1) => piece.PieceType.CompareTo(piece1.PieceType));
             
             // Assign the piece images in the grid panel
-            AssignImages(capturedPieces, isWhite ? _topGrid : _bottomGrid);
+            AssignImages(capturedPieces, isWhite ? _bottomGrid : _topGrid);
         }
 
         /// <summary>
@@ -110,11 +111,12 @@ namespace Chess.GUI
         /// </summary>
         /// <param name="capturedPieces">The list of captured pieces</param>
         /// <param name="grid">The grid to populate</param>
-        private void AssignImages(IEnumerable<Piece> capturedPieces, Grid grid)
+        private void AssignImages(IList<Piece> capturedPieces, UniformGrid grid)
         {
             // Loop through each captured piece in list
-            foreach (var capturedPiece in capturedPieces)
+            for (int i = 0; i < capturedPieces.Count ; i++)
             {
+                var capturedPiece = capturedPieces[i];
                 // Find the image
                 Image image = new Image
                 {
