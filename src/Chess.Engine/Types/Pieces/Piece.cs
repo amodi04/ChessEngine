@@ -12,8 +12,7 @@ namespace Engine.Types.Pieces
     public abstract class Piece : IEquatable<Piece>
     {
         /// <summary>
-        ///     Constructor to create a piece. This class is abstract so this constructor can only be called from inheriting
-        ///     classes.
+        ///     Constructor to create a piece.
         /// </summary>
         /// <param name="pieceType">The type of piece to create.</param>
         /// <param name="piecePosition">The position on the board to create the piece at.</param>
@@ -40,7 +39,7 @@ namespace Engine.Types.Pieces
         /// <returns>True if equal, false if not.</returns>
         public bool Equals(Piece other)
         {
-            // Referential equality checks
+            // Referential equality checks (same instance)
             if (ReferenceEquals(null, other)) return false;
             if (ReferenceEquals(this, other)) return true;
 

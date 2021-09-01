@@ -1,5 +1,6 @@
 ﻿using System;
 using Engine.Types;
+using Engine.Util;
 
 namespace OutputTest
 {
@@ -7,9 +8,10 @@ namespace OutputTest
     {
         private static void Main(string[] args)
         {
-            var board = Board.CreateStandardBoard();
-
-            Console.WriteLine(board);
+            foreach (string s in BoardUtilities.GenerateAlgebraicNotation())
+            {
+                Console.WriteLine(s);
+            }
         }
     }
 }

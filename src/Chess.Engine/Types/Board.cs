@@ -35,14 +35,19 @@ namespace Engine.Types
             // Calculate each colour's legal moves for any board instance
             var whiteMoves = CalculateLegalMoves(WhitePieces);
             var blackMoves = CalculateLegalMoves(BlackPieces);
+            
+            // Store all possible moves for the current board
             AllMoves = whiteMoves.Concat(blackMoves);
 
             // Initialise players
             WhitePlayer = new Player(Coalition.White, this, whiteMoves, blackMoves);
             BlackPlayer = new Player(Coalition.Black, this, blackMoves, whiteMoves);
+            
+            // Set the current player via the board builder
             CurrentPlayer = boardBuilder.CoalitionToMove.ChoosePlayer(WhitePlayer, BlackPlayer);
         }
 
+        // Properties
         public IEnumerable<Piece> BlackPieces { get; }
         public IEnumerable<Piece> WhitePieces { get; }
         public IEnumerable<Piece> AllPieces { get; }
@@ -57,7 +62,7 @@ namespace Engine.Types
         /// <param name="board">The array of tile data which may contain pieces.</param>
         /// <param name="coalition">Tile state that depicts what colour pieces are returned.</param>
         /// <returns>Returns an iterable collection so that it cannot be modified without casting to list.</returns>
-        private IEnumerable<Piece> CalculateActivePieces(Tile[] board, Coalition coalition)
+        private static IEnumerable<Piece> CalculateActivePieces(IEnumerable<Tile> board, Coalition coalition)
         {
             // TODO: Test LINQ performance
             var pieces = new List<Piece>();
@@ -83,10 +88,16 @@ namespace Engine.Types
         private IEnumerable<IMove> CalculateLegalMoves(IEnumerable<Piece> pieces)
         {
             var legalMoves = new List<IMove>();
+            
+            // Loop through all pieces
             foreach (var piece in pieces)
-            foreach (var legalMove in piece.GenerateLegalMoves(this))
-                legalMoves.Add(legalMove);
-
+                
+                // Loop through each move the piece can make
+                foreach (var legalMove in piece.GenerateLegalMoves(this))
+                    
+                    // Add it to the list
+                    legalMoves.Add(legalMove);
+            
             return legalMoves;
         }
 
@@ -98,7 +109,8 @@ namespace Engine.Types
         private static Tile[] InitialiseBoard(BoardBuilder boardBuilder)
         {
             var tiles = new Tile[BoardUtilities.NumTiles];
-            // Create board by looping through and setting tile based on board builder config
+            
+            // Create board by looping through and setting tile based on board builder configuration
             for (var i = 0; i < BoardUtilities.NumTiles; i++)
                 tiles[i] = Tile.CreateTile(i, boardBuilder.BoardConfiguration[i]);
             return tiles;
@@ -163,7 +175,7 @@ namespace Engine.Types
             for (var i = 0; i < BoardUtilities.NumTiles; i++)
             {
                 // Get the string of the tile at current index
-                var tile = _board[i].ToString();
+                var tile = _board[BoardUtilities.ReflectBoard[i]].ToString();
 
                 // Append the tile string with a padding of 3
                 stringBuilder.Append(tile.PadRight(3));

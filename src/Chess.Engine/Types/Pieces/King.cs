@@ -6,15 +6,28 @@ using static Engine.Util.BoardUtilities;
 
 namespace Engine.Types.Pieces
 {
-    /// <inheritdoc cref="Piece" />
+    /// <summary>
+    ///     This class contains king data and methods that it can make such as moving and calculating legal moves.
+    /// </summary>
     public sealed class King : Piece
     {
+        /// <summary>
+        ///     Constructor to create a king.
+        /// </summary>
+        /// <param name="piecePosition">The position on the board to create the piece at.</param>
+        /// <param name="pieceCoalition">The colour of the piece.</param>
+        /// <param name="isFirstMove">Sets whether this is the pieces first move.</param>
         public King(int piecePosition, Coalition pieceCoalition, bool isFirstMove) :
             base(PieceType.King, piecePosition, pieceCoalition, isFirstMove)
         {
             // Empty
         }
 
+        /// <summary>
+        ///     This method generates the legal moves for the king, given the board.
+        /// </summary>
+        /// <param name="board">The current board state.</param>
+        /// <returns>An IList of moves that can be made.</returns>
         public override IEnumerable<IMove> GenerateLegalMoves(Board board)
         {
             // Directions that a king can move in. Stored as position offsets because kings are non-sliding pieces.
@@ -56,8 +69,14 @@ namespace Engine.Types.Pieces
             return moves;
         }
 
+        /// <summary>
+        ///     This method moves the king by utilising passed in move data.
+        /// </summary>
+        /// <param name="move">The move struct containing the data needed to make a move.</param>
+        /// <returns>A piece at the destination location.</returns>
         public override Piece MovePiece(IMove move)
         {
+            // Return a new king instance at the moved position
             return new King(move.ToCoordinate, move.MovedPiece.PieceCoalition, false);
         }
 

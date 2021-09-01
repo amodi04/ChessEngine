@@ -3,6 +3,8 @@
              x:Class="Chess.GUI.App">
 
     <Application.Styles>
+        <!-- Set dark theme to application -->
         <FluentTheme Mode="Dark"/>
+        <StyleInclude Source="avares://Avalonia.Controls.DataGrid/Themes/Fluent.xaml"/>
     </Application.Styles>
 </Application>

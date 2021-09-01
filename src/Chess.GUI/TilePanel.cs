@@ -1,22 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
-using Avalonia;
 using Avalonia.Controls;
-using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Controls.Shapes;
 using Avalonia.Input;
-using Avalonia.Markup.Xaml.Converters;
 using Avalonia.Media;
 using Avalonia.Media.Imaging;
-using Avalonia.Platform;
 using Avalonia.Threading;
 using Engine.Enums;
 using Engine.Extensions;
 using Engine.Factories;
-using Engine.Types;
 using Engine.Types.MoveGeneration;
 using Engine.Types.Pieces;
-using Engine.Util;
 
 namespace Chess.GUI
 {
@@ -41,7 +35,7 @@ namespace Chess.GUI
             
             // Set colour depending on coordinate in grid
             // TODO: Change to allow user defined colour
-            Background = (_tileIndex + _tileIndex / 8) % 2 == 0 ? Brushes.Ivory : Brushes.DarkSlateGray;
+            Background = (_tileIndex + _tileIndex / 8) % 2 == 0 ? Brushes.DarkSlateGray : Brushes.Ivory;
             // Draw the piece on the tile
             DrawPiece();
             // Add a press handler for handling clicks
@@ -95,7 +89,7 @@ namespace Chess.GUI
                         
                         // Set the initial tile to the panel
                         _mainWindow.FromTile = _mainWindow.BoardModel.GetTile(_tileIndex);
-                        
+
                         // Set the piece to be moved to the piece on the tile
                         _mainWindow.MovedPiece = _mainWindow.FromTile.Piece;
                         
@@ -113,15 +107,17 @@ namespace Chess.GUI
                         IMove move = MoveFactory.GetMove(_mainWindow.BoardModel, _mainWindow.FromTile.TileCoordinate, _tileIndex);
                         
                         // Get the new board representation
-                        BoardTransition boardTransition = _mainWindow.BoardModel.CurrentPlayer.MakeMove(move);
+                        var boardTransition = _mainWindow.BoardModel.CurrentPlayer.MakeMove(move);
                         
                         // If the status is done, e.g. is a valid move
                         if (boardTransition.Status == MoveStatus.Done)
                         {
                             // Set the current board in memory to the new board
                             _mainWindow.BoardModel = boardTransition.ToBoard;
+                            
                             // Add move to move history log
-                            _mainWindow.MoveLog.Push(move);
+                            _mainWindow.MoveStack.Push(move);
+                            _mainWindow.MoveLogViewModel.UpdateMoveLog(move, boardTransition);
                         }
 
                         // Reset tiles and pieces ready for a new move to be made
@@ -137,12 +133,7 @@ namespace Chess.GUI
                     break;
             }
             // Redraw board asynchronously
-            Dispatcher.UIThread.InvokeAsync(
-                new Action(() =>
-                {
-                    _mainWindow.DrawBoard();
-                })
-            );
+            Dispatcher.UIThread.InvokeAsync(() => { _mainWindow.DrawBoard(); });
         }
 
         /// <summary>
@@ -160,7 +151,7 @@ namespace Chess.GUI
                 if (move.ToCoordinate == _tileIndex)
                 {
                     // Draw a grey circle above to indicate it is a move
-                    Children.Add(new Ellipse()
+                    Children.Add(new Ellipse
                     {
                         Width = 20,
                         Height = 20,

@@ -9,7 +9,7 @@ namespace Engine.Types
     public readonly struct BoardTransition
     {
         // Member fields
-        private Board FromBoard { get; }
+        public Board FromBoard { get; }
         public Board ToBoard { get; }
         public IMove TransitionMove { get; }
         public MoveStatus Status { get; }

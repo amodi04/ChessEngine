@@ -70,6 +70,9 @@
             <!-- The captured pieces panel is docked left -->
             <gui:CapturedPiecesPanel DockPanel.Dock="Left" x:Name="CapturedPiecesPanel"/>
             
+            <!-- The move log is docked right -->
+            <gui:MoveLogView DockPanel.Dock="Right" x:Name="MoveLogView"/>
+            
             <!-- A general box to keep the board in with a margin -->
             <Viewbox Margin="20">
                 <Border BorderThickness="0.1" BorderBrush="Black">
@@ -77,7 +80,8 @@
                     The main board grid, defined with 8 rows and 8 columns
                     Grid is keyed with "BoardGrid" so it can be accessed in the code behind
                      -->
-                    <UniformGrid Rows="8" Columns="8" x:Name="BoardGrid" VerticalAlignment="Bottom" HorizontalAlignment="Left"/>
+                    <UniformGrid Rows="8" Columns="8" x:Name="BoardGrid" VerticalAlignment="Bottom"
+                                 HorizontalAlignment="Left"/>
                 </Border>
             </Viewbox>
         </DockPanel>

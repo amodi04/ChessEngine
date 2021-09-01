@@ -67,7 +67,7 @@ namespace Chess.GUI
             capturedPieces.Sort((piece, piece1) => piece.PieceType.CompareTo(piece1.PieceType));
             
             // Assign the piece images in the grid panel
-            AssignImages(capturedPieces, isWhite ? _bottomGrid : _topGrid);
+            AssignImages(capturedPieces, isWhite ? _topGrid : _bottomGrid);
         }
 
         /// <summary>

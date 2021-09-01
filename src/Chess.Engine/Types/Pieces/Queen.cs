@@ -7,15 +7,28 @@ using static Engine.Util.BoardUtilities;
 
 namespace Engine.Types.Pieces
 {
+    /// <summary>
+    ///     This class contains queen data and methods that it can make such as moving and calculating legal moves.
+    /// </summary>
     public sealed class Queen : Piece
     {
-        /// <inheritdoc cref="Piece" />
+        /// <summary>
+        ///     Constructor to create a queen.
+        /// </summary>
+        /// <param name="piecePosition">The position on the board to create the piece at.</param>
+        /// <param name="pieceCoalition">The colour of the piece.</param>
+        /// <param name="isFirstMove">Sets whether this is the pieces first move.</param>
         public Queen(int piecePosition, Coalition pieceCoalition, bool isFirstMove) :
             base(PieceType.Queen, piecePosition, pieceCoalition, isFirstMove)
         {
             // Empty
         }
 
+        /// <summary>
+        ///     This method generates the legal moves for the queen, given the board.
+        /// </summary>
+        /// <param name="board">The current board state.</param>
+        /// <returns>An IList of moves that can be made.</returns>
         public override IEnumerable<IMove> GenerateLegalMoves(Board board)
         {
             // Directions that a queen can move in. Stored as vector offset because queens are sliding pieces.
@@ -68,7 +81,11 @@ namespace Engine.Types.Pieces
             return moves;
         }
 
-        // TODO: Implement this
+        /// <summary>
+        ///     This method moves the queen by utilising passed in move data.
+        /// </summary>
+        /// <param name="move">The move struct containing the data needed to make a move.</param>
+        /// <returns>A piece at the destination location.</returns>
         public override Piece MovePiece(IMove move)
         {
             return PieceUtilities.QueenLookup[move.ToCoordinate, move.MovedPiece.PieceCoalition];

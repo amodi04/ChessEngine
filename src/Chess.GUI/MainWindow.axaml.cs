@@ -24,11 +24,13 @@ namespace Chess.GUI
         private readonly UniformGrid _boardView;
         private readonly List<TilePanel> _tilePanels;
         public CapturedPiecesPanel CapturedPiecesPanel { get; }
+        public MoveLogView MoveLogView { get; }
+        public MoveLogViewModel MoveLogViewModel { get; }
         public Board BoardModel { get; set; }
         public Tile? FromTile { get; set; }
         public Piece? MovedPiece { get; set; }
         public bool HighlightLegalMoves { get; private set; }
-        public Stack<IMove> MoveLog { get; }
+        public Stack<IMove> MoveStack { get; }
         
         public MainWindow()
         {
@@ -36,12 +38,25 @@ namespace Chess.GUI
             _tilePanels = new List<TilePanel>();
             // Create a normal chess board
             BoardModel = Board.CreateStandardBoard();
-            // Find the grid from the xaml and store it
+            // Find the front end components from the xaml and store it
             _boardView = this.Find<UniformGrid>("BoardGrid");
             CapturedPiecesPanel = this.Find<CapturedPiecesPanel>("CapturedPiecesPanel");
-            MoveLog = new Stack<IMove>();
+            MoveLogView = this.Find<MoveLogView>("MoveLogView");
+            
+            // Initialise the move log view model data context
+            MoveLogViewModel = new MoveLogViewModel();
+            MoveLogView.DataContext = MoveLogViewModel;
+            
+            // Create a new stack of moves to keep track of moves made
+            MoveStack = new Stack<IMove>();
+            
+            // Generate front end board
             GenerateBoard();
+            
+            // Flip the board so that white is on the bottom by default
             FlipBoardMenuItem_OnClick(null, null);
+            
+            // Turn of highlighting legal moves by default
             HighlightLegalMoves = false;
 #if DEBUG
             this.AttachDevTools();
@@ -69,9 +84,13 @@ namespace Chess.GUI
                 
                 // Add the panel to the list
                 _tilePanels.Add(tilePanel);
-                
-                // Add the panel to the board
-                _boardView.Children.Add(tilePanel);
+            }
+
+            // Loop again because reflected indexes can only be used when list is populated
+            for (var i = 0; i < BoardUtilities.NumTiles; i++)
+            {
+                // Add the tile panel at the correct position (starting from bottom left via reflected mapping)
+                _boardView.Children.Add(_tilePanels[BoardUtilities.ReflectBoard[i]]);
             }
         }
 
@@ -84,16 +103,20 @@ namespace Chess.GUI
             _boardView.Children.Clear();
             
             // Loop over stored tiles
-            foreach (TilePanel tilePanel in _tilePanels)
+            for (int i = 0; i < _tilePanels.Count; i++)
             {
-                // Draw the piece for each tile
-                tilePanel.DrawPiece();
-                tilePanel.HighlightLegalMoves();
+                // Draw the piece
+                _tilePanels[i].DrawPiece();
                 
-                // Re add the tile with the new piece graphics
-                _boardView.Children.Add(tilePanel);
+                // Highlight legal moves
+                _tilePanels[i].HighlightLegalMoves();
+                
+                // Re-add panels
+                _boardView.Children.Add(_tilePanels[BoardUtilities.ReflectBoard[i]]);
             }
-            CapturedPiecesPanel.DrawPanels(MoveLog);
+            
+            // Update the captured pieces panel
+            CapturedPiecesPanel.DrawPanels(MoveStack);
         }
 
         /// <summary>
