@@ -98,10 +98,8 @@ namespace Engine.Types.Pieces
             // AND the offset is -1 (going left).
             // The second special edge case is when its position is on the eighth file
             // AND the offset is 1 (going right)
-            return IsInArray(currentPosition, FirstFile)
-                   && offset is -1 ||
-                   IsInArray(currentPosition, EighthFile)
-                   && offset is 1;
+            return FileIndex(currentPosition) == 0 && offset is -1 ||
+                   FileIndex(currentPosition) == 7 && offset is 1;
         }
     }
 }

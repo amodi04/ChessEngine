@@ -47,12 +47,15 @@ namespace Engine.Types.MoveGeneration
                 if (!MovedPiece.Equals(piece))
                     boardBuilder.SetPieceAtTile(piece);
 
-            // Move the moved piece
-            boardBuilder.SetPieceAtTile(MovedPiece.MovePiece(this));
-
-            // Set next player to move
-            boardBuilder.SetCoalitionToMove(Board.CurrentPlayer.GetOpponent().Coalition);
-
+            // If the captured piece is the en passant pawn
+            if (CapturedPiece == Board.EnPassantPawn)
+            {
+                // Remove the en passant pawn
+                boardBuilder.RemovePieceAtTile(CapturedPiece);
+            }
+            // Set the piece
+            // All capture moves overwrite the captured piece so we do not need to remove it first for all other capture moves
+            boardBuilder.SetPieceAtTile(MovedPiece.MovePiece(this)).SetCoalitionToMove(Board.CurrentPlayer.GetOpponent().Coalition);
             // Build the board
             return boardBuilder.BuildBoard();
         }

@@ -103,19 +103,6 @@ namespace Engine.Util
         }
 
         /// <summary>
-        ///     Checks whether a value is in a given array.
-        /// </summary>
-        /// <param name="value">Value to check.</param>
-        /// <param name="arr">IEnumerable array to check in.</param>
-        /// <returns>True if value is in array.</returns>
-        /// TODO: Check inefficiencies
-        public static bool IsInArray(int value, IEnumerable<int> arr)
-        {
-            // LINQ expression for checking if value is in array
-            return arr.Any(i => value == i);
-        }
-
-        /// <summary>
         /// Gets the rank number based on the tile coordinate.
         /// </summary>
         /// <param name="tileCoordinate">The tile coordinate to get the rank from.</param>

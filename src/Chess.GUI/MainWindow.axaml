@@ -3,7 +3,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:gui="clr-namespace:Chess.GUI"
-        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        mc:Ignorable="d" d:DesignWidth="1280" d:DesignHeight="720"
         x:Class="Chess.GUI.MainWindow"
         Icon="/Assets/avalonia-logo.ico"
         Title="Chess.GUI">
@@ -22,7 +22,7 @@
             </ExperimentalAcrylicBorder.Material>
         </ExperimentalAcrylicBorder>
         <!-- Dock panel allows for controls to be docked to the edges of the window -->
-        <DockPanel>
+        <DockPanel HorizontalAlignment="Stretch">
             <!-- Dock the menu to the top -->
             <Menu DockPanel.Dock="Top">
                 <Menu.ItemsPanel>
@@ -67,23 +67,25 @@
                 </MenuItem>
             </Menu>
             
-            <!-- The captured pieces panel is docked left -->
-            <gui:CapturedPiecesPanel DockPanel.Dock="Left" x:Name="CapturedPiecesPanel"/>
-            
-            <!-- The move log is docked right -->
-            <gui:MoveLogView DockPanel.Dock="Right" x:Name="MoveLogView"/>
-            
-            <!-- A general box to keep the board in with a margin -->
-            <Viewbox Margin="20">
-                <Border BorderThickness="0.1" BorderBrush="Black">
-                    <!--
+            <Grid ColumnDefinitions="*, *, *, *, *">
+                <!-- The captured pieces panel is docked left -->
+                <gui:CapturedPiecesPanel Grid.Column="0" x:Name="CapturedPiecesPanel"/>
+                
+                <!-- A general box to keep the board in with a margin -->
+                <Viewbox Grid.Column="1" Grid.ColumnSpan="3" Margin="20" HorizontalAlignment="Center">
+                    <Border BorderThickness="0.1" BorderBrush="Black">
+                        <!--
                     The main board grid, defined with 8 rows and 8 columns
                     Grid is keyed with "BoardGrid" so it can be accessed in the code behind
                      -->
-                    <UniformGrid Rows="8" Columns="8" x:Name="BoardGrid" VerticalAlignment="Bottom"
-                                 HorizontalAlignment="Left"/>
-                </Border>
-            </Viewbox>
+                        <UniformGrid Rows="8" Columns="8" x:Name="BoardGrid" VerticalAlignment="Bottom"
+                                     HorizontalAlignment="Left"/>
+                    </Border>
+                </Viewbox>
+                
+                <!-- The move log is docked right -->
+                <gui:MoveLogView Grid.Column="4" x:Name="MoveLogView"/>
+            </Grid>
         </DockPanel>
     </Panel>
 </Window>

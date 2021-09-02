@@ -1,4 +1,6 @@
-﻿using System.Text;
+﻿using System.Collections;
+using System.Collections.Generic;
+using System.Text;
 using Engine.Enums;
 using Engine.Extensions;
 using Engine.Types;
@@ -18,7 +20,7 @@ namespace Engine.Util
         /// <param name="move">The move to convert.</param>
         /// <param name="board">The board that the move was executed on.</param>
         /// <returns>A string representation of the move.</returns>
-        public static string ToSAN(IMove move, Board board)
+        public static string ToSAN(IMove move, BoardTransition boardTransition)
         {
             /*
              * --- SAN Format ---
@@ -32,6 +34,8 @@ namespace Engine.Util
             
             // Initialise string builder
             var notation = new StringBuilder();
+            var fromBoard = boardTransition.FromBoard;
+            var toBoard = boardTransition.ToBoard;
             
             // Get the piece type of the moved piece
             var movedPieceType = move.MovedPiece.PieceType;
@@ -46,7 +50,7 @@ namespace Engine.Util
             {
                 
                 // Loop through all moves in the board that could be made
-                foreach (var altMove in board.AllMoves)
+                foreach (var altMove in fromBoard.AllMoves)
                 {
                     // If the from coordinates are equal but the destination coordinates are not, loop to next move.
                     // This is the case when a piece could make more than one move
@@ -116,6 +120,14 @@ namespace Engine.Util
             // TODO: check for pawn promotion
             
             // TODO: Check for check and checkmate
+            if (toBoard.CurrentPlayer.IsInCheckmate())
+            {
+                notation.Append('#');
+            }
+            else if (toBoard.CurrentPlayer.IsInCheck())
+            {
+                notation.Append('+');
+            }
 
             // Return the string
             return notation.ToString();

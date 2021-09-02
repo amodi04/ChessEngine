@@ -6,5 +6,9 @@
         <!-- Set dark theme to application -->
         <FluentTheme Mode="Dark"/>
         <StyleInclude Source="avares://Avalonia.Controls.DataGrid/Themes/Fluent.xaml"/>
+        
+        <Style Selector="DataGridCell.moveLogStyle">
+            <Setter Property="HorizontalAlignment" Value="Center" />
+        </Style>
     </Application.Styles>
 </Application>

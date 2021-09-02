@@ -18,7 +18,7 @@ namespace Engine.Types
     {
         // Member fields
         private readonly Tile[] _board;
-
+        
         /// <summary>
         ///     Internal constructor - only used by board builder.
         /// </summary>
@@ -32,6 +32,9 @@ namespace Engine.Types
             BlackPieces = CalculateActivePieces(_board, Coalition.Black);
             AllPieces = WhitePieces.Concat(BlackPieces);
 
+            // Get the en passant pawn from the board builder and set it internally
+            EnPassantPawn = boardBuilder.EnPassantPawn;
+            
             // Calculate each colour's legal moves for any board instance
             var whiteMoves = CalculateLegalMoves(WhitePieces);
             var blackMoves = CalculateLegalMoves(BlackPieces);
@@ -55,6 +58,9 @@ namespace Engine.Types
         public Player BlackPlayer { get; }
         public Player CurrentPlayer { get; }
         public IEnumerable<IMove> AllMoves { get; }
+        public Pawn EnPassantPawn { get; }
+
+        
 
         /// <summary>
         ///     Gets all pieces on the current board.

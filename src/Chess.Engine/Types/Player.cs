@@ -31,10 +31,9 @@ namespace Engine.Types
             King = GetKingOnBoard();
 
             // Store as array to reduce multiple enumerations
-            var playerMoves = moves as IMove[] ?? moves.ToArray();
             var opponentMovesArray = opponentMoves as IMove[] ?? opponentMoves.ToArray();
 
-            Moves = playerMoves.Concat(ComputeCastleMoves(playerMoves, opponentMovesArray));
+            Moves = moves.Concat(ComputeCastleMoves(opponentMovesArray));
             // TODO: Check LINQ performance
             // True if there are any elements in the collection
             _isInCheck = CalculateAttacksOnTile(King.PiecePosition, opponentMovesArray).Any();
@@ -135,9 +134,6 @@ namespace Engine.Types
 
             // Make the move
             var toBoard = move.ExecuteMove();
-            // Calculate all attacking moves on the current player king
-            var attacksOnKing =
-                CalculateAttacksOnTile(toBoard.CurrentPlayer.King.PiecePosition, toBoard.CurrentPlayer.Moves);
 
             // If there are any attacking moves on the king, return the current board as the move made would leave the
             // player in check. Otherwise return the new board because the move is valid.
@@ -185,7 +181,7 @@ namespace Engine.Types
         /// <param name="playerMoves">The moves that the player can make.</param>
         /// <param name="opponentMoves">The moves that the opponent player can make.</param>
         /// <returns>An IEnumerable of castling moves.</returns>
-        private IEnumerable<IMove> ComputeCastleMoves(IEnumerable<IMove> playerMoves, IEnumerable<IMove> opponentMoves)
+        private IEnumerable<IMove> ComputeCastleMoves(IEnumerable<IMove> opponentMoves)
         {
             // Initialise list
             var castleMoves = new List<IMove>();

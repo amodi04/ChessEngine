@@ -40,8 +40,9 @@ namespace Chess.GUI
                 // Add a new move
                 Moves.Add(new MoveModel()
                 {
+                    MoveNumber = "1",
                     // Add a white move because it is the first move
-                    WhiteMove = MoveUtilities.ToSAN(move, boardTransition.FromBoard),
+                    WhiteMove = MoveUtilities.ToSAN(move, boardTransition),
                     
                     // Set the black move to null
                     BlackMove = null,
@@ -53,8 +54,9 @@ namespace Chess.GUI
                 // Add a new move because the last move is complete
                 Moves.Add(new MoveModel()
                 {
+                    MoveNumber = $"{Moves.Count + 1}",
                     // Add a white move
-                    WhiteMove = MoveUtilities.ToSAN(move, boardTransition.FromBoard),
+                    WhiteMove = MoveUtilities.ToSAN(move, boardTransition),
                     
                     // Set the black move to null
                     BlackMove = null,
@@ -70,11 +72,12 @@ namespace Chess.GUI
                 // Replace the object at that index with a new move model
                 Moves[^1] = new MoveModel()
                 {
+                    MoveNumber = $"{Moves.Count}",
                     // Store the white move
                     WhiteMove = whiteMove,
                     
                     // Set the black move
-                    BlackMove = MoveUtilities.ToSAN(move, boardTransition.FromBoard)
+                    BlackMove = MoveUtilities.ToSAN(move, boardTransition)
                 };
             }
         }

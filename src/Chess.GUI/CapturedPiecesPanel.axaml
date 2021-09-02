@@ -6,12 +6,12 @@
              x:Class="Chess.GUI.CapturedPiecesPanel">
     
     <!-- DockPanel to split white and black captured pieces -->
-    <DockPanel LastChildFill="False" HorizontalAlignment="Center" Margin="10" Width="300" MaxWidth="300">
+    <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" RowDefinitions="*, *" Background="#FF333333">
         
         <!-- Top Players Grid of captured pieces -->
-        <UniformGrid x:Name="TopGrid" DockPanel.Dock="Top" Rows="2" Columns="8"/>
+        <UniformGrid Grid.Row="0" x:Name="TopGrid" Rows="8" Columns="3"/>
         
         <!-- Bottom Players Grid of captured pieces -->
-        <UniformGrid x:Name="BottomGrid" DockPanel.Dock="Bottom" Rows="2" Columns="8"/>
-    </DockPanel>
+        <UniformGrid Grid.Row="1" x:Name="BottomGrid" Rows="8" Columns="4"/>
+    </Grid>
 </UserControl>

@@ -50,15 +50,10 @@ namespace Engine.Types.MoveGeneration
                 if (!MovedPiece.Equals(piece))
                     boardBuilder.SetPieceAtTile(piece);
 
-            // Move the king piece
-            boardBuilder.SetPieceAtTile(MovedPiece.MovePiece(this));
-
-            // Move the rook piece
-            boardBuilder.SetPieceAtTile(PieceUtilities.RookLookup[CastlingRookEndPosition,
-                CastlingRook.PieceCoalition]);
-
-            // Set next player to move
-            boardBuilder.SetCoalitionToMove(Board.CurrentPlayer.GetOpponent().Coalition);
+            // Move the king piece, move the rook and set the next player to move
+            boardBuilder.SetPieceAtTile(MovedPiece.MovePiece(this)).
+                SetPieceAtTile(PieceUtilities.RookLookup[CastlingRookEndPosition, CastlingRook.PieceCoalition]).
+                SetCoalitionToMove(Board.CurrentPlayer.GetOpponent().Coalition);
 
             // Build the board
             return boardBuilder.BuildBoard();

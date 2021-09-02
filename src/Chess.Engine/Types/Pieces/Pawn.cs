@@ -80,10 +80,62 @@ namespace Engine.Types.Pieces
                             var tile = board.GetTile(destinationCoordinate);
                             // Pawns can only attack diagonally forward so we check for enemy at tile and then create an attacking move if there is.
                             if (tile.IsOccupied())
+                            {
                                 if (IsEnemyPieceAtTile(tile))
+                                {
                                     // TODO: Check for promotion
                                     moves.Add(MoveFactory.CreateMove(board, this, destinationCoordinate,
                                         MoveType.CaptureMove, tile.Piece));
+                                }
+                                
+                            }
+                            
+                            // If the tile is empty but the en passant pawn exists
+                            else if (board.EnPassantPawn is not null)
+                            {
+                                // Method scope method for adding the capture move
+                                void AddEnPassantCaptureMove()
+                                {
+                                    // Get the en passant pawn
+                                    Piece pieceAtTile = board.EnPassantPawn;
+                                    
+                                    // If they are enemy pieces
+                                    if (PieceCoalition != pieceAtTile.PieceCoalition)
+                                    {
+                                        // Add a capture move
+                                        moves.Add(new CaptureMove(board, PiecePosition, destinationCoordinate, this, pieceAtTile));
+                                    }   
+                                }
+                                
+                                // Switch based on capture direction (7 - left, 9 - right)
+                                switch (positionOffset)
+                                {
+                                    // If 7
+                                    case 7:
+                                    {
+                                        // If the en passant pawn is to the left of the attacking pawn
+                                        if (board.EnPassantPawn.PiecePosition == PiecePosition + PieceCoalition.GetDirection() * -1)
+                                        {
+                                            // Add the capture move
+                                            AddEnPassantCaptureMove();
+                                        }
+
+                                        break;
+                                    }
+                                    // If 9
+                                    case 9:
+                                    {
+                                        // If the en passant pawn is to the right of the attacking pawn
+                                        if (board.EnPassantPawn.PiecePosition == PiecePosition - PieceCoalition.GetDirection() * -1)
+                                        {
+                                            // Add the capture move
+                                            AddEnPassantCaptureMove();
+                                        }
+
+                                        break;
+                                    }
+                                }
+                            }
                         }
 
                         break;
@@ -108,18 +160,18 @@ namespace Engine.Types.Pieces
         private bool IsColumnExclusion(int currentPosition, int offset)
         {
             // Pawn is on special edge case when its position is on the eighth file
-            // AND the offset is 7 AND it is white (going left).
+            // AND the offset is 9 AND it is white (going left).
             // The second special edge case is when its position is on the first file
-            // AND the offset is 7 AND it is black (going left)
+            // AND the offset is 9 AND it is black (going left)
 
             // Pawn is on special edge case when its position is on the first file
-            // AND the offset is 9 AND it is white (going right).
+            // AND the offset is 7 AND it is white (going right).
             // The second special edge case is when its position is on the eighth file
-            // AND the offset is 9 AND it is black (going right) 
-            return IsInArray(currentPosition, EighthFile) && PieceCoalition.IsWhite() && offset is  9||
-                   IsInArray(currentPosition, FirstFile) && !PieceCoalition.IsWhite() && offset is 9||
-                   IsInArray(currentPosition, FirstFile) && PieceCoalition.IsWhite() && offset is 7||
-                   IsInArray(currentPosition, EighthFile) && !PieceCoalition.IsWhite() && offset is 7;
+            // AND the offset is 7 AND it is black (going right) 
+            return FileIndex(currentPosition) == 7 && PieceCoalition.IsWhite() && offset is  9||
+                   FileIndex(currentPosition) == 0 && !PieceCoalition.IsWhite() && offset is 9||
+                   FileIndex(currentPosition) == 0 && PieceCoalition.IsWhite() && offset is 7||
+                   FileIndex(currentPosition) == 7 && !PieceCoalition.IsWhite() && offset is 7;
         }
     }
 }

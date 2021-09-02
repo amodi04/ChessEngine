@@ -45,8 +45,15 @@ namespace Engine.Types.MoveGeneration
 
             // Move the moved piece
             boardBuilder.SetPieceAtTile(MovedPiece.MovePiece(this));
-
-            // Set next player to move
+            
+            // If the moved piece as moved 2 tiles forwards (only a pawn jump)
+            if (ToCoordinate - FromCoordinate == 16 || ToCoordinate - FromCoordinate == -16)
+            {
+                // Set the en passant pawn to this piece
+                boardBuilder.SetEnPassantPawn((Pawn)MovedPiece.MovePiece(this));
+            }
+            
+            // Set the next player to move
             boardBuilder.SetCoalitionToMove(Board.CurrentPlayer.GetOpponent().Coalition);
 
             // Build the board
