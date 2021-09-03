@@ -1,0 +1,32 @@
+﻿<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="200" d:DesignHeight="400"
+        Width="200"
+        Height="500"
+        x:Class="Chess.GUI.PromotionWindow"
+        Title="PromotionWindow"
+        TransparencyLevelHint="AcrylicBlur"
+        ExtendClientAreaToDecorationsHint="True"
+        ExtendClientAreaChromeHints="-1"
+        WindowStartupLocation="CenterOwner">
+    <Panel>
+        <ExperimentalAcrylicBorder>
+            <ExperimentalAcrylicBorder.Material>
+                <ExperimentalAcrylicMaterial
+                    BackgroundSource="Digger"
+                    TintColor="Black"
+                    TintOpacity="1"
+                    MaterialOpacity="0.65"/>
+            </ExperimentalAcrylicBorder.Material>
+        </ExperimentalAcrylicBorder>
+        
+        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+            <Button Click="Button_OnClick" Content="Queen" Classes="promotionButton"/>
+            <Button Click="Button_OnClick" Content="Rook" Classes="promotionButton"/>
+            <Button Click="Button_OnClick" Content="Bishop" Classes="promotionButton"/>
+            <Button Click="Button_OnClick" Content="Knight" Classes="promotionButton"/>
+        </StackPanel>
+    </Panel>
+</Window>

@@ -5,13 +5,16 @@ using Engine.Util;
 
 namespace Engine.Types.MoveGeneration
 {
+    /// <inheritdoc cref="IMove" />
+    /// <summary>
+    ///     This struct stores castling move data.
+    /// </summary>
     public readonly struct CastlingMove : IMove, IEquatable<CastlingMove>
     {
         /// <summary>
         ///     Move Data
         /// </summary>
         public Board Board { get; }
-
         public int FromCoordinate { get; }
         public int ToCoordinate { get; }
         public Piece MovedPiece { get; }

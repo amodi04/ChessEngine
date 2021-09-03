@@ -32,6 +32,7 @@ namespace Engine.Types.Pieces
         /// <returns>An IList of moves that can be made.</returns>
         public override IEnumerable<IMove> GenerateLegalMoves(Board board)
         {
+            // TODO: Refactor method
             // Directions that a pawn can move in. Stored as position offsets because pawns are non-sliding pieces.
             /*
              *     16
@@ -55,11 +56,36 @@ namespace Engine.Types.Pieces
                 // There are many cases for a pawn to move so a switch statement is more efficient
                 switch (positionOffset)
                 {
-                    // If the position offset is 8 and the tile is empty, create a normal move
+                    // If the position offset is 8 and the tile is empty,
                     case 8 when !board.GetTile(destinationCoordinate).IsOccupied():
-                        // TODO: Check for promotion
-                        moves.Add(MoveFactory.CreateMove(board, this, destinationCoordinate));
+                    {
+                        // Add a move depending on if the destination is a pawn promotion square
+                        // If it is, then add a promotion move, otherwise add a normal move
+                        if (IsPromotion(destinationCoordinate))
+                        {
+                            // Add a queen promotion
+                            moves.Add(MoveFactory.CreateMove(board, this, destinationCoordinate,MoveType.PromotionMove, 
+                                promotedPiece: PieceUtilities.QueenLookup[destinationCoordinate, PieceCoalition]));
+                            
+                            // Add a rook promotion
+                            moves.Add(MoveFactory.CreateMove(board, this, destinationCoordinate,MoveType.PromotionMove, 
+                                promotedPiece: PieceUtilities.RookLookup[destinationCoordinate, PieceCoalition]));
+                            
+                            // Add a bishop promotion
+                            moves.Add(MoveFactory.CreateMove(board, this, destinationCoordinate,MoveType.PromotionMove, 
+                                promotedPiece: PieceUtilities.BishopLookup[destinationCoordinate, PieceCoalition]));
+                            
+                            // Add a knight promotion
+                            moves.Add(MoveFactory.CreateMove(board, this, destinationCoordinate,MoveType.PromotionMove, 
+                                promotedPiece: PieceUtilities.KnightLookup[destinationCoordinate, PieceCoalition]));
+                        }
+                        else
+                        {
+                            // Add a normal move
+                            moves.Add(MoveFactory.CreateMove(board, this, destinationCoordinate));
+                        }
                         break;
+                    }
                     // If the position offset is 16 and it is the pawns first move (pawn jump move),
                     case 16 when IsFirstMove:
                     {
@@ -81,13 +107,40 @@ namespace Engine.Types.Pieces
                             // Pawns can only attack diagonally forward so we check for enemy at tile and then create an attacking move if there is.
                             if (tile.IsOccupied())
                             {
+                                // If there is an enemy piece
                                 if (IsEnemyPieceAtTile(tile))
                                 {
-                                    // TODO: Check for promotion
-                                    moves.Add(MoveFactory.CreateMove(board, this, destinationCoordinate,
-                                        MoveType.CaptureMove, tile.Piece));
+                                    // Add a move depending on if the destination is a pawn promotion square
+                                    // If it is, then add a promotion attack move, otherwise add a normal attack move
+                                    if (IsPromotion(destinationCoordinate))
+                                    {
+                                        // Add a queen promotion
+                                        moves.Add(MoveFactory.CreateMove(board, this, destinationCoordinate,
+                                            MoveType.PromotionMove, tile.Piece,
+                                            promotedPiece: PieceUtilities.QueenLookup[destinationCoordinate, PieceCoalition]));
+                                        
+                                        // Add a rook promotion
+                                        moves.Add(MoveFactory.CreateMove(board, this, destinationCoordinate,
+                                            MoveType.PromotionMove, tile.Piece,
+                                            promotedPiece: PieceUtilities.RookLookup[destinationCoordinate, PieceCoalition]));
+                                        
+                                        // Add a bishop promotion
+                                        moves.Add(MoveFactory.CreateMove(board, this, destinationCoordinate,
+                                            MoveType.PromotionMove, tile.Piece,
+                                            promotedPiece: PieceUtilities.BishopLookup[destinationCoordinate, PieceCoalition]));
+                                        
+                                        // Add a knight promotion
+                                        moves.Add(MoveFactory.CreateMove(board, this, destinationCoordinate,
+                                            MoveType.PromotionMove, tile.Piece,
+                                            promotedPiece: PieceUtilities.KnightLookup[destinationCoordinate, PieceCoalition]));
+                                    }
+                                    else
+                                    {
+                                        // Add normal capture move
+                                        moves.Add(MoveFactory.CreateMove(board, this, destinationCoordinate,
+                                            MoveType.CaptureMove, tile.Piece));
+                                    }
                                 }
-                                
                             }
                             
                             // If the tile is empty but the en passant pawn exists
@@ -103,7 +156,7 @@ namespace Engine.Types.Pieces
                                     if (PieceCoalition != pieceAtTile.PieceCoalition)
                                     {
                                         // Add a capture move
-                                        moves.Add(new CaptureMove(board, PiecePosition, destinationCoordinate, this, pieceAtTile));
+                                        moves.Add(MoveFactory.CreateMove(board, this, destinationCoordinate, MoveType.CaptureMove, pieceAtTile, isEnPassant: true));
                                     }   
                                 }
                                 
@@ -144,6 +197,21 @@ namespace Engine.Types.Pieces
             }
 
             return moves;
+        }
+
+        /// <summary>
+        /// Checks if a tile coordinate is on a promotion rank.
+        /// </summary>
+        /// <param name="destinationCoordinate">The tile coordinate to check.</param>
+        /// <returns>True if it is on the promotion rank.</returns>
+        private bool IsPromotion(int destinationCoordinate)
+        {
+            // If the pawn is white, return true if the coordinate is on the 7th index rank (0 offset so 8th rank)
+            // Otherwise return true if the the coordinate is on the 0th index (1st rank)
+            // Each colour is trying to reach the other side of the board to promote
+            return PieceCoalition.IsWhite()
+                ? RankIndex(destinationCoordinate) == 7
+                : RankIndex(destinationCoordinate) == 0;
         }
 
         /// <summary>

@@ -6,7 +6,7 @@ namespace Engine.Types.MoveGeneration
 {
     /// <inheritdoc cref="IMove" />
     /// <summary>
-    ///     This struct stores normal move data
+    ///     This struct stores normal move data.
     /// </summary>
     public readonly struct NormalMove : IMove, IEquatable<NormalMove>
     {
@@ -14,7 +14,6 @@ namespace Engine.Types.MoveGeneration
         ///     Move Data
         /// </summary>
         public Board Board { get; }
-
         public int FromCoordinate { get; }
         public int ToCoordinate { get; }
         public Piece MovedPiece { get; }

@@ -18,20 +18,32 @@ namespace Engine.Factories
         /// <param name="capturedPiece">The piece being captured. Default is null.</param>
         /// <param name="castlingRook">The rook being castled. Default is null.</param>
         /// <param name="castlingRookEndPosition">The castling rook destination. Default is 0.</param>
+        /// <param name="isEnPassant">IsEnPassant flag for the move. True if the move is an en passant move.</param>
+        /// <param name="promotedPiece">The piece to promote to. Default is null.</param>
         /// <returns>An implementer of IMove dependent on passed in move type.</returns>
         /// <exception cref="ArgumentOutOfRangeException">Called when an unhandled move type is passed in.</exception>
         public static IMove CreateMove(Board board, Piece movedPiece, int toCoordinate,
             MoveType moveType = MoveType.NormalMove, Piece capturedPiece = null, Piece castlingRook = default,
-            int castlingRookEndPosition = default)
+            int castlingRookEndPosition = default, bool isEnPassant = false, Piece promotedPiece = null)
         {
             return moveType switch
             {
+                // Creates a normal move
                 MoveType.NormalMove => CreateNormalMove(board, movedPiece, toCoordinate),
-                MoveType.CaptureMove => CreateAttackMove(board, movedPiece, toCoordinate, capturedPiece),
+                
+                // Creates a capture move taking in an additional captured piece
+                MoveType.CaptureMove => CreateAttackMove(board, movedPiece, toCoordinate, capturedPiece, isEnPassant),
+                
+                // Creates a castling move taking in additional rook parameters
                 MoveType.CastleMove => CreateCastlingMove(board, movedPiece, toCoordinate, castlingRook,
                     castlingRookEndPosition),
-                MoveType.PromotionMove => null,
-                MoveType.EnPassantMove => null,
+                
+                // Creates a promotion move which wraps either a normal or attack move depending on if there is a piece to be captured
+                MoveType.PromotionMove => capturedPiece == null ? 
+                    CreatePromotionMove(CreateNormalMove(board, movedPiece, toCoordinate), promotedPiece) :
+                    CreatePromotionMove(CreateAttackMove(board, movedPiece, toCoordinate, capturedPiece, false), promotedPiece),
+                
+                // Throw argument out of range when unknown move type is passed in
                 _ => throw new ArgumentOutOfRangeException(nameof(moveType), moveType, null)
             };
         }
@@ -66,7 +78,7 @@ namespace Engine.Factories
         /// <param name="movedPiece">The piece to be moved.</param>
         /// <param name="toCoordinate">The destination coordinate of the move.</param>
         /// <returns>A NormalMove containing the passed in move data.</returns>
-        private static IMove CreateNormalMove(Board board, Piece movedPiece, int toCoordinate)
+        private static NormalMove CreateNormalMove(Board board, Piece movedPiece, int toCoordinate)
         {
             return new NormalMove(board, movedPiece.PiecePosition, toCoordinate, movedPiece);
         }
@@ -78,10 +90,11 @@ namespace Engine.Factories
         /// <param name="movedPiece">The piece to be moved.</param>
         /// <param name="toCoordinate">The destination coordinate of the move.</param>
         /// <param name="capturedPiece">The piece being captured.</param>
+        /// <param name="isEnPassant">Determines whether the move is an en passant move.</param>
         /// <returns>A CaptureMove containing the passed in move data.</returns>
-        private static IMove CreateAttackMove(Board board, Piece movedPiece, int toCoordinate, Piece capturedPiece)
+        private static CaptureMove CreateAttackMove(Board board, Piece movedPiece, int toCoordinate, Piece capturedPiece, bool isEnPassant)
         {
-            return new CaptureMove(board, movedPiece.PiecePosition, toCoordinate, movedPiece, capturedPiece);
+            return new CaptureMove(board, movedPiece.PiecePosition, toCoordinate, movedPiece, capturedPiece, isEnPassant);
         }
 
         /// <summary>
@@ -93,12 +106,23 @@ namespace Engine.Factories
         /// <param name="castlingRook">The rook being castled.</param>
         /// <param name="castlingRookEndPosition">The destination coordinate of the rook participating in the move.</param>
         /// <returns>A CastlingMove containing the passed in move data.</returns>
-        private static IMove CreateCastlingMove(Board board, Piece movedPiece, int toCoordinate, Piece castlingRook,
+        private static CastlingMove CreateCastlingMove(Board board, Piece movedPiece, int toCoordinate, Piece castlingRook,
             int castlingRookEndPosition)
 
         {
-            return new CastlingMove(board, movedPiece.PiecePosition, toCoordinate, movedPiece, castlingRook,
+            return new CastlingMove(board, movedPiece.PiecePosition, toCoordinate, movedPiece, castlingRook, 
                 castlingRook.PiecePosition, castlingRookEndPosition);
+        }
+
+        /// <summary>
+        /// Factory method to create a promotion move.
+        /// </summary>
+        /// <param name="move">The move to wrap.</param>
+        /// <param name="promotedPiece">The piece to promote to.</param>
+        /// <returns>A move wrapped in a promotion move.</returns>
+        private static PromotionMove CreatePromotionMove(IMove move, Piece promotedPiece)
+        {
+            return new PromotionMove(move, promotedPiece);
         }
     }
 }

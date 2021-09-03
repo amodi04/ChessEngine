@@ -19,6 +19,7 @@ namespace Engine.Util
         /// </summary>
         /// <param name="move">The move to convert.</param>
         /// <param name="board">The board that the move was executed on.</param>
+        /// <param name="boardTransition">The from and to board data for getting move context.</param>
         /// <returns>A string representation of the move.</returns>
         public static string ToSAN(IMove move, BoardTransition boardTransition)
         {
@@ -40,10 +41,11 @@ namespace Engine.Util
             // Get the piece type of the moved piece
             var movedPieceType = move.MovedPiece.PieceType;
             
-            // If it is a pawn, then append an empty string, otherwise append the normal abbreviation for the piece
+            // If it is a pawn, then append an empty string, otherwise append the uppercase abbreviation for the piece.
             // This is because the SAN format does not use an abbreviation for pawns
+            // Passing in Coalition.White forces the uppercase abbreviation
             notation.Append(
-                movedPieceType == PieceType.Pawn ? "" : movedPieceType.ToAbbreviation(move.MovedPiece.PieceCoalition));
+                movedPieceType == PieceType.Pawn ? "" : movedPieceType.ToAbbreviation(Coalition.White));
             
             // If the piece is not a pawn and is not a king
             if (movedPieceType != PieceType.Pawn && movedPieceType != PieceType.King)
@@ -97,33 +99,75 @@ namespace Engine.Util
                 }
             }
 
+            // Temporary variable to check for en passant
+            var enPassant = false;
+            
             // If the move is a capture move
-            if (move is CaptureMove)
+            if (move is CaptureMove captureMove)
             {
                 // If the capturing piece is a pawn
-                if (move.MovedPiece.PieceType == PieceType.Pawn)
+                if (captureMove.MovedPiece.PieceType == PieceType.Pawn)
                 {
                     // Append the from file letter because this is the SAN format for pawn captures
-                    notation.Append(FileNames[FileIndex(move.FromCoordinate)]);
+                    notation.Append(FileNames[FileIndex(captureMove.FromCoordinate)]);
                 }
 
                 // Append an x to denote a capture
                 notation.Append('x');
+
+                // Store if the move is en passant
+                enPassant = captureMove.IsEnPassant;
             }
-            // TODO: check for en passant
-            
-            
-            // Append the file letter and rank number for the destination coordinate
-            notation.Append(FileNames[FileIndex(move.ToCoordinate)]);
-            notation.Append(RankNames[RankIndex(move.ToCoordinate)]);
-            
-            // TODO: check for pawn promotion
-            
-            // TODO: Check for check and checkmate
+
+            // If the move is a promotion move
+            if (move is PromotionMove promotionMove)
+            {
+                // Promotion move format is:
+                // {toSquare}={PieceType} or
+                // {fromFile} 'x' {toSquare}={PieceType} for capture promotions
+                // e.g. e8=Q means pawn to e8 has promoted to a queen
+                notation.Append(FileNames[FileIndex(promotionMove.FromCoordinate)]);
+
+                // If there is a captured piece (is a Capture Promotion Move)
+                if (promotionMove.CapturedPiece != null)
+                {
+                    // Append 'x' for capture move
+                    notation.Append('x');
+                    
+                    // Append the file letter and rank number for the destination coordinate
+                    notation.Append(FileNames[FileIndex(move.ToCoordinate)]);
+                    notation.Append(RankNames[RankIndex(move.ToCoordinate)]);
+                }
+                // Else, append the rank letter because it is not a capture move
+                else
+                {
+                    notation.Append(RankNames[RankIndex(move.FromCoordinate)]);
+                }
+                
+                // Passing in Coalition.White forces the uppercase abbreviation
+                notation.Append($"={promotionMove.PromotedPiece.PieceType.ToAbbreviation(Coalition.White)}");
+            }
+            else
+            {
+                // Append the file letter and rank number for the destination coordinate
+                notation.Append(FileNames[FileIndex(move.ToCoordinate)]);
+                notation.Append(RankNames[RankIndex(move.ToCoordinate)]);
+            }
+
+            // If the move is an en passant move
+            if (enPassant)
+            {
+                // Append 'e.p.' which signifies en passant
+                notation.Append(" e.p.");
+            }
+
+            // Append'#' if checkmate move
             if (toBoard.CurrentPlayer.IsInCheckmate())
             {
                 notation.Append('#');
             }
+            
+            // Append '+' if check move
             else if (toBoard.CurrentPlayer.IsInCheck())
             {
                 notation.Append('+');

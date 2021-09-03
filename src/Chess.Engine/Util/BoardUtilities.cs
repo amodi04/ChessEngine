@@ -19,32 +19,6 @@ namespace Engine.Util
         public const string FileNames = "abcdefgh";
         public const string RankNames = "12345678";
 
-        /// <summary>
-        ///     Lookup array containing the tile coordinate values of the tiles in the respective rank.
-        /// </summary>
-        public static readonly int[] FirstRank = CreateRank(0);
-
-        public static readonly int[] SecondRank = CreateRank(8);
-        public static readonly int[] ThirdRank = CreateRank(16);
-        public static readonly int[] FourthRank = CreateRank(24);
-        public static readonly int[] FifthRank = CreateRank(32);
-        public static readonly int[] SixthRank = CreateRank(40);
-        public static readonly int[] SeventhRank = CreateRank(48);
-        public static readonly int[] EighthRank = CreateRank(56);
-
-        /// <summary>
-        ///     Lookup array containing the tile coordinate values of the tiles in the respective file.
-        /// </summary>
-        public static readonly int[] FirstFile = CreateFile(0);
-
-        public static readonly int[] SecondFile = CreateFile(1);
-        public static readonly int[] ThirdFile = CreateFile(2);
-        public static readonly int[] FourthFile = CreateFile(3);
-        public static readonly int[] FifthFile = CreateFile(4);
-        public static readonly int[] SixthFile = CreateFile(5);
-        public static readonly int[] SeventhFile = CreateFile(6);
-        public static readonly int[] EighthFile = CreateFile(7);
-
         // Stores a reflected mapping of tile coordinates so that the board starts at the bottom left
         // Rather than the bottom right
         public static readonly Dictionary<int, int> ReflectBoard = GenerateReflectedPositions();

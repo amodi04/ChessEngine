@@ -11,6 +11,7 @@ using Engine.Extensions;
 using Engine.Factories;
 using Engine.Types.MoveGeneration;
 using Engine.Types.Pieces;
+using Engine.Util;
 
 namespace Chess.GUI
 {
@@ -75,7 +76,7 @@ namespace Chess.GUI
         /// </summary>
         /// <param name="sender">The object that owns the event handler.</param>
         /// <param name="e">The event.</param>
-        private void MouseDownHandler(object? sender, PointerPressedEventArgs e)
+        private async void MouseDownHandler(object? sender, PointerPressedEventArgs e)
         {
             // Switch depending on what mouse button was clicked
             switch (e.GetCurrentPoint(null).Properties.PointerUpdateKind)
@@ -106,6 +107,33 @@ namespace Chess.GUI
                         // Get the move that matches the tiles selected
                         IMove move = MoveFactory.GetMove(_mainWindow.BoardModel, _mainWindow.FromTile.TileCoordinate, _tileIndex);
                         
+                        // If the move is a promotion move,
+                        if (move is PromotionMove)
+                        {
+                            // Create a new window for selecting the piece to promote to.
+                            PromotionWindow promotionWindow = new PromotionWindow();
+                            
+                            // Await the result from the user input, default is queen.
+                            PieceType pieceType = await promotionWindow.ShowDialog<PieceType>(_mainWindow);
+                            
+                            // Loop through all moves in the board
+                            foreach (var potentialPromotionMove in _mainWindow.BoardModel.AllMoves)
+                            {
+                                // If the move is not a promotion move, skip
+                                if (potentialPromotionMove is not PromotionMove promotionMove) continue;
+                                
+                                // If the move is the correct piece type and the to coordinate is correct
+                                if (promotionMove.PromotedPiece.PieceType == pieceType && promotionMove.ToCoordinate == _tileIndex)
+                                {
+                                    // Set the move to the promotion move
+                                    move = promotionMove;
+                                    
+                                    // Break because we have found the correct move to use
+                                    break;
+                                }
+                            }
+                        }
+                        
                         // Get the new board representation
                         var boardTransition = _mainWindow.BoardModel.CurrentPlayer.MakeMove(move);
                         
@@ -133,7 +161,7 @@ namespace Chess.GUI
                     break;
             }
             // Redraw board asynchronously
-            Dispatcher.UIThread.InvokeAsync(() => { _mainWindow.DrawBoard(); });
+            await Dispatcher.UIThread.InvokeAsync(() => { _mainWindow.DrawBoard(); });
         }
 
         /// <summary>

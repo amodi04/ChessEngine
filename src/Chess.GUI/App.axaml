@@ -1,14 +1,22 @@
 <Application xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              x:Class="Chess.GUI.App">
-
+    <!-- TODO: Move styles here -->
+    <!-- Application Styles -->
     <Application.Styles>
         <!-- Set dark theme to application -->
         <FluentTheme Mode="Dark"/>
         <StyleInclude Source="avares://Avalonia.Controls.DataGrid/Themes/Fluent.xaml"/>
-        
+        <!-- Set style for move log cells -->
         <Style Selector="DataGridCell.moveLogStyle">
             <Setter Property="HorizontalAlignment" Value="Center" />
+        </Style>
+        <!-- Set style for the buttons on the promotion dialogue -->
+        <Style Selector="Button.promotionButton">
+            <Setter Property="Width" Value="100"/>
+            <Setter Property="Height" Value="60"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
         </Style>
     </Application.Styles>
 </Application>
