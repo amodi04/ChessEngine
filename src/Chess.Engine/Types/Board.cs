@@ -38,13 +38,13 @@ namespace Engine.Types
             // Calculate each colour's legal moves for any board instance
             var whiteMoves = CalculateLegalMoves(WhitePieces);
             var blackMoves = CalculateLegalMoves(BlackPieces);
-            
-            // Store all possible moves for the current board
-            AllMoves = whiteMoves.Concat(blackMoves);
 
             // Initialise players
             WhitePlayer = new Player(Coalition.White, this, whiteMoves, blackMoves);
             BlackPlayer = new Player(Coalition.Black, this, blackMoves, whiteMoves);
+            
+            // Store all possible moves for the current board
+            AllMoves = WhitePlayer.Moves.Concat(BlackPlayer.Moves);
             
             // Set the current player via the board builder
             CurrentPlayer = boardBuilder.CoalitionToMove.ChoosePlayer(WhitePlayer, BlackPlayer);
