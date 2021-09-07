@@ -5,7 +5,7 @@
         mc:Ignorable="d" d:DesignWidth="200" d:DesignHeight="400"
         Width="200"
         Height="500"
-        x:Class="Chess.GUI.PromotionWindow"
+        x:Class="Chess.GUI.Views.PromotionWindow"
         Title="PromotionWindow"
         TransparencyLevelHint="AcrylicBlur"
         ExtendClientAreaToDecorationsHint="True"

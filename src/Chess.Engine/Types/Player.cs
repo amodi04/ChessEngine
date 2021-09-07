@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Engine.Enums;
@@ -33,14 +34,14 @@ namespace Engine.Types
             // Store as array to reduce multiple enumerations
             var opponentMovesArray = opponentMoves as IMove[] ?? opponentMoves.ToArray();
 
-            Moves = moves.Concat(ComputeCastleMoves(opponentMovesArray));
+            Moves = moves.Concat(ComputeCastleMoves(opponentMovesArray)).ToList();
             // TODO: Check LINQ performance
             // True if there are any elements in the collection
             _isInCheck = CalculateAttacksOnTile(King.PiecePosition, opponentMovesArray).Any();
         }
 
         public King King { get; }
-        public IEnumerable<IMove> Moves { get; }
+        public ICollection<IMove> Moves { get; }
         public Coalition Coalition { get; }
 
         /// <summary>
@@ -159,7 +160,7 @@ namespace Engine.Types
         ///     Gets the current active allied piece
         /// </summary>
         /// <returns>Active white pieces if the player is white and active black pieces if the player is black.</returns>
-        private IEnumerable<Piece> GetActiveAlliedPieces()
+        public IEnumerable<Piece> GetActiveAlliedPieces()
         {
             // If white return white pieces, else return black pieces
             return Coalition.IsWhite() ? _board.WhitePieces : _board.BlackPieces;

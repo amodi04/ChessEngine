@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using Avalonia;
+﻿using Avalonia;
 using Avalonia.Platform;
-using Engine.Util;
 
-namespace Chess.GUI
+namespace Chess.GUI.Util
 {
     /// <summary>
     /// GUI utility class

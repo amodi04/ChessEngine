@@ -3,9 +3,8 @@ using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
 using Engine.Enums;
-using Engine.Types.Pieces;
 
-namespace Chess.GUI
+namespace Chess.GUI.Views
 {
     /// <summary>
     /// Code behind for the promotion window

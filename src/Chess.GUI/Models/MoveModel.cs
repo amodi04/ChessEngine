@@ -1,4 +1,4 @@
-﻿namespace Chess.GUI
+﻿namespace Chess.GUI.Models
 {
     /// <summary>
     /// Stores string representation of moves

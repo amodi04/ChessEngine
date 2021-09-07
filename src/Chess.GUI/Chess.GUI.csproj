@@ -18,8 +18,20 @@
       <ProjectReference Include="..\Chess.Engine\Chess.Engine.csproj" />
     </ItemGroup>
     <ItemGroup>
-      <Compile Update="MainWindow.axaml.cs">
+      <Compile Update="Views\MoveLogView.axaml.cs">
+        <DependentUpon>MoveLogView.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\CapturedPiecesPanel.axaml.cs">
+        <DependentUpon>CapturedPiecesPanel.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\MainWindow.axaml.cs">
         <DependentUpon>MainWindow.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\PromotionWindow.axaml.cs">
+        <DependentUpon>PromotionWindow.axaml</DependentUpon>
         <SubType>Code</SubType>
       </Compile>
     </ItemGroup>

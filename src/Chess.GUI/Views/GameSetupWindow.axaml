@@ -1,0 +1,47 @@
+﻿<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="400" d:DesignHeight="600"
+        Width="400"
+        Height="600"
+        x:Class="Chess.GUI.Views.GameSetupWindow"
+        Title="GameSetupWindow"
+        TransparencyLevelHint="AcrylicBlur"
+        ExtendClientAreaToDecorationsHint="True"
+        ExtendClientAreaChromeHints="-1"
+        WindowStartupLocation="CenterOwner">
+    <Panel>
+        <ExperimentalAcrylicBorder>
+            <ExperimentalAcrylicBorder.Material>
+                <ExperimentalAcrylicMaterial
+                    BackgroundSource="Digger"
+                    TintColor="Black"
+                    TintOpacity="1"
+                    MaterialOpacity="0.65"/>
+            </ExperimentalAcrylicBorder.Material>
+        </ExperimentalAcrylicBorder>
+    <StackPanel Margin="30">
+        <Label Height="50" FontSize="32" Content="New Game" HorizontalContentAlignment="Center"/>
+        <Separator Height="15"/>
+        <Label Height="25" Content="White"/>
+            <Separator Height="5"/>
+            <Grid RowDefinitions="*" ColumnDefinitions="*, *">
+                <RadioButton Grid.Row="0" Grid.Column="0" GroupName="White" IsChecked="True" Content="Human" Checked="RadioButton_Checked"/>
+                <RadioButton Grid.Row="0" Grid.Column="1" GroupName="White" Content="Computer" Checked="RadioButton_Checked"/>
+            </Grid>
+            <Separator Height="50"/>
+            <Label Height="25" Content="Black"/>
+            <Separator Height="5"/>
+            <Grid RowDefinitions="*" ColumnDefinitions="*, *">
+                <RadioButton Grid.Row="0" Grid.Column="0" GroupName="Black" IsChecked="True" Content="Human" Checked="RadioButton_Checked"/>
+                <RadioButton Grid.Row="0" Grid.Column="1" GroupName="Black" Content="Computer" Checked="RadioButton_Checked"/>
+            </Grid>
+        <Separator Height="250"/>
+        <Grid RowDefinitions="*" ColumnDefinitions="*, *" HorizontalAlignment="Stretch">
+            <Button Grid.Column="0" Content="New Game" Click="CloseButton_OnClick"/>
+            <Button Grid.Column="1" Content="Cancel" Click="CloseButton_OnClick"/>
+        </Grid>
+    </StackPanel>
+    </Panel>
+</Window>

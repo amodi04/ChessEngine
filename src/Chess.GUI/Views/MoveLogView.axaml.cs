@@ -1,8 +1,7 @@
-﻿using Avalonia;
-using Avalonia.Controls;
+﻿using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 
-namespace Chess.GUI
+namespace Chess.GUI.Views
 {
     /// <summary>
     /// Code behind for the view.

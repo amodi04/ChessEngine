@@ -15,8 +15,11 @@
         <entry key="src/Chess.GUI/PieceView.axaml" value="src/Chess.GUI/Chess.GUI.csproj" />
         <entry key="src/Chess.GUI/PromotionWindow.axaml" value="src/Chess.GUI/Chess.GUI.csproj" />
         <entry key="src/Chess.GUI/TileView.axaml" value="src/Chess.GUI/Chess.GUI.csproj" />
+        <entry key="src/Chess.GUI/Views/GameSetupWindow.axaml" value="src/Chess.GUI/Chess.GUI.csproj" />
         <entry key="src/Chess.GUI/Views/MainWindow.axaml" value="src/Chess.GUI/Chess.GUI.csproj" />
         <entry key="src/Chess.GUI/Views/MenuView.axaml" value="src/Chess.GUI/Chess.GUI.csproj" />
+        <entry key="src/Chess.GUI/Views/MoveLogView.axaml" value="src/Chess.GUI/Chess.GUI.csproj" />
+        <entry key="src/Chess.GUI/Views/PromotionWindow.axaml" value="src/Chess.GUI/Chess.GUI.csproj" />
         <entry key="src/Chess.GUI/Views/TodoListView.axaml" value="src/Chess.GUI/Chess.GUI.csproj" />
       </map>
     </option>

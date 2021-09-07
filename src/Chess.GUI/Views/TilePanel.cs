@@ -6,14 +6,14 @@ using Avalonia.Input;
 using Avalonia.Media;
 using Avalonia.Media.Imaging;
 using Avalonia.Threading;
+using Chess.GUI.Util;
 using Engine.Enums;
 using Engine.Extensions;
 using Engine.Factories;
 using Engine.Types.MoveGeneration;
 using Engine.Types.Pieces;
-using Engine.Util;
 
-namespace Chess.GUI
+namespace Chess.GUI.Views
 {
     /// <summary>
     /// Custom panel class so that it can hold state.

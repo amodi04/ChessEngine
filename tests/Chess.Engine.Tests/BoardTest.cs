@@ -17,8 +17,8 @@ namespace Chess.Engine.Tests
         public void TestInitialBoard()
         {
             var board = Board.CreateStandardBoard();
-            Assert.AreEqual(board.CurrentPlayer.Moves.Count(), 20);
-            Assert.AreEqual(board.CurrentPlayer.GetOpponent().Moves.Count(), 20);
+            Assert.AreEqual(board.CurrentPlayer.Moves.Count, 20);
+            Assert.AreEqual(board.CurrentPlayer.GetOpponent().Moves.Count, 20);
             Assert.False(board.CurrentPlayer.IsInCheck());
             Assert.False(board.CurrentPlayer.IsInCheckmate());
             Assert.False(board.CurrentPlayer.IsInStalemate());

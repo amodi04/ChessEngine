@@ -4,12 +4,13 @@ using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
 using Avalonia.Markup.Xaml;
 using Avalonia.Media.Imaging;
+using Chess.GUI.Util;
 using Engine.Enums;
 using Engine.Extensions;
 using Engine.Types.MoveGeneration;
 using Engine.Types.Pieces;
 
-namespace Chess.GUI
+namespace Chess.GUI.Views
 {
     /// <summary>
     /// Captured Pieces Panel class.

@@ -3,11 +3,12 @@
              xmlns:vm="clr-namespace:Chess.GUI"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:viewModels="clr-namespace:Chess.GUI.ViewModels"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             x:Class="Chess.GUI.MoveLogView">
+             x:Class="Chess.GUI.Views.MoveLogView">
     <!-- Design time rendering of data (not compiled in application -->
     <Design.DataContext>
-        <vm:MoveLogViewModel/>
+        <viewModels:MoveLogViewModel/>
     </Design.DataContext>
     
     <!-- Data grid will output data from bound values -->

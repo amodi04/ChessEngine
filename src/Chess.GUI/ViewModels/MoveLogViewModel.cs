@@ -1,13 +1,11 @@
-﻿using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Collections.Specialized;
-using System.ComponentModel;
+﻿using System.Collections.ObjectModel;
 using System.Linq;
+using Chess.GUI.Models;
 using Engine.Types;
 using Engine.Types.MoveGeneration;
 using Engine.Util;
 
-namespace Chess.GUI
+namespace Chess.GUI.ViewModels
 {
     /// <summary>
     /// ViewModel for the MoveLog. 

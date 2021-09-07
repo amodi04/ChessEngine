@@ -1,19 +1,18 @@
-using System.Collections;
+using System;
 using System.Collections.Generic;
-using System.Collections.Specialized;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
-using Avalonia.Controls.Shapes;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
-using Avalonia.Media;
+using Chess.GUI.ViewModels;
+using Engine.Enums;
 using Engine.Types;
 using Engine.Types.MoveGeneration;
 using Engine.Types.Pieces;
 using Engine.Util;
 
-namespace Chess.GUI
+namespace Chess.GUI.Views
 {
     /// <summary>
     /// The main window class.
@@ -23,9 +22,9 @@ namespace Chess.GUI
         // Member fields
         private readonly UniformGrid _boardView;
         private readonly List<TilePanel> _tilePanels;
-        public CapturedPiecesPanel CapturedPiecesPanel { get; }
+        public CapturedPiecesPanel CapturedPiecesPanel { get; private set; }
         public MoveLogView MoveLogView { get; }
-        public MoveLogViewModel MoveLogViewModel { get; }
+        public MoveLogViewModel MoveLogViewModel { get; private set; }
         public Board BoardModel { get; set; }
         public Tile? FromTile { get; set; }
         public Piece? MovedPiece { get; set; }
@@ -154,6 +153,33 @@ namespace Chess.GUI
         {
             // Set the boolean to the not of itself. Button therefore acts as a toggle
             HighlightLegalMoves = !HighlightLegalMoves;
+        }
+
+        private async void NewGame_OnClick(object? sender, RoutedEventArgs e)
+        {
+            GameSetupWindow gameSetupWindow = new GameSetupWindow();
+            try
+            {
+                Tuple<PlayerType, PlayerType> result = await gameSetupWindow.ShowDialog<Tuple<PlayerType, PlayerType>>(this);
+                SetupGame(result);
+            }
+            catch
+            {
+                // ignored
+            }
+        }
+
+        private void SetupGame(Tuple<PlayerType, PlayerType> newGameConfig)
+        {
+            BoardModel = Board.CreateStandardBoard();
+            DrawBoard();
+            ResetGUI();
+        }
+
+        private void ResetGUI()
+        {
+            MoveLogViewModel.Moves.Clear();
+            CapturedPiecesPanel.DrawPanels(new Stack<IMove>());
         }
     }
 }

@@ -3,8 +3,9 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:gui="clr-namespace:Chess.GUI"
+        xmlns:views="clr-namespace:Chess.GUI.Views"
         mc:Ignorable="d" d:DesignWidth="1280" d:DesignHeight="720"
-        x:Class="Chess.GUI.MainWindow"
+        x:Class="Chess.GUI.Views.MainWindow"
         Icon="/Assets/avalonia-logo.ico"
         Title="Chess.GUI">
     <!-->
@@ -33,7 +34,7 @@
                 </Menu.ItemsPanel>
                 <!-- Defines the game menu -->
                 <MenuItem Header="Game">
-                    <MenuItem Header="New" InputGesture="Ctrl+N"/>
+                    <MenuItem Header="New" InputGesture="Ctrl+N" Click="NewGame_OnClick"/>
                     <MenuItem Header="Load">
                         <MenuItem Header="From FEN"/>
                         <MenuItem Header="From PGN"/>
@@ -69,7 +70,7 @@
             
             <Grid ColumnDefinitions="*, *, *, *, *">
                 <!-- The captured pieces panel is docked left -->
-                <gui:CapturedPiecesPanel Grid.Column="0" x:Name="CapturedPiecesPanel"/>
+                <views:CapturedPiecesPanel Grid.Column="0" x:Name="CapturedPiecesPanel"/>
                 
                 <!-- A general box to keep the board in with a margin -->
                 <Viewbox Grid.Column="1" Grid.ColumnSpan="3" Margin="20" HorizontalAlignment="Center">
@@ -84,7 +85,7 @@
                 </Viewbox>
                 
                 <!-- The move log is docked right -->
-                <gui:MoveLogView Grid.Column="4" x:Name="MoveLogView"/>
+                <views:MoveLogView Grid.Column="4" x:Name="MoveLogView"/>
             </Grid>
         </DockPanel>
     </Panel>
