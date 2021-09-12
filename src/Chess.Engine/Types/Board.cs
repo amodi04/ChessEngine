@@ -39,9 +39,9 @@ namespace Engine.Types
             var whiteMoves = CalculateLegalMoves(WhitePieces);
             var blackMoves = CalculateLegalMoves(BlackPieces);
 
-            // Initialise players
-            WhitePlayer = new Player(Coalition.White, this, whiteMoves, blackMoves);
-            BlackPlayer = new Player(Coalition.Black, this, blackMoves, whiteMoves);
+            // Initialise players with default player types. TODO: Fix this
+            WhitePlayer = new Player(Coalition.White, this, whiteMoves, blackMoves, PlayerType.Human);
+            BlackPlayer = new Player(Coalition.Black, this, blackMoves, whiteMoves, PlayerType.Computer);
             
             // Store all possible moves for the current board
             AllMoves = WhitePlayer.Moves.Concat(BlackPlayer.Moves);
@@ -59,8 +59,6 @@ namespace Engine.Types
         public Player CurrentPlayer { get; }
         public IEnumerable<IMove> AllMoves { get; }
         public Pawn EnPassantPawn { get; }
-
-        
 
         /// <summary>
         ///     Gets all pieces on the current board.

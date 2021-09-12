@@ -15,7 +15,7 @@ namespace Engine.Types
     public class Player
     {
         // Member fields
-        private readonly Board _board;
+        protected readonly Board Board;
         private readonly bool _isInCheck;
 
         /// <summary>
@@ -25,11 +25,13 @@ namespace Engine.Types
         /// <param name="board">The current board in play.</param>
         /// <param name="moves">An iterable collection of moves available to the player.</param>
         /// <param name="opponentMoves">An iterable collection of opponent moves available to the player.</param>
-        public Player(Coalition coalition, Board board, IEnumerable<IMove> moves, IEnumerable<IMove> opponentMoves)
+        /// <param name="playerType">The type of player.</param>
+        public Player(Coalition coalition, Board board, IEnumerable<IMove> moves, IEnumerable<IMove> opponentMoves, PlayerType playerType)
         {
             Coalition = coalition;
-            _board = board;
+            Board = board;
             King = GetKingOnBoard();
+            PlayerType = playerType;
 
             // Store as array to reduce multiple enumerations
             var opponentMovesArray = opponentMoves as IMove[] ?? opponentMoves.ToArray();
@@ -43,6 +45,7 @@ namespace Engine.Types
         public King King { get; }
         public ICollection<IMove> Moves { get; }
         public Coalition Coalition { get; }
+        public PlayerType PlayerType { get; set; }
 
         /// <summary>
         ///     Gets all the moves that are attacking the tile passed in.
@@ -131,7 +134,7 @@ namespace Engine.Types
         public BoardTransition MakeMove(IMove move)
         {
             // If the move is illegal, return the current board data.
-            if (!IsMoveLegal(move)) return new BoardTransition(_board, _board, move, MoveStatus.Illegal);
+            if (!IsMoveLegal(move)) return new BoardTransition(Board, Board, move, MoveStatus.Illegal);
 
             // Make the move
             var toBoard = move.ExecuteMove();
@@ -139,8 +142,8 @@ namespace Engine.Types
             // If there are any attacking moves on the king, return the current board as the move made would leave the
             // player in check. Otherwise return the new board because the move is valid.
             return toBoard.CurrentPlayer.GetOpponent().IsInCheck()
-                ? new BoardTransition(_board, _board, move, MoveStatus.PlayerInCheck)
-                : new BoardTransition(_board, toBoard, move, MoveStatus.Done);
+                ? new BoardTransition(Board, Board, move, MoveStatus.PlayerInCheck)
+                : new BoardTransition(Board, toBoard, move, MoveStatus.Done);
         }
 
         /// <summary>
@@ -153,7 +156,16 @@ namespace Engine.Types
             // TODO: Check LINQ performance
             // True if the member field Moves contains the move passed in
             // All moves in the member field are legal
-            return Moves.Contains(move);
+            foreach (var potentialMove in Moves)
+            {
+                if (potentialMove.FromCoordinate == move.FromCoordinate &&
+                    potentialMove.ToCoordinate == move.ToCoordinate)
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         /// <summary>
@@ -163,7 +175,7 @@ namespace Engine.Types
         public IEnumerable<Piece> GetActiveAlliedPieces()
         {
             // If white return white pieces, else return black pieces
-            return Coalition.IsWhite() ? _board.WhitePieces : _board.BlackPieces;
+            return Coalition.IsWhite() ? Board.WhitePieces : Board.BlackPieces;
         }
 
         /// <summary>
@@ -173,7 +185,7 @@ namespace Engine.Types
         public Player GetOpponent()
         {
             // If white return black, else white,
-            return Coalition.IsWhite() ? _board.BlackPlayer : _board.WhitePlayer;
+            return Coalition.IsWhite() ? Board.BlackPlayer : Board.WhitePlayer;
         }
 
         /// <summary>
@@ -198,10 +210,10 @@ namespace Engine.Types
 
             // King side castle
             // If the adjacent tile next to the king is empty and the 2nd consecutive adjacent tile is empty
-            if (!_board.GetTile(kingPosition + 1).IsOccupied() && !_board.GetTile(kingPosition + 2).IsOccupied())
+            if (!Board.GetTile(kingPosition + 1).IsOccupied() && !Board.GetTile(kingPosition + 2).IsOccupied())
             {
                 // Get the rook on the king side. Position is dependent on coalition
-                var rookTile = _board.GetTile(Coalition.IsWhite() ? 7 : 63);
+                var rookTile = Board.GetTile(Coalition.IsWhite() ? 7 : 63);
 
                 // If the rook tile is occupied and it is the pieces first move
                 if (rookTile.IsOccupied() && rookTile.Piece.IsFirstMove)
@@ -211,7 +223,7 @@ namespace Engine.Types
                         !CalculateAttacksOnTile(kingPosition + 2, opponentMovesArray).Any() &&
                         rookTile.Piece.PieceType == PieceType.Rook)
                         // Add a king side castling move
-                        castleMoves.Add(new CastlingMove(_board,
+                        castleMoves.Add(new CastlingMove(Board,
                             kingPosition,
                             kingPosition + 2,
                             King,
@@ -224,12 +236,12 @@ namespace Engine.Types
             // If the adjacent tile next to the king is occupied or the 2nd consecutive adjacent tile is occupied or
             // the 3rd consecutive adjacent tile is occupied,
             // return the current list of castling moves because queen side castling is invalid here.
-            if (_board.GetTile(kingPosition - 1).IsOccupied() || _board.GetTile(kingPosition - 2).IsOccupied() ||
-                !_board.GetTile(kingPosition - 3).IsOccupied()) return castleMoves;
+            if (Board.GetTile(kingPosition - 1).IsOccupied() || Board.GetTile(kingPosition - 2).IsOccupied() ||
+                !Board.GetTile(kingPosition - 3).IsOccupied()) return castleMoves;
             {
                 // Get the rook on the queen side. Position is dependent on coalition
                 // TODO: Change hard coding rooks
-                var rookTile = _board.GetTile(Coalition.IsWhite() ? 0 : 56);
+                var rookTile = Board.GetTile(Coalition.IsWhite() ? 0 : 56);
 
                 // If the rook tile is not occupied or the rook has moved, castling is invalid so return the calculated 
                 // moves so far.
@@ -242,7 +254,7 @@ namespace Engine.Types
                     !CalculateAttacksOnTile(kingPosition - 3, opponentMovesArray).Any() &&
                     rookTile.Piece.PieceType == PieceType.Rook)
                     // Add a queen side castling move
-                    castleMoves.Add(new CastlingMove(_board,
+                    castleMoves.Add(new CastlingMove(Board,
                         kingPosition,
                         kingPosition - 2,
                         King,

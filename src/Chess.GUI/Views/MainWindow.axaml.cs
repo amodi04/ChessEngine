@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
@@ -8,6 +9,7 @@ using Avalonia.Markup.Xaml;
 using Chess.GUI.ViewModels;
 using Engine.Enums;
 using Engine.Types;
+using Engine.Types.AI;
 using Engine.Types.MoveGeneration;
 using Engine.Types.Pieces;
 using Engine.Util;
@@ -22,6 +24,7 @@ namespace Chess.GUI.Views
         // Member fields
         private readonly UniformGrid _boardView;
         private readonly List<TilePanel> _tilePanels;
+        private static MainWindow instance;
         public CapturedPiecesPanel CapturedPiecesPanel { get; private set; }
         public MoveLogView MoveLogView { get; }
         public MoveLogViewModel MoveLogViewModel { get; private set; }
@@ -30,7 +33,9 @@ namespace Chess.GUI.Views
         public Piece? MovedPiece { get; set; }
         public bool HighlightLegalMoves { get; private set; }
         public Stack<IMove> MoveStack { get; }
-        
+        public EventHandler? OnGUIUpdate;
+        public GameObserver GameObserver { get; }
+
         public MainWindow()
         {
             InitializeComponent();
@@ -57,6 +62,9 @@ namespace Chess.GUI.Views
             
             // Turn of highlighting legal moves by default
             HighlightLegalMoves = false;
+            
+            // Create a new GameObserver
+            GameObserver = new GameObserver(this);
 #if DEBUG
             this.AttachDevTools();
 #endif
@@ -155,31 +163,80 @@ namespace Chess.GUI.Views
             HighlightLegalMoves = !HighlightLegalMoves;
         }
 
+        /// <summary>
+        /// Called when the New Game button is clicked.
+        /// </summary>
+        /// <param name="sender">The object that owns the event.</param>
+        /// <param name="e">The arguments passed in.</param>
         private async void NewGame_OnClick(object? sender, RoutedEventArgs e)
         {
             GameSetupWindow gameSetupWindow = new GameSetupWindow();
+            
+            // Try catch because input is involved
             try
             {
+                // Await the result from the dialog pop up
                 Tuple<PlayerType, PlayerType> result = await gameSetupWindow.ShowDialog<Tuple<PlayerType, PlayerType>>(this);
+                
+                // Setup a new game
                 SetupGame(result);
             }
+            
             catch
             {
-                // ignored
+                // ignored 
             }
         }
 
+        /// <summary>
+        /// Sets up a new game.
+        /// </summary>
+        /// <param name="newGameConfig">The configuration for the new game.</param>
         private void SetupGame(Tuple<PlayerType, PlayerType> newGameConfig)
         {
+            // Create a new standard board
             BoardModel = Board.CreateStandardBoard();
-            DrawBoard();
+            
+            // TODO: Implement this
+            // BoardModel.WhitePlayer.PlayerType = newGameConfig.Item1;
+            // BoardModel.BlackPlayer.PlayerType = newGameConfig.Item2;
+            
+            // Reset the GUI
             ResetGUI();
+            
+            // Draw the board
+            DrawBoard();
         }
 
+        /// <summary>
+        /// Resets the GUI.
+        /// </summary>
         private void ResetGUI()
         {
+            // Remove all moves from the move log
             MoveLogViewModel.Moves.Clear();
+            
+            // Clear move history
+            MoveStack.Clear();
+            
+            // Pass in an empty move stack into the captured pieces panel to reset it
             CapturedPiecesPanel.DrawPanels(new Stack<IMove>());
+        }
+
+        /// <summary>
+        /// Called when a move is made.
+        /// </summary>
+        public void MoveMadeUpdate()
+        {
+            // If the current player is human
+            if (BoardModel.CurrentPlayer.PlayerType == PlayerType.Human)
+            {
+                // Return
+                return;
+            }
+            
+            // Else if the player is a computer, invoke the OnGUIUpdate event
+            OnGUIUpdate?.Invoke(this, EventArgs.Empty);
         }
     }
 }

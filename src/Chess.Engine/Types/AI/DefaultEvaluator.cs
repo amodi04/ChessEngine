@@ -65,7 +65,7 @@ namespace Engine.Types.AI
         /// <returns>The more moves that can be made, the higher the value.</returns>
         private int EvaluateMobility(Player player)
         {
-            return player.Moves.Count;
+            return player.Moves.Count * 50;
         }
         
         /// <summary>

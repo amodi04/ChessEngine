@@ -45,8 +45,8 @@ namespace Engine.Types.MoveGeneration
             // Move the moved piece
             boardBuilder.SetPieceAtTile(MovedPiece.MovePiece(this));
             
-            // If the moved piece as moved 2 tiles forwards (only a pawn jump)
-            if (ToCoordinate - FromCoordinate == 16 || ToCoordinate - FromCoordinate == -16)
+            // If the moved piece has moved 2 tiles forwards and the piece is a pawn (only a pawn jump)
+            if ((ToCoordinate - FromCoordinate == 16 || ToCoordinate - FromCoordinate == -16) && MovedPiece is Pawn)
             {
                 // Set the en passant pawn to this piece
                 boardBuilder.SetEnPassantPawn((Pawn)MovedPiece.MovePiece(this));

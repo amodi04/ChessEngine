@@ -146,6 +146,12 @@ namespace Chess.GUI.Views
                             // Add move to move history log
                             _mainWindow.MoveStack.Push(move);
                             _mainWindow.MoveLogViewModel.UpdateMoveLog(move, boardTransition);
+                            
+                            // Redraw board
+                            _mainWindow.DrawBoard();
+                            
+                            // Call the move made update
+                            _mainWindow.MoveMadeUpdate();
                         }
 
                         // Reset tiles and pieces ready for a new move to be made
@@ -161,7 +167,10 @@ namespace Chess.GUI.Views
                     break;
             }
             // Redraw board asynchronously
-            await Dispatcher.UIThread.InvokeAsync(() => { _mainWindow.DrawBoard(); });
+            await Dispatcher.UIThread.InvokeAsync(() =>
+            {
+                _mainWindow.DrawBoard();
+            });
         }
 
         /// <summary>

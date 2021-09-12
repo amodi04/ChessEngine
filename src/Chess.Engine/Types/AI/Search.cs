@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using Engine.Enums;
 using Engine.Extensions;
 using Engine.Types.MoveGeneration;
@@ -12,7 +13,6 @@ namespace Engine.Types.AI
     {
         // Member fields
         private readonly IEvaluator _evaluation;
-        private IMove _bestMove;
         private readonly int _searchDepth;
 
         /// <summary>
@@ -23,7 +23,6 @@ namespace Engine.Types.AI
         {
             // Create a new evaluator
             _evaluation = new DefaultEvaluator();
-            _bestMove = null;
             _searchDepth = depth;
         }
 
@@ -32,104 +31,148 @@ namespace Engine.Types.AI
         /// </summary>
         /// <param name="board">The board to execute the move on.</param>
         /// <returns>A move to execute.</returns>
-        public IMove ExecuteMove(Board board)
+        public IMove SearchMove(Board board)
         {
-            // Start watch to time speed of minimax algorithm
+            // Initialise the max evaluation to a minimum
+            int maxEval = int.MinValue;
+            
+            // Initialise the min evaluation to a maximum
+            int minEval = int.MaxValue;
+            
+            IMove bestMove = null;
+
+            // TODO: Remove DEBUG
             var watch = new Stopwatch();
             watch.Start();
             
-            // Start the algorithm with the board, search depth and condition for if it is the white player
-            Minimax(board, _searchDepth, board.CurrentPlayer.Coalition.IsWhite());
-            
-            // Stop watch after completion
+            // Loop through each legal move that can be made for the current player
+            foreach (var move in board.CurrentPlayer.Moves)
+            {
+                // Make the move
+                BoardTransition boardTransition = board.CurrentPlayer.MakeMove(move);
+                
+                // If the move was completed
+                if (boardTransition.Status == MoveStatus.Done)
+                {
+                    // Evaluate the board based on the next player to move
+                    // If white is to move, then they want to maximise the score for black
+                    // If black is to move, then they want to minimise the score 
+                    var currentEval = board.CurrentPlayer.Coalition.IsWhite()
+                        ? Minimise(boardTransition.ToBoard, _searchDepth - 1)
+                        : Maximise(boardTransition.ToBoard, _searchDepth - 1);
+
+                    // If the current player is white and current evaluation is more than the max evaluation
+                    if (board.CurrentPlayer.Coalition.IsWhite() && currentEval >= maxEval)
+                    {
+                        // Set the new max evaluation
+                        maxEval = currentEval;
+                        
+                        // Set the best move
+                        bestMove = move;
+                        
+                    // Else if the player is black and the current evaluation is less than the min evaluation
+                    } else if (!board.CurrentPlayer.Coalition.IsWhite() && currentEval <= minEval)
+                    {
+                        // Set hte new min evaluation
+                        minEval = currentEval;
+                        
+                        // Set the best move
+                        bestMove = move;
+                    }
+                }
+            }
+
+            // TODO: DEBUG
             watch.Stop();
+            Debug.WriteLine(watch.ElapsedMilliseconds);
             
             // Return the best move
-            return _bestMove;
+            return bestMove;
         }
 
         /// <summary>
-        /// Minimax algorithm evaluates moves and picks the best one depending on evaluator.
+        /// Minimises the score on the board.
         /// </summary>
-        /// <param name="board">The board to evaluate.</param>
-        /// <param name="depth">The depth to search to.</param>
-        /// <param name="maximisingPlayer">Condition is true if white.</param>
-        /// <returns></returns>
-        private int Minimax(Board board, int depth, bool maximisingPlayer)
+        /// <param name="board">The board to minimise.</param>
+        /// <param name="depth">The depth to search at.</param>
+        /// <returns>An integer value of the minimised board.</returns>
+        private int Minimise(Board board, int depth)
         {
-            // If depth is 0 (look at this current move) or the game has ended
+            // If the depth is 0 or the game has ended
             if (depth == 0 || IsEndgame(board))
             {
-                // Evaluate current board
+                // Return the evaluation of the current board
                 return _evaluation.Evaluate(board);
             }
 
-            // If white (value wants to be as a great as possible)
-            if (maximisingPlayer)
+            // Initialise the minimum value to the maximum value
+            int minEval = int.MaxValue;
+            
+            // Loop through each available move
+            foreach (IMove move in board.CurrentPlayer.Moves)
             {
-                // Initialise the max evaluation to the minimum number
-                int maxEval = int.MinValue;
+                // Make the move
+                BoardTransition boardTransition = board.CurrentPlayer.MakeMove(move);
                 
-                // Loop through player moves
-                foreach (IMove move in board.CurrentPlayer.Moves)
+                // If the move completed
+                if (boardTransition.Status == MoveStatus.Done)
                 {
-                    // Make the move
-                    BoardTransition boardTransition = board.CurrentPlayer.MakeMove(move);
+                    // Maximise the board
+                    int currentEval = Maximise(boardTransition.ToBoard, depth - 1);
                     
-                    // If the move has completed
-                    if (boardTransition.Status == MoveStatus.Done)
+                    // If the evaluation is less than the minimum evaluation
+                    if (currentEval <= minEval)
                     {
-                        // Call the minimax algorithm again with a lesser depth but this time for the black player
-                        // This is so we can evaluate blacks best move and compare moves
-                        int currentEval = Minimax(boardTransition.ToBoard, depth - 1, false);
-                        
-                        // If the current evaluation is higher than any evaluations seen before
-                        if (currentEval >= maxEval)
-                        {
-                            // Set the max to the new evaluation
-                            maxEval = currentEval;
-                            
-                            // Set the best move to this move
-                            _bestMove = move;
-                        }
+                        // Set the current minimum to the new minimum 
+                        minEval = currentEval;
                     }
                 }
-
-                // Return the max evaluation achieved
-                return maxEval;
             }
-            else
+
+            // Return the min evaluation
+            return minEval;
+        }
+
+        /// <summary>
+        /// Maximises the score on the board.
+        /// </summary>
+        /// <param name="board">The board to maximise.</param>
+        /// <param name="depth">The depth to search at.</param>
+        /// <returns>An integer value of the maximised board.</returns>
+        private int Maximise(Board board, int depth)
+        {
+            // If the depth is 0 or the game has ended
+            if (depth == 0 || IsEndgame(board))
             {
-                // Initialise the min evaluation to the maximum number
-                int minEval = int.MaxValue;
+                return _evaluation.Evaluate(board);
+            }
+
+            // Initialise the maximum value to the minimum value
+            int maxEval = int.MinValue;
+            
+            // Loop through each available move
+            foreach (IMove move in board.CurrentPlayer.Moves)
+            {
+                // Make the move
+                BoardTransition boardTransition = board.CurrentPlayer.MakeMove(move);
                 
-                // Loop through player moves
-                foreach (IMove move in board.CurrentPlayer.Moves)
+                // If the move completed
+                if (boardTransition.Status == MoveStatus.Done)
                 {
-                    // Make the move
-                    BoardTransition boardTransition = board.CurrentPlayer.MakeMove(move);
+                    // Minimise the board
+                    int currentEval = Minimise(boardTransition.ToBoard, depth - 1);
                     
-                    // If the move has completed
-                    if (boardTransition.Status == MoveStatus.Done)
+                    // If the evaluation is more than the maximum evaluation
+                    if (currentEval >= maxEval)
                     {
-                        // Call the minimax algorithm again with a lesser depth but this time for the white player
-                        int currentEval = Minimax(boardTransition.ToBoard, depth - 1, true);
-                        
-                        // If the current evaluation is less than any evaluations seen before
-                        if (currentEval <= minEval)
-                        {
-                            // Set the minimum evaluation to the new evaluation
-                            minEval = currentEval;
-                            
-                            // Set the best move to this move
-                            _bestMove = move;
-                        }
+                        // Set the current maximum to the new maximum 
+                        maxEval = currentEval;
                     }
                 }
-
-                // Return the minimum evaluation achieved
-                return minEval;
             }
+
+            // Return the max evaluation
+            return maxEval;
         }
 
         /// <summary>
@@ -139,6 +182,7 @@ namespace Engine.Types.AI
         /// <returns>True if the player is in checkmate or in stalemate.</returns>
         private bool IsEndgame(Board board)
         {
+            // Return true if the current player is in checkmate or stalemate(draw)
             return board.CurrentPlayer.IsInCheckmate() || board.CurrentPlayer.IsInStalemate();
         }
     }
