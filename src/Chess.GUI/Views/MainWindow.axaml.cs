@@ -1,3 +1,4 @@
+
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -61,7 +62,7 @@ namespace Chess.GUI.Views
             FlipBoardMenuItem_OnClick(null, null);
             
             // Turn of highlighting legal moves by default
-            HighlightLegalMoves = false;
+            HighlightLegalMoves = true;
             
             // Create a new GameObserver
             GameObserver = new GameObserver(this);
@@ -198,8 +199,8 @@ namespace Chess.GUI.Views
             BoardModel = Board.CreateStandardBoard();
             
             // TODO: Implement this
-            // BoardModel.WhitePlayer.PlayerType = newGameConfig.Item1;
-            // BoardModel.BlackPlayer.PlayerType = newGameConfig.Item2;
+            BoardModel.WhitePlayer.PlayerType = newGameConfig.Item1;
+            BoardModel.BlackPlayer.PlayerType = newGameConfig.Item2;
             
             // Reset the GUI
             ResetGUI();

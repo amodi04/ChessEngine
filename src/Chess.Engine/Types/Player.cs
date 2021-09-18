@@ -237,7 +237,7 @@ namespace Engine.Types
             // the 3rd consecutive adjacent tile is occupied,
             // return the current list of castling moves because queen side castling is invalid here.
             if (Board.GetTile(kingPosition - 1).IsOccupied() || Board.GetTile(kingPosition - 2).IsOccupied() ||
-                !Board.GetTile(kingPosition - 3).IsOccupied()) return castleMoves;
+                Board.GetTile(kingPosition - 3).IsOccupied()) return castleMoves;
             {
                 // Get the rook on the queen side. Position is dependent on coalition
                 // TODO: Change hard coding rooks

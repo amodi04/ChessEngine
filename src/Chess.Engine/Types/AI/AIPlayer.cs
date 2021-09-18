@@ -12,7 +12,7 @@ namespace Engine.Types.AI
     public class AIPlayer
     {
         // Member fields
-        public Search Search { get; }
+        public AlphaBetaSearch Search { get; }
         private Board _board;
         
         // Background worker used for running a task on another thread asynchronously
@@ -25,7 +25,7 @@ namespace Engine.Types.AI
         public AIPlayer(Board board)
         {
             // Create a new search object with a depth
-            Search = new Search(3);
+            Search = new AlphaBetaSearch(4);
             
             // Assign variables
             _board = board;

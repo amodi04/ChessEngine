@@ -9,21 +9,23 @@ namespace Engine.Types.AI
     /// <summary>
     /// Class responsible for searching through moves.
     /// </summary>
-    public class Search
+    public class MinimaxSearch
     {
         // Member fields
         private readonly IEvaluator _evaluation;
         private readonly int _searchDepth;
+        private int _movesEvaluated;
 
         /// <summary>
         /// Constructor
         /// </summary>
         /// <param name="depth">The depth for the search to use.</param>
-        public Search(int depth)
+        public MinimaxSearch(int depth)
         {
             // Create a new evaluator
             _evaluation = new DefaultEvaluator();
             _searchDepth = depth;
+            _movesEvaluated = 0;
         }
 
         /// <summary>
@@ -40,6 +42,7 @@ namespace Engine.Types.AI
             int minEval = int.MaxValue;
             
             IMove bestMove = null;
+            _movesEvaluated = 0;
 
             // TODO: Remove DEBUG
             var watch = new Stopwatch();
@@ -73,7 +76,7 @@ namespace Engine.Types.AI
                     // Else if the player is black and the current evaluation is less than the min evaluation
                     } else if (!board.CurrentPlayer.Coalition.IsWhite() && currentEval <= minEval)
                     {
-                        // Set hte new min evaluation
+                        // Set the new min evaluation
                         minEval = currentEval;
                         
                         // Set the best move
@@ -84,7 +87,7 @@ namespace Engine.Types.AI
 
             // TODO: DEBUG
             watch.Stop();
-            Debug.WriteLine(watch.ElapsedMilliseconds);
+            Debug.WriteLine($"Evaluated {_movesEvaluated} moves in {watch.ElapsedMilliseconds}ms");
             
             // Return the best move
             return bestMove;
@@ -101,8 +104,9 @@ namespace Engine.Types.AI
             // If the depth is 0 or the game has ended
             if (depth == 0 || IsEndgame(board))
             {
+                _movesEvaluated++;
                 // Return the evaluation of the current board
-                return _evaluation.Evaluate(board);
+                return _evaluation.Evaluate(board, depth);
             }
 
             // Initialise the minimum value to the maximum value
@@ -144,7 +148,8 @@ namespace Engine.Types.AI
             // If the depth is 0 or the game has ended
             if (depth == 0 || IsEndgame(board))
             {
-                return _evaluation.Evaluate(board);
+                _movesEvaluated++;
+                return _evaluation.Evaluate(board, depth);
             }
 
             // Initialise the maximum value to the minimum value

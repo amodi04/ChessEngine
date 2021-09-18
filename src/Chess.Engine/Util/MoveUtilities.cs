@@ -41,6 +41,23 @@ namespace Engine.Util
             // Get the piece type of the moved piece
             var movedPieceType = move.MovedPiece.PieceType;
             
+            // If the move is a castling move
+            if (move is CastlingMove castlingMove)
+            {
+                // Get the change in position of the king
+                int delta = castlingMove.ToCoordinate - castlingMove.FromCoordinate;
+                
+                // If the delta is negative (e.g. king side castle)
+                if (delta > 0)
+                {
+                    // Return the string "O-O"
+                    return "O-O";
+                }
+
+                // Else Return the string "O-O-O because it is a queen side castle"
+                return "O-O-O";
+            }
+            
             // If it is a pawn, then append an empty string, otherwise append the uppercase abbreviation for the piece.
             // This is because the SAN format does not use an abbreviation for pawns
             // Passing in Coalition.White forces the uppercase abbreviation

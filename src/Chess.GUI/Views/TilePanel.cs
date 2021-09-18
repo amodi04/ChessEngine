@@ -10,6 +10,7 @@ using Chess.GUI.Util;
 using Engine.Enums;
 using Engine.Extensions;
 using Engine.Factories;
+using Engine.Types;
 using Engine.Types.MoveGeneration;
 using Engine.Types.Pieces;
 
@@ -145,6 +146,8 @@ namespace Chess.GUI.Views
                             
                             // Add move to move history log
                             _mainWindow.MoveStack.Push(move);
+                            
+                            // Update the move log
                             _mainWindow.MoveLogViewModel.UpdateMoveLog(move, boardTransition);
                             
                             // Redraw board
@@ -204,11 +207,25 @@ namespace Chess.GUI.Views
         /// <returns>An enumerable list of moves.</returns>
         private IEnumerable<IMove> GetPieceMoves()
         {
+            
             // If the piece is not null and the clicked piece is the same colour as the player
             if (_mainWindow.MovedPiece != null && _mainWindow.MovedPiece.PieceCoalition == _mainWindow.BoardModel.CurrentPlayer.Coalition)
             {
-                // Generate the moves for the piece and return it
-                return _mainWindow.MovedPiece.GenerateLegalMoves(_mainWindow.BoardModel);
+                List<IMove> pieceMoves = new List<IMove>();
+                Board board = _mainWindow.BoardModel;
+                foreach (var move in board.CurrentPlayer.Moves)
+                {
+                    if (move.MovedPiece == _mainWindow.MovedPiece)
+                    {
+                        BoardTransition boardTransition = board.CurrentPlayer.MakeMove(move);
+                        if (boardTransition.Status == MoveStatus.Done)
+                        {
+                            pieceMoves.Add(move);
+                        }
+                    }
+                }
+
+                return pieceMoves;
             }
 
             // Return an empty list if conditions not met

@@ -55,7 +55,7 @@ namespace Engine.Types.MoveGeneration
 
             // Move the king piece, move the rook and set the next player to move
             boardBuilder.SetPieceAtTile(MovedPiece.MovePiece(this)).
-                SetPieceAtTile(PieceUtilities.RookLookup[CastlingRookEndPosition, CastlingRook.PieceCoalition]).
+                SetPieceAtTile(PieceUtilities.RookLookup[CastlingRookEndPosition, CastlingRook.PieceCoalition]).RemovePieceAtTile(CastlingRook).
                 SetCoalitionToMove(Board.CurrentPlayer.GetOpponent().Coalition);
 
             // Build the board

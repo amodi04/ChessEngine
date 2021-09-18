@@ -91,6 +91,9 @@ namespace Chess.GUI
                 // Call a move made update event on the main window
                 _mainWindow.MoveMadeUpdate();
                 
+                // Update move stack
+                _mainWindow.MoveStack.Push(bestMove);
+                
                 // Update the move log
                 _mainWindow.MoveLogViewModel.UpdateMoveLog(bestMove, boardTransition);
             }
