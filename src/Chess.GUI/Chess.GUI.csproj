@@ -12,10 +12,10 @@
         <PackageReference Include="Avalonia.Desktop" Version="0.10.3" />
         <PackageReference Include="Avalonia.Diagnostics" Version="0.10.3" />
         <PackageReference Include="Avalonia.ReactiveUI" Version="0.10.3" />
-        <PackageReference Include="Material.Avalonia" Version="2.3.0" />
     </ItemGroup>
     <ItemGroup>
       <ProjectReference Include="..\Chess.Engine\Chess.Engine.csproj" />
+      <ProjectReference Include="..\Chess.IO\Chess.IO.csproj" />
     </ItemGroup>
     <ItemGroup>
       <Compile Update="Views\MoveLogView.axaml.cs">

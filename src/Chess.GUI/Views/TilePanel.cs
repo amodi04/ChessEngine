@@ -143,7 +143,7 @@ namespace Chess.GUI.Views
                         {
                             // Set the current board in memory to the new board
                             _mainWindow.BoardModel = boardTransition.ToBoard;
-                            
+
                             // Add move to move history log
                             _mainWindow.MoveStack.Push(move);
                             

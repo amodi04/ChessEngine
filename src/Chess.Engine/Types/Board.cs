@@ -40,8 +40,8 @@ namespace Engine.Types
             var blackMoves = CalculateLegalMoves(BlackPieces);
 
             // Initialise players with default player types. TODO: Fix this
-            WhitePlayer = new Player(Coalition.White, this, whiteMoves, blackMoves, PlayerType.Human);
-            BlackPlayer = new Player(Coalition.Black, this, blackMoves, whiteMoves, PlayerType.Computer);
+            WhitePlayer = new Player(Coalition.White, this, whiteMoves, blackMoves);
+            BlackPlayer = new Player(Coalition.Black, this, blackMoves, whiteMoves);
             
             // Store all possible moves for the current board
             AllMoves = WhitePlayer.Moves.Concat(BlackPlayer.Moves);

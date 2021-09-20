@@ -32,7 +32,7 @@
             <Separator Height="5"/>
             <Grid RowDefinitions="*" ColumnDefinitions="*, *">
                 <!-- Buttons bound to RadioButton_Checked method in code behind -->
-                <RadioButton Grid.Row="0" Grid.Column="0" GroupName="White" IsChecked="True" Content="Human" Checked="RadioButton_Checked"/>
+                <RadioButton Grid.Row="0" Grid.Column="0" GroupName="White" Content="Human" Checked="RadioButton_Checked"/>
                 <RadioButton Grid.Row="0" Grid.Column="1" GroupName="White" Content="Computer" Checked="RadioButton_Checked"/>
             </Grid>
             <Separator Height="50"/>
@@ -41,7 +41,7 @@
             <Separator Height="5"/>
             <Grid RowDefinitions="*" ColumnDefinitions="*, *">
                 <!-- Buttons bound to RadioButton_Checked method in code behind -->
-                <RadioButton Grid.Row="0" Grid.Column="0" GroupName="Black" IsChecked="True" Content="Human" Checked="RadioButton_Checked"/>
+                <RadioButton Grid.Row="0" Grid.Column="0" GroupName="Black" Content="Human" Checked="RadioButton_Checked"/>
                 <RadioButton Grid.Row="0" Grid.Column="1" GroupName="Black" Content="Computer" Checked="RadioButton_Checked"/>
             </Grid>
         <Separator Height="250"/>

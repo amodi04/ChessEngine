@@ -6,6 +6,7 @@ using Engine.Enums;
 using Engine.Extensions;
 using Engine.Types.MoveGeneration;
 using Engine.Types.Pieces;
+using Engine.Util;
 
 namespace Engine.Types
 {
@@ -25,13 +26,15 @@ namespace Engine.Types
         /// <param name="board">The current board in play.</param>
         /// <param name="moves">An iterable collection of moves available to the player.</param>
         /// <param name="opponentMoves">An iterable collection of opponent moves available to the player.</param>
-        /// <param name="playerType">The type of player.</param>
-        public Player(Coalition coalition, Board board, IEnumerable<IMove> moves, IEnumerable<IMove> opponentMoves, PlayerType playerType)
+        public Player(Coalition coalition, Board board, IEnumerable<IMove> moves, IEnumerable<IMove> opponentMoves)
         {
             Coalition = coalition;
+
+            // Set the player type depending on if the player is white or black
+            PlayerType = coalition.IsWhite() ? BoardUtilities.WhitePlayerType : BoardUtilities.BlackPlayerType;
+            
             Board = board;
             King = GetKingOnBoard();
-            PlayerType = playerType;
 
             // Store as array to reduce multiple enumerations
             var opponentMovesArray = opponentMoves as IMove[] ?? opponentMoves.ToArray();
@@ -45,7 +48,7 @@ namespace Engine.Types
         public King King { get; }
         public ICollection<IMove> Moves { get; }
         public Coalition Coalition { get; }
-        public PlayerType PlayerType { get; set; }
+        public PlayerType PlayerType { get; }
 
         /// <summary>
         ///     Gets all the moves that are attacking the tile passed in.

@@ -35,7 +35,6 @@ namespace Chess.GUI.Views
         public bool HighlightLegalMoves { get; private set; }
         public Stack<IMove> MoveStack { get; }
         public EventHandler? OnGUIUpdate;
-        public GameObserver GameObserver { get; }
 
         public MainWindow()
         {
@@ -65,7 +64,7 @@ namespace Chess.GUI.Views
             HighlightLegalMoves = true;
             
             // Create a new GameObserver
-            GameObserver = new GameObserver(this);
+            new GameObserver(this);
 #if DEBUG
             this.AttachDevTools();
 #endif
@@ -171,6 +170,7 @@ namespace Chess.GUI.Views
         /// <param name="e">The arguments passed in.</param>
         private async void NewGame_OnClick(object? sender, RoutedEventArgs e)
         {
+            // Create a new game setup window
             GameSetupWindow gameSetupWindow = new GameSetupWindow();
             
             // Try catch because input is involved
@@ -192,16 +192,16 @@ namespace Chess.GUI.Views
         /// <summary>
         /// Sets up a new game.
         /// </summary>
-        /// <param name="newGameConfig">The configuration for the new game.</param>
-        private void SetupGame(Tuple<PlayerType, PlayerType> newGameConfig)
+        /// <param name="gameConfig">The configuration for the new game.</param>
+        private void SetupGame(Tuple<PlayerType, PlayerType> gameConfig)
         {
+            // Set the player types in board utilities so they can be accessed throughout the game
+            BoardUtilities.WhitePlayerType = gameConfig.Item1;
+            BoardUtilities.WhitePlayerType = gameConfig.Item2;
+            
             // Create a new standard board
             BoardModel = Board.CreateStandardBoard();
-            
-            // TODO: Implement this
-            BoardModel.WhitePlayer.PlayerType = newGameConfig.Item1;
-            BoardModel.BlackPlayer.PlayerType = newGameConfig.Item2;
-            
+
             // Reset the GUI
             ResetGUI();
             

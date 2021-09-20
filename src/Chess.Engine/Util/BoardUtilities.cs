@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using Engine.Enums;
 
 namespace Engine.Util
 {
@@ -21,15 +22,19 @@ namespace Engine.Util
 
         // Stores a reflected mapping of tile coordinates so that the board starts at the bottom left
         // Rather than the bottom right
-        public static readonly Dictionary<int, int> ReflectBoard = GenerateReflectedPositions();
+        public static readonly int[] ReflectBoard = GenerateReflectedPositions();
+
+        // Stores the respective player types for the players that can be accessed throughout the game
+        public static PlayerType WhitePlayerType = PlayerType.Human;
+        public static PlayerType BlackPlayerType = PlayerType.Computer;
 
         /// <summary>
         /// Generates the reflected mapping of tile positions.
         /// </summary>
         /// <returns>A dictionary containing the key to value mapping.</returns>
-        private static Dictionary<int, int> GenerateReflectedPositions()
+        private static int[] GenerateReflectedPositions()
         {
-            Dictionary<int, int> mapping = new Dictionary<int, int>();
+            int[] mapping = new int[64];
             
             // Loop over 64 times
             for (var i = 0; i < NumTiles; i++)

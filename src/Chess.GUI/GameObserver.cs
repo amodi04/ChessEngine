@@ -87,7 +87,7 @@ namespace Chess.GUI
             {
                 // Set the new board
                 _mainWindow.BoardModel = boardTransition.ToBoard;
-                
+
                 // Call a move made update event on the main window
                 _mainWindow.MoveMadeUpdate();
                 
