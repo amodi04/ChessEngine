@@ -24,8 +24,8 @@ namespace Engine.Util
         /// </summary>
         /// <param name="pieceType">The piece to generate the positions for.</param>
         /// <returns>
-        ///     A double key dictionary containing the position and coalition as keys. The value is the piece object at that
-        ///     index.
+        ///     A double key dictionary containing the position and coalition as keys.
+        ///     The value is the piece object at that index.
         /// </returns>
         /// <exception cref="ArgumentOutOfRangeException">If an undefined piece type is passed in, the exception will occur.</exception>
         private static DoubleKeyDictionary<int, Coalition, Piece> GeneratePiece(PieceType pieceType)
@@ -38,6 +38,7 @@ namespace Engine.Util
                 // All the cases to handle when a piece type is passed in.
                 // King not handled as a lookup will not be efficient when checking for checkmate
                 // Create a new piece with the position and coalition with the passed in data values
+                // Piece isFirstMove is false because this function is only called when pieces are moved
                 PieceType.Pawn => (i, coalition) => new Pawn(i, coalition, false),
                 PieceType.Knight => (i, coalition) => new Knight(i, coalition, false),
                 PieceType.Bishop => (i, coalition) => new Bishop(i, coalition, false),

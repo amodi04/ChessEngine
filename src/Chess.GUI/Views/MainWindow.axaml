@@ -34,27 +34,23 @@
                 </Menu.ItemsPanel>
                 <!-- Defines the game menu -->
                 <MenuItem Header="Game">
-                    <!-- Bind New Game MenuItem to the NewGame_OnClick method -->
                     <MenuItem Header="New" InputGesture="Ctrl+N" Click="NewGame_OnClick"/>
                     <MenuItem Header="Load">
-                        <MenuItem Header="From FEN"/>
+                        <MenuItem Header="From FEN" Click="FromFEN_OnClick"/>
                         <MenuItem Header="From PGN"/>
                     </MenuItem>
                     <MenuItem Header="Save">
-                        <MenuItem Header="To FEN"/>
+                        <MenuItem Header="To FEN" Click="ToFEN_OnClick"/>
                         <MenuItem Header="To PGN"/>
                     </MenuItem>
                     <Separator/>
-                    <!-- Bind New Game MenuItem to the QuitMenuItem_OnClick method -->
                     <MenuItem Header="_Exit" Click="QuitMenuItem_OnClick"/>
                 </MenuItem>
                 <!-- Defines the edit menu -->
                 <MenuItem Header="Edit">
                     <MenuItem Header="Preferences">
                         <MenuItem Header="Change Tile Colours"/>
-                        <!-- Bind New Game MenuItem to the FlipBoardMenuItem_OnClick method -->
                         <MenuItem Header="Flip Board" x:Name="FlipBoardMenuItem" Click="FlipBoardMenuItem_OnClick"/>
-                        <!-- Bind New Game MenuItem to the HighlightLegalMovesMenuItem_OnClick method -->
                         <MenuItem Header="Highlight Legal Moves" x:Name="HighlightLegalMovesMenuItem" Click="HighlightLegalMovesMenuItem_OnClick"/>
                     </MenuItem>
                     <Separator/>

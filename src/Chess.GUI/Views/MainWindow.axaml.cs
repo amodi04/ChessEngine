@@ -1,7 +1,5 @@
-
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
@@ -9,8 +7,8 @@ using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
 using Chess.GUI.ViewModels;
 using Engine.Enums;
+using Engine.IO;
 using Engine.Types;
-using Engine.Types.AI;
 using Engine.Types.MoveGeneration;
 using Engine.Types.Pieces;
 using Engine.Util;
@@ -20,21 +18,20 @@ namespace Chess.GUI.Views
     /// <summary>
     /// The main window class.
     /// </summary>
-    public partial class MainWindow : Window
+    public class MainWindow : Window
     {
         // Member fields
         private readonly UniformGrid _boardView;
         private readonly List<TilePanel> _tilePanels;
-        private static MainWindow instance;
-        public CapturedPiecesPanel CapturedPiecesPanel { get; private set; }
+        private CapturedPiecesPanel CapturedPiecesPanel { get; }
         public MoveLogView MoveLogView { get; }
-        public MoveLogViewModel MoveLogViewModel { get; private set; }
+        public MoveLogViewModel MoveLogViewModel { get; }
         public Board BoardModel { get; set; }
         public Tile? FromTile { get; set; }
         public Piece? MovedPiece { get; set; }
         public bool HighlightLegalMoves { get; private set; }
         public Stack<IMove> MoveStack { get; }
-        public EventHandler? OnGUIUpdate;
+        public EventHandler? OnGuiUpdate;
 
         public MainWindow()
         {
@@ -142,7 +139,7 @@ namespace Chess.GUI.Views
         /// </summary>
         /// <param name="sender">Object that owns the event handler.</param>
         /// <param name="e">The event.</param>
-        private void FlipBoardMenuItem_OnClick(object? sender, RoutedEventArgs e)
+        private void FlipBoardMenuItem_OnClick(object? sender, RoutedEventArgs? e)
         {
             // Reverse the array of tile panels
             // This is equal to a 180 degree rotation of the board
@@ -182,10 +179,9 @@ namespace Chess.GUI.Views
                 // Setup a new game
                 SetupGame(result);
             }
-            
             catch
             {
-                // ignored 
+                // ignored. Carry on if the game could not be setup (does not replace board)
             }
         }
 
@@ -197,22 +193,23 @@ namespace Chess.GUI.Views
         {
             // Set the player types in board utilities so they can be accessed throughout the game
             BoardUtilities.WhitePlayerType = gameConfig.Item1;
-            BoardUtilities.WhitePlayerType = gameConfig.Item2;
+            BoardUtilities.BlackPlayerType = gameConfig.Item2;
             
             // Create a new standard board
             BoardModel = Board.CreateStandardBoard();
 
             // Reset the GUI
-            ResetGUI();
+            ResetGui();
             
             // Draw the board
             DrawBoard();
+            MoveMadeUpdate();
         }
 
         /// <summary>
         /// Resets the GUI.
         /// </summary>
-        private void ResetGUI()
+        private void ResetGui()
         {
             // Remove all moves from the move log
             MoveLogViewModel.Moves.Clear();
@@ -237,7 +234,54 @@ namespace Chess.GUI.Views
             }
             
             // Else if the player is a computer, invoke the OnGUIUpdate event
-            OnGUIUpdate?.Invoke(this, EventArgs.Empty);
+            OnGuiUpdate?.Invoke(this, EventArgs.Empty);
+        }
+
+        /// <summary>
+        /// Called when the To Fen menu button is clicked.
+        /// </summary>
+        /// <param name="sender">The object that owns the event.</param>
+        /// <param name="e">The event.</param>
+        private async void ToFEN_OnClick(object? sender, RoutedEventArgs e)
+        {
+            // Get the FEN string of the current board
+            string fen = FenParser.FenFromPosition(BoardModel);
+            
+            // Create a new FenOutputWindow object
+            FenOutputWindow fenOutputWindow = new FenOutputWindow(fen);
+            
+            // Wait for the dialog to close asynchronously so the main thread isn't blocked
+            await fenOutputWindow.ShowDialog(this);
+        }
+
+        /// <summary>
+        /// Called when the From Fen menu button is clicked.
+        /// </summary>
+        /// <param name="sender">The object that owns the event.</param>
+        /// <param name="e">The event.</param>
+        private async void FromFEN_OnClick(object? sender, RoutedEventArgs e)
+        {
+            // Create a new FenInputWindowObject
+            FenInputWindow fenInputWindow = new FenInputWindow();
+            
+            // Wait for the result of the dialog when it closes. Expecting a string
+            string fen = await fenInputWindow.ShowDialog<string>(this);
+            
+            // Try parse
+            try
+            {
+                // Parse the board
+                BoardModel = Board.CreateBoardFromFen(fen);
+                
+                // Redraw GUI
+                ResetGui();
+                DrawBoard();
+                MoveMadeUpdate();
+            }
+            catch
+            {
+                // ignored. Carry on if string not parsed (does not replace the board model)
+            }
         }
     }
 }

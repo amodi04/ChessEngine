@@ -115,9 +115,8 @@ namespace Chess.GUI.Views
         private void AssignImages(IList<Piece> capturedPieces, UniformGrid grid)
         {
             // Loop through each captured piece in list
-            for (int i = 0; i < capturedPieces.Count ; i++)
+            foreach (var capturedPiece in capturedPieces)
             {
-                var capturedPiece = capturedPieces[i];
                 // Find the image
                 Image image = new Image
                 {

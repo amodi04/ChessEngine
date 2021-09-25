@@ -15,6 +15,9 @@
         <entry key="src/Chess.GUI/PieceView.axaml" value="src/Chess.GUI/Chess.GUI.csproj" />
         <entry key="src/Chess.GUI/PromotionWindow.axaml" value="src/Chess.GUI/Chess.GUI.csproj" />
         <entry key="src/Chess.GUI/TileView.axaml" value="src/Chess.GUI/Chess.GUI.csproj" />
+        <entry key="src/Chess.GUI/Views/CapturedPiecesPanel.axaml" value="src/Chess.GUI/Chess.GUI.csproj" />
+        <entry key="src/Chess.GUI/Views/FenInputWindow.axaml" value="src/Chess.GUI/Chess.GUI.csproj" />
+        <entry key="src/Chess.GUI/Views/FenOutputWindow.axaml" value="src/Chess.GUI/Chess.GUI.csproj" />
         <entry key="src/Chess.GUI/Views/GameSetupWindow.axaml" value="src/Chess.GUI/Chess.GUI.csproj" />
         <entry key="src/Chess.GUI/Views/MainWindow.axaml" value="src/Chess.GUI/Chess.GUI.csproj" />
         <entry key="src/Chess.GUI/Views/MenuView.axaml" value="src/Chess.GUI/Chess.GUI.csproj" />

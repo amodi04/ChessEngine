@@ -4,9 +4,4 @@
         <TargetFramework>net5.0</TargetFramework>
         <RootNamespace>Engine</RootNamespace>
     </PropertyGroup>
-
-    <ItemGroup>
-      <ProjectReference Include="..\Chess.IO\Chess.IO.csproj" />
-    </ItemGroup>
-
 </Project>

@@ -32,7 +32,6 @@ namespace Engine.Types.Pieces
         /// <returns>An IList of moves that can be made.</returns>
         public override IEnumerable<IMove> GenerateLegalMoves(Board board)
         {
-            // TODO: Refactor method
             // Directions that a pawn can move in. Stored as position offsets because pawns are non-sliding pieces.
             /*
              *     16
@@ -60,24 +59,10 @@ namespace Engine.Types.Pieces
                     case 8 when !board.GetTile(destinationCoordinate).IsOccupied():
                     {
                         // Add a move depending on if the destination is a pawn promotion square
-                        // If it is, then add a promotion move, otherwise add a normal move
+                        // If it is, then add promotion move, otherwise add a normal move
                         if (IsPromotion(destinationCoordinate))
                         {
-                            // Add a queen promotion
-                            moves.Add(MoveFactory.CreateMove(board, this, destinationCoordinate,MoveType.PromotionMove, 
-                                promotedPiece: PieceUtilities.QueenLookup[destinationCoordinate, PieceCoalition]));
-                            
-                            // Add a rook promotion
-                            moves.Add(MoveFactory.CreateMove(board, this, destinationCoordinate,MoveType.PromotionMove, 
-                                promotedPiece: PieceUtilities.RookLookup[destinationCoordinate, PieceCoalition]));
-                            
-                            // Add a bishop promotion
-                            moves.Add(MoveFactory.CreateMove(board, this, destinationCoordinate,MoveType.PromotionMove, 
-                                promotedPiece: PieceUtilities.BishopLookup[destinationCoordinate, PieceCoalition]));
-                            
-                            // Add a knight promotion
-                            moves.Add(MoveFactory.CreateMove(board, this, destinationCoordinate,MoveType.PromotionMove, 
-                                promotedPiece: PieceUtilities.KnightLookup[destinationCoordinate, PieceCoalition]));
+                            AddNonCapturePromotionMoves(board, moves, destinationCoordinate);
                         }
                         else
                         {
@@ -114,25 +99,7 @@ namespace Engine.Types.Pieces
                                     // If it is, then add a promotion attack move, otherwise add a normal attack move
                                     if (IsPromotion(destinationCoordinate))
                                     {
-                                        // Add a queen promotion
-                                        moves.Add(MoveFactory.CreateMove(board, this, destinationCoordinate,
-                                            MoveType.PromotionMove, tile.Piece,
-                                            promotedPiece: PieceUtilities.QueenLookup[destinationCoordinate, PieceCoalition]));
-                                        
-                                        // Add a rook promotion
-                                        moves.Add(MoveFactory.CreateMove(board, this, destinationCoordinate,
-                                            MoveType.PromotionMove, tile.Piece,
-                                            promotedPiece: PieceUtilities.RookLookup[destinationCoordinate, PieceCoalition]));
-                                        
-                                        // Add a bishop promotion
-                                        moves.Add(MoveFactory.CreateMove(board, this, destinationCoordinate,
-                                            MoveType.PromotionMove, tile.Piece,
-                                            promotedPiece: PieceUtilities.BishopLookup[destinationCoordinate, PieceCoalition]));
-                                        
-                                        // Add a knight promotion
-                                        moves.Add(MoveFactory.CreateMove(board, this, destinationCoordinate,
-                                            MoveType.PromotionMove, tile.Piece,
-                                            promotedPiece: PieceUtilities.KnightLookup[destinationCoordinate, PieceCoalition]));
+                                        AddCapturePromotionMoves(board, moves, destinationCoordinate, tile.Piece);
                                     }
                                     else
                                     {
@@ -172,7 +139,6 @@ namespace Engine.Types.Pieces
                                             // Add the capture move
                                             AddEnPassantCaptureMove();
                                         }
-
                                         break;
                                     }
                                     // If 9
@@ -184,7 +150,6 @@ namespace Engine.Types.Pieces
                                             // Add the capture move
                                             AddEnPassantCaptureMove();
                                         }
-
                                         break;
                                     }
                                 }
@@ -197,6 +162,61 @@ namespace Engine.Types.Pieces
             }
 
             return moves;
+        }
+
+        /// <summary>
+        /// Adds capture promotion moves to a move list.
+        /// </summary>
+        /// <param name="board">The current board.</param>
+        /// <param name="moves">The list of moves to add to.</param>
+        /// <param name="destinationCoordinate">The destination coordinate of the promotion move.</param>
+        /// <param name="capturedPiece">The captured piece.</param>
+        private void AddCapturePromotionMoves(Board board, List<IMove> moves, int destinationCoordinate, Piece capturedPiece)
+        {
+            // Add a queen promotion
+            moves.Add(MoveFactory.CreateMove(board, this, destinationCoordinate,
+                MoveType.PromotionMove, capturedPiece,
+                promotedPiece: PieceUtilities.QueenLookup[destinationCoordinate, PieceCoalition]));
+
+            // Add a rook promotion
+            moves.Add(MoveFactory.CreateMove(board, this, destinationCoordinate,
+                MoveType.PromotionMove, capturedPiece,
+                promotedPiece: PieceUtilities.RookLookup[destinationCoordinate, PieceCoalition]));
+
+            // Add a bishop promotion
+            moves.Add(MoveFactory.CreateMove(board, this, destinationCoordinate,
+                MoveType.PromotionMove, capturedPiece,
+                promotedPiece: PieceUtilities.BishopLookup[destinationCoordinate, PieceCoalition]));
+
+            // Add a knight promotion
+            moves.Add(MoveFactory.CreateMove(board, this, destinationCoordinate,
+                MoveType.PromotionMove, capturedPiece,
+                promotedPiece: PieceUtilities.KnightLookup[destinationCoordinate, PieceCoalition]));
+        }
+
+        /// <summary>
+        /// Adds capture promotion moves to a move list.
+        /// </summary>
+        /// <param name="board">The current board.</param>
+        /// <param name="moves">The list of moves to add to.</param>
+        /// <param name="destinationCoordinate">The destination coordinate of the promotion move.</param>
+        private void AddNonCapturePromotionMoves(Board board, List<IMove> moves, int destinationCoordinate)
+        {
+            // Add a queen promotion
+            moves.Add(MoveFactory.CreateMove(board, this, destinationCoordinate, MoveType.PromotionMove,
+                promotedPiece: PieceUtilities.QueenLookup[destinationCoordinate, PieceCoalition]));
+
+            // Add a rook promotion
+            moves.Add(MoveFactory.CreateMove(board, this, destinationCoordinate, MoveType.PromotionMove,
+                promotedPiece: PieceUtilities.RookLookup[destinationCoordinate, PieceCoalition]));
+
+            // Add a bishop promotion
+            moves.Add(MoveFactory.CreateMove(board, this, destinationCoordinate, MoveType.PromotionMove,
+                promotedPiece: PieceUtilities.BishopLookup[destinationCoordinate, PieceCoalition]));
+
+            // Add a knight promotion
+            moves.Add(MoveFactory.CreateMove(board, this, destinationCoordinate, MoveType.PromotionMove,
+                promotedPiece: PieceUtilities.KnightLookup[destinationCoordinate, PieceCoalition]));
         }
 
         /// <summary>

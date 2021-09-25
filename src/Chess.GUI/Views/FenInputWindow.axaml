@@ -1,0 +1,36 @@
+﻿<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="720" d:DesignHeight="200"
+        Width="720"
+        Height="200"
+        x:Class="Chess.GUI.Views.FenInputWindow"
+        Title="FenInputWindow"
+        TransparencyLevelHint="AcrylicBlur"
+        ExtendClientAreaToDecorationsHint="True"
+        ExtendClientAreaChromeHints="-1"
+        WindowStartupLocation="CenterOwner">
+    <Panel>
+        <!-- Set background -->
+        <ExperimentalAcrylicBorder>
+            <ExperimentalAcrylicBorder.Material>
+                <ExperimentalAcrylicMaterial
+                    BackgroundSource="Digger"
+                    TintColor="Black"
+                    TintOpacity="1"
+                    MaterialOpacity="0.65"/>
+            </ExperimentalAcrylicBorder.Material>
+        </ExperimentalAcrylicBorder>
+        <!-- Main panel -->
+        <Grid Margin="30" RowDefinitions="*, *" ColumnDefinitions="*">
+            <TextBox x:Name="FenInputLabel" Grid.Row="0" Grid.Column="0" Height="50" FontSize="18" Text="Input FEN string..." 
+                     HorizontalAlignment="Center" VerticalAlignment="Center" VerticalContentAlignment="Center"
+                     IsReadOnly="False" BorderThickness="0" TextWrapping="NoWrap"/>
+            <Grid Grid.Row="1" Grid.Column="0" RowDefinitions="*" ColumnDefinitions="*, *" HorizontalAlignment="Center">
+                <!-- Buttons bound to CloseButton_OnClick method in code behind -->
+                <Button Grid.Column="0" Content="Create Board" Click="CreateBoard_OnClick" Margin="20"/>
+            </Grid>
+        </Grid>
+    </Panel>
+</Window>

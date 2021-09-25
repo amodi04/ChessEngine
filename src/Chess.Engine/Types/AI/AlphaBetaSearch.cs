@@ -26,7 +26,7 @@ namespace Engine.Types.AI
         public AlphaBetaSearch(int depth)
         {
             // Create a new evaluator
-            _evaluation = new DefaultEvaluator();
+            _evaluation = new BetterEvaluator();
             
             // Initialise information values
             _searchDepth = depth;

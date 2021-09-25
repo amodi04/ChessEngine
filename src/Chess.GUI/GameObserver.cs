@@ -1,6 +1,8 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Linq;
+using Chess.GUI.Models;
 using Chess.GUI.Views;
 using Engine.Enums;
 using Engine.Types;
@@ -30,7 +32,7 @@ namespace Chess.GUI
             AIPlayer = new AIPlayer(mainWindow.BoardModel);
             
             // Subscribe the HandleUpdate method to the main window OnGUIUpdate event
-            _mainWindow.OnGUIUpdate += HandleUpdate;
+            _mainWindow.OnGuiUpdate += HandleUpdate;
             
             // Subscribe the OnSearchComplete method to the AIPlayer BackgroundWorker RunWorkerCompleted event
             AIPlayer.Worker.RunWorkerCompleted += OnSearchComplete;
@@ -96,6 +98,7 @@ namespace Chess.GUI
                 
                 // Update the move log
                 _mainWindow.MoveLogViewModel.UpdateMoveLog(bestMove, boardTransition);
+                _mainWindow.MoveLogView.DataGrid.ScrollIntoView(_mainWindow.MoveLogView.DataGrid.Items.Cast<MoveModel>().Last(), null);
             }
             
             // Draw the board again

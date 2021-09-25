@@ -5,6 +5,7 @@ using System.Text;
 using Engine.Builders;
 using Engine.Enums;
 using Engine.Extensions;
+using Engine.IO;
 using Engine.Types.MoveGeneration;
 using Engine.Types.Pieces;
 using Engine.Util;
@@ -39,7 +40,7 @@ namespace Engine.Types
             var whiteMoves = CalculateLegalMoves(WhitePieces);
             var blackMoves = CalculateLegalMoves(BlackPieces);
 
-            // Initialise players with default player types. TODO: Fix this
+            // Initialise players
             WhitePlayer = new Player(Coalition.White, this, whiteMoves, blackMoves);
             BlackPlayer = new Player(Coalition.Black, this, blackMoves, whiteMoves);
             
@@ -68,7 +69,6 @@ namespace Engine.Types
         /// <returns>Returns an iterable collection so that it cannot be modified without casting to list.</returns>
         private static IEnumerable<Piece> CalculateActivePieces(IEnumerable<Tile> board, Coalition coalition)
         {
-            // TODO: Test LINQ performance
             var pieces = new List<Piece>();
 
             // Loop through each tile
@@ -119,43 +119,24 @@ namespace Engine.Types
                 tiles[i] = Tile.CreateTile(i, boardBuilder.BoardConfiguration[i]);
             return tiles;
         }
-
-        // TODO: Use FEN
+        
         /// <summary>
         ///     Generates the standard board of chess.
         /// </summary>
         /// <returns>Returns a board object containing tiles with pieces at their starting positions.</returns>
         public static Board CreateStandardBoard()
         {
-            var boardBuilder = new BoardBuilder();
-            
-            // Set white pieces
-            boardBuilder.SetPieceAtTile(new Rook(0, Coalition.White, true));
-            boardBuilder.SetPieceAtTile(new Knight(1, Coalition.White, true));
-            boardBuilder.SetPieceAtTile(new Bishop(2, Coalition.White, true));
-            boardBuilder.SetPieceAtTile(new Queen(3, Coalition.White, true));
-            boardBuilder.SetPieceAtTile(new King(4, Coalition.White, true));
-            boardBuilder.SetPieceAtTile(new Bishop(5, Coalition.White, true));
-            boardBuilder.SetPieceAtTile(new Knight(6, Coalition.White, true));
-            boardBuilder.SetPieceAtTile(new Rook(7, Coalition.White, true));
-            for (var i = 8; i < 16; i++) boardBuilder.SetPieceAtTile(new Pawn(i, Coalition.White, true));
+            return FenParser.PositionFromFen(FenParser.StartFen);
+        }
 
-            // Set black pieces
-            for (var i = 48; i < 56; i++) boardBuilder.SetPieceAtTile(new Pawn(i, Coalition.Black, true));
-            boardBuilder.SetPieceAtTile(new Rook(56, Coalition.Black, true));
-            boardBuilder.SetPieceAtTile(new Knight(57, Coalition.Black, true));
-            boardBuilder.SetPieceAtTile(new Bishop(58, Coalition.Black, true));
-            boardBuilder.SetPieceAtTile(new Queen(59, Coalition.Black, true));
-            boardBuilder.SetPieceAtTile(new King(60, Coalition.Black, true));
-            boardBuilder.SetPieceAtTile(new Bishop(61, Coalition.Black, true));
-            boardBuilder.SetPieceAtTile(new Knight(62, Coalition.Black, true));
-            boardBuilder.SetPieceAtTile(new Rook(63, Coalition.Black, true));
-
-            // Set initial turn to white
-            boardBuilder.SetCoalitionToMove(Coalition.White);
-            
-            // Build the board
-            return boardBuilder.BuildBoard();
+        /// <summary>
+        /// Creates a board from a custom fen string.
+        /// </summary>
+        /// <param name="fen">The fen string to use.</param>
+        /// <returns>A board parsed from the fen string.</returns>
+        public static Board CreateBoardFromFen(string fen)
+        { 
+            return FenParser.PositionFromFen(fen);
         }
 
         /// <summary>
@@ -170,7 +151,7 @@ namespace Engine.Types
         }
 
         /// <summary>
-        ///     Converts the board object to a useful string.
+        ///     Converts the board object to a useful string for debugging purposes.
         /// </summary>
         /// <returns>A string of letters and dashed representing the current board layout from white's perspective.</returns>
         public override string ToString()

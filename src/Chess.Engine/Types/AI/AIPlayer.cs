@@ -1,7 +1,4 @@
-﻿using System;
-using System.ComponentModel;
-using System.Diagnostics;
-using Engine.Enums;
+﻿using System.ComponentModel;
 using Engine.Types.MoveGeneration;
 
 namespace Engine.Types.AI
@@ -12,8 +9,8 @@ namespace Engine.Types.AI
     public class AIPlayer
     {
         // Member fields
-        public AlphaBetaSearch Search { get; }
-        private Board _board;
+        private AlphaBetaSearch Search { get; }
+        private readonly Board _board;
         
         // Background worker used for running a task on another thread asynchronously
         public BackgroundWorker Worker { get; }

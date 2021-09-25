@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Text;
 using Engine.Enums;
 using Engine.Extensions;
 using Engine.Types;
@@ -18,10 +16,9 @@ namespace Engine.Util
         /// Utility method to convert a move struct into the SAN (Standard Algebraic Notation) format.
         /// </summary>
         /// <param name="move">The move to convert.</param>
-        /// <param name="board">The board that the move was executed on.</param>
         /// <param name="boardTransition">The from and to board data for getting move context.</param>
         /// <returns>A string representation of the move.</returns>
-        public static string ToSAN(IMove move, BoardTransition boardTransition)
+        public static string ToSan(IMove move, BoardTransition boardTransition)
         {
             /*
              * --- SAN Format ---

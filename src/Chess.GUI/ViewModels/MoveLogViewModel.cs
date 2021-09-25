@@ -1,6 +1,7 @@
 ﻿using System.Collections.ObjectModel;
 using System.Linq;
 using Chess.GUI.Models;
+using Engine.Extensions;
 using Engine.Types;
 using Engine.Types.MoveGeneration;
 using Engine.Util;
@@ -35,16 +36,35 @@ namespace Chess.GUI.ViewModels
             // If there are no moves in the collection
             if (!Moves.Any())
             {
-                // Add a new move
-                Moves.Add(new MoveModel()
+                // If the current player is white
+                if (boardTransition.FromBoard.CurrentPlayer.Coalition.IsWhite())
                 {
-                    MoveNumber = "1",
-                    // Add a white move because it is the first move
-                    WhiteMove = MoveUtilities.ToSAN(move, boardTransition),
+                    // Add a new move
+                    Moves.Add(new MoveModel()
+                    {
+                        MoveNumber = "1",
+                        // Add a white move because it is the first move
+                        WhiteMove = MoveUtilities.ToSan(move, boardTransition),
                     
-                    // Set the black move to null
-                    BlackMove = null,
-                });
+                        // Set the black move to null
+                        BlackMove = null,
+                    });
+                }
+                // Else if the current player is black (happens when game is started from fen sometimes)
+                else
+                {
+                    // Add a new move
+                    Moves.Add(new MoveModel()
+                    {
+                        MoveNumber = "1",
+                        
+                        // Add an empty white move
+                        WhiteMove = "-",
+                    
+                        // Set the black move
+                        BlackMove = MoveUtilities.ToSan(move, boardTransition),
+                    });
+                }
             }
             // If the last move in the collection does not have a null black move
             else if (Moves[^1].BlackMove is not null)
@@ -54,7 +74,7 @@ namespace Chess.GUI.ViewModels
                 {
                     MoveNumber = $"{Moves.Count + 1}",
                     // Add a white move
-                    WhiteMove = MoveUtilities.ToSAN(move, boardTransition),
+                    WhiteMove = MoveUtilities.ToSan(move, boardTransition),
                     
                     // Set the black move to null
                     BlackMove = null,
@@ -75,7 +95,7 @@ namespace Chess.GUI.ViewModels
                     WhiteMove = whiteMove,
                     
                     // Set the black move
-                    BlackMove = MoveUtilities.ToSAN(move, boardTransition)
+                    BlackMove = MoveUtilities.ToSan(move, boardTransition)
                 };
             }
         }

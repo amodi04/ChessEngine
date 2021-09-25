@@ -13,17 +13,22 @@ namespace Engine.Types.Pieces
     {
         // Member fields
         public bool IsCastled { get; }
-        
+        public bool KingsideCastleCapable { get; }
+        public bool QueensideCastleCapable { get; }
+
         /// <summary>
         ///     Constructor to create a king.
         /// </summary>
         /// <param name="piecePosition">The position on the board to create the piece at.</param>
         /// <param name="pieceCoalition">The colour of the piece.</param>
-        /// <param name="isFirstMove">Sets whether this is the pieces first move.</param>
-        public King(int piecePosition, Coalition pieceCoalition, bool isFirstMove) :
-            base(PieceType.King, piecePosition, pieceCoalition, isFirstMove)
+        /// <param name="kingsideCastleCapable">Can the king castle kingside.</param>
+        /// <param name="queensideCastleCapable">Can the king castle queenside.</param>
+        public King(int piecePosition, Coalition pieceCoalition, bool kingsideCastleCapable, bool queensideCastleCapable) :
+            base(PieceType.King, piecePosition, pieceCoalition, true)
         {
             IsCastled = false;
+            KingsideCastleCapable = kingsideCastleCapable;
+            QueensideCastleCapable = queensideCastleCapable;
         }
         
         /// <summary>
@@ -33,11 +38,15 @@ namespace Engine.Types.Pieces
         /// <param name="pieceCoalition">The colour of the piece.</param>
         /// <param name="isFirstMove">Sets whether this is the pieces first move.</param>
         /// <param name="isCastled">Sets whether the king is castled or not</param>
-        public King(int piecePosition, Coalition pieceCoalition, bool isFirstMove, bool isCastled) :
+        /// <param name="kingsideCastleCapable">Can the king castle kingside.</param>
+        /// <param name="queensideCastleCapable">Can the king castle queenside.</param>
+        public King(int piecePosition, Coalition pieceCoalition, bool isFirstMove, bool isCastled,  bool kingsideCastleCapable, bool queensideCastleCapable) :
             base(PieceType.King, piecePosition, pieceCoalition, isFirstMove)
         {
             // Set the IsCastled property to the value of the passed in parameter isCastled
             IsCastled = isCastled;
+            KingsideCastleCapable = kingsideCastleCapable;
+            QueensideCastleCapable = queensideCastleCapable;
         }
 
         /// <summary>
@@ -94,7 +103,7 @@ namespace Engine.Types.Pieces
         public override Piece MovePiece(IMove move)
         {
             // Return a new king instance at the moved position
-            return new King(move.ToCoordinate, move.MovedPiece.PieceCoalition, false, move is CastlingMove);
+            return new King(move.ToCoordinate, move.MovedPiece.PieceCoalition, false, move is CastlingMove, false, false);
         }
 
         private static bool IsColumnExclusion(int currentPosition, int offset)

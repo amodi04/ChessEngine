@@ -18,5 +18,11 @@
             <Setter Property="HorizontalContentAlignment" Value="Center"/>
             <Setter Property="VerticalContentAlignment" Value="Center"/>
         </Style>
+        <!-- Set style for the textbox acting as labels on the fen input/output dialogues -->
+        <Style Selector="TextBox.textBoxAsLabel">
+            <Setter Property="IsReadOnly" Value="True" />
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="TextWrapping" Value="Wrap" />
+        </Style>
     </Application.Styles>
 </Application>

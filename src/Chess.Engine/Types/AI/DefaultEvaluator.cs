@@ -6,9 +6,9 @@ using Engine.Types.MoveGeneration;
 namespace Engine.Types.AI
 {
     /// <summary>
-    /// Structure for holding default evaluation data.
+    /// Class for holding default evaluation data.
     /// </summary>
-    public struct DefaultEvaluator : IEvaluator
+    public class DefaultEvaluator : IEvaluator
     {
         // Member fields
         private const int CheckmateBonus = 100000;

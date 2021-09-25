@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Avalonia.Controls;
 using Avalonia.Controls.Shapes;
 using Avalonia.Input;
 using Avalonia.Media;
 using Avalonia.Media.Imaging;
 using Avalonia.Threading;
+using Chess.GUI.Models;
 using Chess.GUI.Util;
 using Engine.Enums;
 using Engine.Extensions;
@@ -149,6 +151,7 @@ namespace Chess.GUI.Views
                             
                             // Update the move log
                             _mainWindow.MoveLogViewModel.UpdateMoveLog(move, boardTransition);
+                            _mainWindow.MoveLogView.DataGrid.ScrollIntoView(_mainWindow.MoveLogView.DataGrid.Items.Cast<MoveModel>().Last(), null);
                             
                             // Redraw board
                             _mainWindow.DrawBoard();
