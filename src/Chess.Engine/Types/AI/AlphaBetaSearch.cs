@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Linq;
 using Engine.Enums;
 using Engine.Extensions;
 using Engine.Types.MoveGeneration;
@@ -18,6 +19,7 @@ namespace Engine.Types.AI
         private int _movesEvaluated;
         private int _cutoffsProduced;
         private bool _isWhite;
+        private MoveOrdering _moveOrdering;
 
         /// <summary>
         /// Constructor
@@ -27,6 +29,7 @@ namespace Engine.Types.AI
         {
             // Create a new evaluator
             _evaluation = new BetterEvaluator();
+            _moveOrdering = new MoveOrdering();
             
             // Initialise information values
             _searchDepth = depth;
@@ -58,6 +61,7 @@ namespace Engine.Types.AI
             // TODO: DEBUG
             watch.Stop();
             Debug.WriteLine($"Evaluated {_movesEvaluated} moves in {watch.ElapsedMilliseconds}ms");
+            Debug.WriteLine($"Cutoffs Produced: {_cutoffsProduced}");
             
             // Return the best move
             return _bestMove;
@@ -87,6 +91,9 @@ namespace Engine.Types.AI
                 // Return the static evaluation of the board
                 return _evaluation.Evaluate(board, depth);
             }
+            
+            // Sort the moves
+            var orderedMoves = _moveOrdering.OrderMoves(board, board.CurrentPlayer.Moves.ToList());
 
             // If the algorithm is running as white
             if (maximisingPlayer)
@@ -94,8 +101,8 @@ namespace Engine.Types.AI
                 // Initialise the maximum evaluation to -Infinity (we want this to increase)
                 int maxEval = int.MinValue;
                 
-                // Loop through each move for the current player
-                foreach (var move in board.CurrentPlayer.Moves)
+                // Loop through the sorted moves for the current player
+                foreach (var move in orderedMoves)
                 {
                     // Make the move
                     BoardTransition boardTransition = board.CurrentPlayer.MakeMove(move);
@@ -128,6 +135,7 @@ namespace Engine.Types.AI
                         {
                             // Beta cutoff
                             // Prune branch because white has already found a better move
+                            _cutoffsProduced++;
                             break;
                         }
                     }
@@ -142,8 +150,8 @@ namespace Engine.Types.AI
                 // Initialise the minimum evaluation to +Infinity (we want this to decrease)
                 int minEval = int.MaxValue;
                 
-                // Loop through each move for the current player
-                foreach (var move in board.CurrentPlayer.Moves)
+                // Loop through the sorted moves for the current player
+                foreach (var move in orderedMoves)
                 {
                     // Make the move
                     BoardTransition boardTransition = board.CurrentPlayer.MakeMove(move);
@@ -176,6 +184,7 @@ namespace Engine.Types.AI
                         {
                             // Beta cutoff
                             // Prune branch because white has already found a better move
+                            _cutoffsProduced++;
                             break;
                         }
                     }
