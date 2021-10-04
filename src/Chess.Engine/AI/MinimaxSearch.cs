@@ -1,10 +1,9 @@
-﻿using System;
-using System.Diagnostics;
-using Engine.Enums;
-using Engine.Extensions;
-using Engine.Types.MoveGeneration;
+﻿using System.Diagnostics;
+using Engine.BoardRepresentation;
+using Engine.MoveGeneration;
+using Engine.Player;
 
-namespace Engine.Types.AI
+namespace Engine.AI
 {
     /// <summary>
     /// Class responsible for searching through moves.

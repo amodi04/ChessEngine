@@ -1,4 +1,4 @@
-﻿namespace Engine.Enums
+﻿namespace Engine.Pieces
 {
     /// <summary>
     ///     Enumeration to keep track of piece types.

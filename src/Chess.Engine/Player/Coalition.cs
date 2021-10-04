@@ -1,4 +1,4 @@
-﻿namespace Engine.Enums
+﻿namespace Engine.Player
 {
     /// <summary>
     ///     Enumeration to keep track of opposition.

@@ -1,7 +1,8 @@
 ﻿using System.ComponentModel;
-using Engine.Types.MoveGeneration;
+using Engine.BoardRepresentation;
+using Engine.MoveGeneration;
 
-namespace Engine.Types.AI
+namespace Engine.AI
 {
     /// <summary>
     /// This class houses the AIPlayer abstraction.
@@ -22,14 +23,14 @@ namespace Engine.Types.AI
         public AIPlayer(Board board)
         {
             // Create a new search object with a depth
-            Search = new AlphaBetaSearch(4);
+            Search = new AlphaBetaSearch();
             
             // Assign variables
             _board = board;
             Worker = new BackgroundWorker();
             
             // Subscribe the StartThreadedSearch method to the BackgroundWorker DoWork event
-            Worker.DoWork += StartThreadedSearch;
+            Worker.DoWork += MakeMove;
         }
 
         /// <summary>
@@ -37,7 +38,7 @@ namespace Engine.Types.AI
         /// </summary>
         /// <param name="sender">The object that owns the event.</param>
         /// <param name="args">Arguments passed into the method</param>
-        private void StartThreadedSearch(object sender, DoWorkEventArgs args)
+        private void MakeMove(object sender, DoWorkEventArgs args)
         {
             // If the AI is in checkmate or stalemate then return because the game is over
             if (_board.CurrentPlayer.IsInCheckmate() || _board.CurrentPlayer.IsInStalemate()) return;

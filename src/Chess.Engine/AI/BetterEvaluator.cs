@@ -1,14 +1,14 @@
-﻿using System.Collections;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Engine.Enums;
-using Engine.Extensions;
-using Engine.Types.Pieces;
+using Engine.BoardRepresentation;
+using Engine.Pieces;
+using Engine.Player;
 
-namespace Engine.Types.AI
+namespace Engine.AI
 {
 	/// <summary>
-	/// Class for holding evaluation data TODO: Revise this
+	/// Class for holding evaluation data
 	/// </summary>
     public class BetterEvaluator : IEvaluator
     {
@@ -82,7 +82,7 @@ namespace Engine.Types.AI
 			// Return 1 - the minimum of 1 or the material count without pawns multiplied by the multiplier
 			// The minimum is 0 (denoting that the game has not reached end game yet
 			// The maximum tends to 1 denoting that the game has reached the endgame
-			return 1 - System.Math.Min (1, materialCountWithoutPawns * multiplier);
+			return 1 - Math.Min (1, materialCountWithoutPawns * multiplier);
 		}
 		
 		/// <summary>
@@ -90,7 +90,7 @@ namespace Engine.Types.AI
 		/// </summary>
 		/// <param name="player">The player to count the material score for.</param>
 		/// <returns>An integer score.</returns>
-		int CountMaterial (Player player)
+		int CountMaterial (Player.Player player)
 		{
 			// Initialise the sum to 0
 			int material = 0;
@@ -102,8 +102,15 @@ namespace Engine.Types.AI
 				// (we don't count the king in the score because the king's score is just used for evaluating checkmate)
 				if (piece.PieceType != PieceType.King)
 				{
-					// Add piece value to the sum
-					material += piece.PieceType.ToValue();
+					material += piece.PieceType switch
+					{
+						PieceType.Pawn => PawnValue,
+						PieceType.Knight => KnightValue,
+						PieceType.Bishop => BishopValue,
+						PieceType.Rook => RookValue,
+						PieceType.Queen => QueenValue,
+						_ => throw new ArgumentOutOfRangeException()
+					};
 				}
 			}
 
@@ -117,7 +124,7 @@ namespace Engine.Types.AI
 		/// <param name="player">The player to evaluate for.</param>
 		/// <param name="endgamePhaseWeight">The endgame phase weight (how far into the endgame).</param>
 		/// <returns>An integer score.</returns>
-		int EvaluatePiecePositionTables (Player player, float endgamePhaseWeight) {
+		int EvaluatePiecePositionTables (Player.Player player, float endgamePhaseWeight) {
 			
 			// Initialise the value to 0
 			int value = 0;

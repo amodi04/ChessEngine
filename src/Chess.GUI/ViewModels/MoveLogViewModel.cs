@@ -1,9 +1,9 @@
 ﻿using System.Collections.ObjectModel;
 using System.Linq;
 using Chess.GUI.Models;
-using Engine.Extensions;
-using Engine.Types;
-using Engine.Types.MoveGeneration;
+using Engine.BoardRepresentation;
+using Engine.MoveGeneration;
+using Engine.Player;
 using Engine.Util;
 
 namespace Chess.GUI.ViewModels

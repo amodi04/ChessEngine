@@ -1,9 +1,8 @@
 ﻿using System;
-using Engine.Builders;
-using Engine.Types.Pieces;
-using Engine.Util;
+using Engine.BoardRepresentation;
+using Engine.Pieces;
 
-namespace Engine.Types.MoveGeneration
+namespace Engine.MoveGeneration
 {
     /// <inheritdoc cref="IMove" />
     /// <summary>

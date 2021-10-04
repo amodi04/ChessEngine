@@ -1,6 +1,6 @@
-﻿using Engine.Util;
+﻿using Engine.BoardRepresentation;
 
-namespace Engine.Types
+namespace Engine.AI
 {
 	/// <summary>
 	/// This class holds values for preferred piece positions during a game.

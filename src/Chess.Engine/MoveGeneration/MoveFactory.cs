@@ -1,10 +1,8 @@
 ﻿using System;
-using Engine.Enums;
-using Engine.Types;
-using Engine.Types.MoveGeneration;
-using Engine.Types.Pieces;
+using Engine.BoardRepresentation;
+using Engine.Pieces;
 
-namespace Engine.Factories
+namespace Engine.MoveGeneration
 {
     public static class MoveFactory
     {

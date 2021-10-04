@@ -1,4 +1,4 @@
-﻿namespace Engine.Enums
+﻿namespace Engine.MoveGeneration
 {
     /// <summary>
     ///     Enumeration to keep track of move type.

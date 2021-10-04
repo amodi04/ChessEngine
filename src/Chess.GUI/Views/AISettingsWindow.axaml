@@ -1,0 +1,126 @@
+﻿    <Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:views="clr-namespace:Chess.GUI.Views"
+        mc:Ignorable="d" d:DesignWidth="1200" d:DesignHeight="800"
+        Width="1200"
+        Height="800"
+        x:Class="Chess.GUI.Views.AISettingsWindow"
+        Title="AI Settings"
+        WindowStartupLocation="CenterOwner">
+    <Panel>
+        <!-- Set background -->
+        <ExperimentalAcrylicBorder>
+            <ExperimentalAcrylicBorder.Material>
+                <ExperimentalAcrylicMaterial
+                    BackgroundSource="Digger"
+                    TintColor="Black"
+                    TintOpacity="1"
+                    MaterialOpacity="0.65"/>
+            </ExperimentalAcrylicBorder.Material>
+        </ExperimentalAcrylicBorder>
+        <!-- Main panel -->
+        <StackPanel HorizontalAlignment="Center" Orientation="Vertical" VerticalAlignment="Center">
+            <!-- Title -->
+            <Label Content="AI Settings" HorizontalAlignment="Center"
+                   HorizontalContentAlignment="Center" VerticalAlignment="Top" FontSize="32" Padding="35"/>
+            <!-- Outer grid holding both the piece value grid and other settings grid  -->
+            <Grid RowDefinitions="*" ColumnDefinitions="Auto, Auto" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                  >
+                <!-- Other settings grid -->
+                <Grid Grid.Row="0" Grid.Column="0" VerticalAlignment="Stretch" HorizontalAlignment="Left"
+                      RowDefinitions="*, *, *, *, *, *, *, *, *, *, *" ColumnDefinitions="*, Auto" Margin="10"
+                      x:Name="Grid">
+                
+                    <Label Content="Depth" Grid.Row="0" Grid.Column="0" VerticalAlignment="Center"/>
+                    <views:AISettingElement Grid.Row="0" Grid.Column="1" MaxValue="6" MinValue="1" TickFrequency="1"
+                                            TickPlacement="BottomRight" SnapToTick="True" IsTextBoxReadonly="True"
+                                            x:Name="Depth"/>
+                    
+                    <Label Content="Checkmate Bonus" Grid.Row="1" Grid.Column="0" VerticalAlignment="Center"/>
+                    <views:AISettingElement Grid.Row="1" Grid.Column="1" MaxValue="9999999" MinValue="-9999999"
+                                            TickPlacement="None" TickFrequency="1" SnapToTick="True"
+                                            IsTextBoxReadonly="False" x:Name="CheckmateBonus"/>
+                    
+                    <Label Content="Check Bonus" Grid.Row="2" Grid.Column="0" VerticalAlignment="Center"/>
+                    <views:AISettingElement Grid.Row="2" Grid.Column="1" MaxValue="9999999" MinValue="-9999999"
+                                            TickPlacement="None" TickFrequency="1" SnapToTick="True"
+                                            IsTextBoxReadonly="False" x:Name="CheckBonus" />
+                    
+                    <Label Content="Castle Bonus" Grid.Row="3" Grid.Column="0" VerticalAlignment="Center"/>
+                    <views:AISettingElement Grid.Row="3" Grid.Column="1" MaxValue="9999999" MinValue="-9999999"
+                                            TickPlacement="None" TickFrequency="1" SnapToTick="True"
+                                            IsTextBoxReadonly="False" x:Name="CastleBonus"/>
+                    
+                    <Label Content="Mobility Multiplier" Grid.Row="4" Grid.Column="0" VerticalAlignment="Center"/>
+                    <views:AISettingElement Grid.Row="4" Grid.Column="1" MaxValue="1000" MinValue="-1000"
+                                            TickPlacement="None" TickFrequency="1" SnapToTick="True"
+                                            IsTextBoxReadonly="False" x:Name="MobilityMultiplier"/>
+                    
+                    <Label Content="Piece Multiplier" Grid.Row="5" Grid.Column="0" VerticalAlignment="Center"/>
+                    <views:AISettingElement Grid.Row="5" Grid.Column="1" MaxValue="1000" MinValue="-1000"
+                                            TickPlacement="None" TickFrequency="1" SnapToTick="True"
+                                            IsTextBoxReadonly="False" x:Name="PieceMultiplier"/>
+                    
+                    <Label Content="Attack Multiplier" Grid.Row="6" Grid.Column="0" VerticalAlignment="Center"/>
+                    <views:AISettingElement Grid.Row="6" Grid.Column="1" MaxValue="1000" MinValue="-1000"
+                                            TickPlacement="None" TickFrequency="1" SnapToTick="True"
+                                            IsTextBoxReadonly="False" x:Name="AttackMultiplier"/>
+                    
+                    <Label Content="Depth Multiplier" Grid.Row="7" Grid.Column="0" VerticalAlignment="Center"/>
+                    <views:AISettingElement Grid.Row="7" Grid.Column="1" MaxValue="1000" MinValue="-1000"
+                                            TickPlacement="None" TickFrequency="1" SnapToTick="True"
+                                            IsTextBoxReadonly="False" x:Name="DepthMultiplier"/>
+                    
+                    <Label Content="Two Bishops Bonus" Grid.Row="8" Grid.Column="0" VerticalAlignment="Center"/>
+                    <views:AISettingElement Grid.Row="8" Grid.Column="1" MaxValue="9999999" MinValue="-9999999"
+                                            TickPlacement="None" TickFrequency="1" SnapToTick="True"
+                                            IsTextBoxReadonly="False" x:Name="TwoBishopsBonus"/>
+                    
+                    <Label Content="Two Rooks Bonus" Grid.Row="9" Grid.Column="0" VerticalAlignment="Center"/>
+                    <views:AISettingElement Grid.Row="9" Grid.Column="1" MaxValue="9999999" MinValue="-9999999"
+                                            TickPlacement="None" TickFrequency="1" SnapToTick="True"
+                                            IsTextBoxReadonly="False" x:Name="TwoRooksBonus"/>
+            </Grid>
+                <!-- Piece value grid -->
+                <Grid Grid.Row="0" Grid.Column="1" RowDefinitions="*, *, *, *, *, *" ColumnDefinitions="*, Auto" Margin="50"
+                      VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+                    <Label Content="Pawn Value" Grid.Row="0" Grid.Column="0" VerticalAlignment="Center"/>
+                    <views:AISettingElement Grid.Row="0" Grid.Column="1" MaxValue="1000" MinValue="-1000" TickFrequency="10"
+                                            TickPlacement="None" SnapToTick="True" IsTextBoxReadonly="False"
+                                            x:Name="PawnValue"/>
+                    
+                    <Label Content="Knight Value" Grid.Row="1" Grid.Column="0" VerticalAlignment="Center"/>
+                    <views:AISettingElement Grid.Row="1" Grid.Column="1" MaxValue="1000" MinValue="-1000" TickFrequency="10"
+                                            TickPlacement="None" SnapToTick="True" IsTextBoxReadonly="False"
+                                            x:Name="KnightValue"/>
+                    
+                    <Label Content="Bishop Value" Grid.Row="2" Grid.Column="0" VerticalAlignment="Center"/>
+                    <views:AISettingElement Grid.Row="2" Grid.Column="1" MaxValue="1000" MinValue="-1000" TickFrequency="10"
+                                            TickPlacement="None" SnapToTick="True" IsTextBoxReadonly="False"
+                                            x:Name="BishopValue"/>
+                    
+                    <Label Content="Rook Value" Grid.Row="3" Grid.Column="0" VerticalAlignment="Center"/>
+                    <views:AISettingElement Grid.Row="3" Grid.Column="1" MaxValue="1000" MinValue="-1000" TickFrequency="10"
+                                            TickPlacement="None" SnapToTick="True" IsTextBoxReadonly="False"
+                                            x:Name="RookValue"/>
+                    
+                    <Label Content="Queen Value" Grid.Row="4" Grid.Column="0" VerticalAlignment="Center"/>
+                    <views:AISettingElement Grid.Row="4" Grid.Column="1" MaxValue="1000" MinValue="-1000" TickFrequency="10"
+                                            TickPlacement="None" SnapToTick="True" IsTextBoxReadonly="False"
+                                            x:Name="QueenValue"/>
+                    
+                    <Label Content="Use Better Evaluator" Grid.Row="5" Grid.Column="0" VerticalAlignment="Center"/>
+                    <CheckBox Grid.Row="5" Grid.Column="1" Margin="25" x:Name="UseBetterEvaluator" IsChecked="False" Checked="UseBetterEvaluator_OnChecked" Unchecked="UseBetterEvaluator_OnUnchecked"/>
+                    
+                </Grid>
+            </Grid>
+            <!-- Close and restore defaults buttons -->
+            <Grid RowDefinitions="*" ColumnDefinitions="*, *" HorizontalAlignment="Stretch" Margin="50">
+                <Button Grid.Column="0" Content="Confirm" HorizontalAlignment="Center" Click="CloseButton_OnClick"/>
+                <Button Grid.Column="1" Content="Restore Defaults" HorizontalAlignment="Center" Click="RestoreDefaults_OnClick"/>
+            </Grid>
+        </StackPanel>
+    </Panel>
+</Window>

@@ -6,10 +6,7 @@
         Width="720"
         Height="200"
         x:Class="Chess.GUI.Views.FenOutputWindow"
-        Title="FenOutputWindow"
-        TransparencyLevelHint="AcrylicBlur"
-        ExtendClientAreaToDecorationsHint="True"
-        ExtendClientAreaChromeHints="-1"
+        Title="FEN Output"
         WindowStartupLocation="CenterOwner">
     <Panel>
         <!-- Set background -->

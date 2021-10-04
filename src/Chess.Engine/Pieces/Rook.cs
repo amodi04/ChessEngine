@@ -1,11 +1,10 @@
 ﻿using System.Collections.Generic;
-using Engine.Enums;
-using Engine.Factories;
-using Engine.Types.MoveGeneration;
-using Engine.Util;
-using static Engine.Util.BoardUtilities;
+using Engine.BoardRepresentation;
+using Engine.MoveGeneration;
+using Engine.Player;
+using static Engine.BoardRepresentation.BoardUtilities;
 
-namespace Engine.Types.Pieces
+namespace Engine.Pieces
 {
     /// <summary>
     ///     This class contains rook data and methods that it can make such as moving and calculating legal moves.

@@ -4,10 +4,9 @@ using System.Diagnostics;
 using System.Linq;
 using Chess.GUI.Models;
 using Chess.GUI.Views;
-using Engine.Enums;
-using Engine.Types;
-using Engine.Types.AI;
-using Engine.Types.MoveGeneration;
+using Engine.AI;
+using Engine.BoardRepresentation;
+using Engine.MoveGeneration;
 
 namespace Chess.GUI
 {

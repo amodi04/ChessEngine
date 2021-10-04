@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Linq;
-using Engine.Enums;
-using Engine.Extensions;
-using Engine.Types.MoveGeneration;
+using Engine.BoardRepresentation;
+using Engine.MoveGeneration;
+using Engine.Player;
 
-namespace Engine.Types.AI
+namespace Engine.AI
 {
     /// <summary>
     /// Class responsible for searching through moves.
@@ -13,26 +13,22 @@ namespace Engine.Types.AI
     public class AlphaBetaSearch
     {
         // Member fields
-        private readonly IEvaluator _evaluation;
-        private readonly int _searchDepth;
+        private IEvaluator _evaluation;
+        private int _searchDepth;
         private IMove _bestMove;
         private int _movesEvaluated;
         private int _cutoffsProduced;
         private bool _isWhite;
-        private MoveOrdering _moveOrdering;
+        private readonly MoveOrdering _moveOrdering;
 
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="depth">The depth for the search to use.</param>
-        public AlphaBetaSearch(int depth)
+        public AlphaBetaSearch()
         {
-            // Create a new evaluator
-            _evaluation = new BetterEvaluator();
-            _moveOrdering = new MoveOrdering();
-            
             // Initialise information values
-            _searchDepth = depth;
+            _searchDepth = AISettings.Depth;
+            _moveOrdering = new MoveOrdering();
             _movesEvaluated = 0;
             _cutoffsProduced = 0;
             _isWhite = false;
@@ -54,8 +50,12 @@ namespace Engine.Types.AI
             _cutoffsProduced = 0;
             _bestMove = null;
             _isWhite = board.CurrentPlayer.Coalition.IsWhite();
+            
+            // Create evaluator based on the value in the AISettings class
+            _evaluation = AISettings.UseBetterEvaluator ? new BetterEvaluator() : new DefaultEvaluator();
 
             // Search for the best move
+            _searchDepth = AISettings.Depth;
             AlphaBeta(board, _searchDepth, int.MinValue, int.MaxValue, _isWhite);
 
             // TODO: DEBUG
@@ -69,8 +69,8 @@ namespace Engine.Types.AI
 
         /// <summary>
         /// Alpha beta search algorithm.
-        /// Iterates through a game tree and picks a move based on evaluation score
-        /// Decreases the number of search nodes evaluated by the minimax algorithm
+        /// Iterates through a game tree and picks a move based on evaluation score.
+        /// Decreases the number of search nodes evaluated by the minimax algorithm.
         /// Outputs the same move as a standard minimax algorithm but evaluates less nodes
         /// because they can never influence the outcome.
         /// </summary>

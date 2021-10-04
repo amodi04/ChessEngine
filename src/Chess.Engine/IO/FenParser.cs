@@ -1,11 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Text;
-using Engine.Builders;
-using Engine.Enums;
-using Engine.Extensions;
-using Engine.Types;
-using Engine.Types.Pieces;
-using static Engine.Util.BoardUtilities;
+using Engine.BoardRepresentation;
+using Engine.Pieces;
+using Engine.Player;
+using static Engine.BoardRepresentation.BoardUtilities;
 
 namespace Engine.IO
 {

@@ -1,5 +1,5 @@
 ﻿using System.Linq;
-using Engine.Types;
+using Engine.BoardRepresentation;
 using NUnit.Framework;
 
 namespace Chess.Engine.Tests

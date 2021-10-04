@@ -1,9 +1,9 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using Engine.Enums;
-using Engine.Types.MoveGeneration;
+﻿using System.Collections.Generic;
+using Engine.BoardRepresentation;
+using Engine.MoveGeneration;
+using Engine.Pieces;
 
-namespace Engine.Types.AI
+namespace Engine.AI
 {
     /// <summary>
     /// This class handles the ordering move lists of moves.

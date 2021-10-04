@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Engine.Enums;
-using Engine.Extensions;
-using Engine.Types.MoveGeneration;
-using Engine.Types.Pieces;
-using Engine.Util;
+using Engine.BoardRepresentation;
+using Engine.MoveGeneration;
+using Engine.Pieces;
 
-namespace Engine.Types
+namespace Engine.Player
 {
     /// <summary>
     ///     This class contains player data and functions that the chess player will utilise to play the game.

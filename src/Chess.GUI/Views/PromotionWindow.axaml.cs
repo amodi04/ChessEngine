@@ -2,7 +2,7 @@
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
-using Engine.Enums;
+using Engine.Pieces;
 
 namespace Chess.GUI.Views
 {

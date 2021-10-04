@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using Engine.Enums;
-using Engine.Extensions;
-using Engine.Types.MoveGeneration;
+using Engine.BoardRepresentation;
+using Engine.MoveGeneration;
+using Engine.Player;
 
-namespace Engine.Types.Pieces
+namespace Engine.Pieces
 {
     /// <summary>
     ///     This class contains piece data and methods that it can make such as moving and calculating legal moves.

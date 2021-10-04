@@ -1,6 +1,7 @@
-﻿using Engine.Types.Pieces;
+﻿using Engine.BoardRepresentation;
+using Engine.Pieces;
 
-namespace Engine.Types.MoveGeneration
+namespace Engine.MoveGeneration
 {
     /// <summary>
     ///     The base interface that all move structures will implement with their own logic.

@@ -50,11 +50,11 @@
                 <MenuItem Header="Edit">
                     <MenuItem Header="Preferences">
                         <MenuItem Header="Change Tile Colours"/>
-                        <MenuItem Header="Flip Board" x:Name="FlipBoardMenuItem" Click="FlipBoardMenuItem_OnClick"/>
-                        <MenuItem Header="Highlight Legal Moves" x:Name="HighlightLegalMovesMenuItem" Click="HighlightLegalMovesMenuItem_OnClick"/>
+                        <MenuItem Header="Flip Board" Click="FlipBoardMenuItem_OnClick"/>
+                        <MenuItem Header="Highlight Legal Moves" Click="HighlightLegalMovesMenuItem_OnClick"/>
                     </MenuItem>
                     <Separator/>
-                    <MenuItem Header="Configure AI settings"/>
+                    <MenuItem Header="Configure AI settings" Click="ConfigureAISettings_OnClick"/>
                 </MenuItem>
                 <!-- Defines the about menu -->
                 <MenuItem Header="About">

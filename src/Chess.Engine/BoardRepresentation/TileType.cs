@@ -1,4 +1,4 @@
-﻿namespace Engine.Enums
+﻿namespace Engine.BoardRepresentation
 {
     /// <summary>
     ///     Enumeration to keep track of tile state.

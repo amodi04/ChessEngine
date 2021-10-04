@@ -1,7 +1,4 @@
-﻿using Engine.Enums;
-using Engine.Types;
-
-namespace Engine.Extensions
+﻿namespace Engine.Player
 {
     /// <summary>
     ///     This extension class contains methods for dealing with coalition state.

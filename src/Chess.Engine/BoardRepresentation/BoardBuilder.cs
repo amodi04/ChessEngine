@@ -1,9 +1,7 @@
-﻿using Engine.Enums;
-using Engine.Types;
-using Engine.Types.Pieces;
-using Engine.Util;
+﻿using Engine.Pieces;
+using Engine.Player;
 
-namespace Engine.Builders
+namespace Engine.BoardRepresentation
 {
     /// <summary>
     ///     This class enables the building of board and board data.

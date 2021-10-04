@@ -6,10 +6,7 @@
         Width="720"
         Height="200"
         x:Class="Chess.GUI.Views.FenInputWindow"
-        Title="FenInputWindow"
-        TransparencyLevelHint="AcrylicBlur"
-        ExtendClientAreaToDecorationsHint="True"
-        ExtendClientAreaChromeHints="-1"
+        Title="FEN Input"
         WindowStartupLocation="CenterOwner">
     <Panel>
         <!-- Set background -->

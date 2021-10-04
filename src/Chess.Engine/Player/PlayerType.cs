@@ -1,4 +1,4 @@
-﻿namespace Engine.Enums
+﻿namespace Engine.Player
 {
     /// <summary>
     /// Enum for determining player type in engine

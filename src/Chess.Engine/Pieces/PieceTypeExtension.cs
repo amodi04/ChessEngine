@@ -1,7 +1,8 @@
 ﻿using System;
-using Engine.Enums;
+using Engine.AI;
+using Engine.Player;
 
-namespace Engine.Extensions
+namespace Engine.Pieces
 {
     /// <summary>
     ///     This extension class contains methods for dealing with piece types.
@@ -39,12 +40,12 @@ namespace Engine.Extensions
         {
             return pieceType switch
             {
-                PieceType.Pawn => 100,
-                PieceType.Knight => 300,
-                PieceType.Bishop => 320,
-                PieceType.Rook => 500,
-                PieceType.Queen => 900,
-                PieceType.King => 100000,
+                PieceType.Pawn => AISettings.PawnValue,
+                PieceType.Knight => AISettings.KnightValue,
+                PieceType.Bishop => AISettings.BishopValue,
+                PieceType.Rook => AISettings.RookValue,
+                PieceType.Queen => AISettings.QueenValue,
+                PieceType.King => 0,
                 _ => throw new ArgumentOutOfRangeException(nameof(pieceType), pieceType, null)
             };
         }

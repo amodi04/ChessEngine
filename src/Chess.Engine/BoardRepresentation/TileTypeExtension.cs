@@ -1,7 +1,6 @@
 ﻿using System;
-using Engine.Enums;
 
-namespace Engine.Extensions
+namespace Engine.BoardRepresentation
 {
     /// <summary>
     ///     This extension class contains methods for dealing with tile state.

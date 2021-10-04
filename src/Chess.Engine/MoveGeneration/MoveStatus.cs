@@ -1,4 +1,4 @@
-﻿namespace Engine.Enums
+﻿namespace Engine.MoveGeneration
 {
     /// <summary>
     ///     This enum handles move state and is used for checking move progress.

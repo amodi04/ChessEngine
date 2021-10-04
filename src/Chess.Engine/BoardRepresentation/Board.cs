@@ -2,15 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Engine.Builders;
-using Engine.Enums;
-using Engine.Extensions;
 using Engine.IO;
-using Engine.Types.MoveGeneration;
-using Engine.Types.Pieces;
-using Engine.Util;
+using Engine.MoveGeneration;
+using Engine.Pieces;
+using Engine.Player;
 
-namespace Engine.Types
+namespace Engine.BoardRepresentation
 {
     /// <summary>
     ///     This class stores current game state in form of the chess board.
@@ -41,8 +38,8 @@ namespace Engine.Types
             var blackMoves = CalculateLegalMoves(BlackPieces);
 
             // Initialise players
-            WhitePlayer = new Player(Coalition.White, this, whiteMoves, blackMoves);
-            BlackPlayer = new Player(Coalition.Black, this, blackMoves, whiteMoves);
+            WhitePlayer = new Player.Player(Coalition.White, this, whiteMoves, blackMoves);
+            BlackPlayer = new Player.Player(Coalition.Black, this, blackMoves, whiteMoves);
             
             // Store all possible moves for the current board
             AllMoves = WhitePlayer.Moves.Concat(BlackPlayer.Moves);
@@ -55,9 +52,9 @@ namespace Engine.Types
         public IEnumerable<Piece> BlackPieces { get; }
         public IEnumerable<Piece> WhitePieces { get; }
         public IEnumerable<Piece> AllPieces { get; }
-        public Player WhitePlayer { get; }
-        public Player BlackPlayer { get; }
-        public Player CurrentPlayer { get; }
+        public Player.Player WhitePlayer { get; }
+        public Player.Player BlackPlayer { get; }
+        public Player.Player CurrentPlayer { get; }
         public IEnumerable<IMove> AllMoves { get; }
         public Pawn EnPassantPawn { get; }
 

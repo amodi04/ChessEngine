@@ -5,10 +5,9 @@ using Avalonia.Controls.Primitives;
 using Avalonia.Markup.Xaml;
 using Avalonia.Media.Imaging;
 using Chess.GUI.Util;
-using Engine.Enums;
-using Engine.Extensions;
-using Engine.Types.MoveGeneration;
-using Engine.Types.Pieces;
+using Engine.MoveGeneration;
+using Engine.Pieces;
+using Engine.Player;
 
 namespace Chess.GUI.Views
 {
@@ -117,15 +116,9 @@ namespace Chess.GUI.Views
             // Loop through each captured piece in list
             foreach (var capturedPiece in capturedPieces)
             {
-                // Find the image
-                Image image = new Image
-                {
-                    // Image format: "{Coalition}{Piece}.png"
-                    // Example: WB.png => White Bishop
-                    // Example: BK => Black King
-                    Source = new Bitmap(GUIUtilities.AssetLoader.Open(new Uri(
-                        $"avares://Chess.GUI/Assets/{capturedPiece.PieceCoalition.ToAbbreviation()}{capturedPiece.PieceType.ToAbbreviation(Coalition.White)}.png")))
-                };
+                // Get the corresponding image
+                Image image = GUIUtilities.GenerateImage(capturedPiece);
+                
                 // Add the image to the panel
                 grid.Children.Add(image);
             }

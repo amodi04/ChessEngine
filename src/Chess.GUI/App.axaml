@@ -1,4 +1,5 @@
 <Application xmlns="https://github.com/avaloniaui"
+             xmlns:views="clr-namespace:Chess.GUI.Views"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              x:Class="Chess.GUI.App">
     <!-- TODO: Move styles here -->
@@ -18,11 +19,17 @@
             <Setter Property="HorizontalContentAlignment" Value="Center"/>
             <Setter Property="VerticalContentAlignment" Value="Center"/>
         </Style>
-        <!-- Set style for the textbox acting as labels on the fen input/output dialogues -->
+        <!-- Set style for the text box acting as labels on the fen input/output dialogues -->
         <Style Selector="TextBox.textBoxAsLabel">
             <Setter Property="IsReadOnly" Value="True" />
             <Setter Property="BorderThickness" Value="0" />
             <Setter Property="TextWrapping" Value="Wrap" />
+        </Style>
+        <!-- Set style for the the sliders in the AI Setting window -->
+        <Style Selector="views|AISettingElement">
+            <Setter Property="Margin" Value="20, 0, 0, 0"/>
+            <Setter Property="Width" Value="400"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
         </Style>
     </Application.Styles>
 </Application>

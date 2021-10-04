@@ -1,4 +1,6 @@
-﻿namespace Engine.Types.AI
+﻿using Engine.BoardRepresentation;
+
+namespace Engine.AI
 {
     /// <summary>
     /// Base interface that all evaluators will inherit from.

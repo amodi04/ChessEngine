@@ -1,8 +1,9 @@
 ﻿using System;
-using Engine.Enums;
-using Engine.Types.Pieces;
+using Engine.BoardRepresentation;
+using Engine.Player;
+using Engine.Util;
 
-namespace Engine.Util
+namespace Engine.Pieces
 {
     /// <summary>
     ///     This utility class contains some useful methods for pieces.

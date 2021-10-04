@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using Engine.Enums;
+using Engine.Player;
 
-namespace Engine.Util
+namespace Engine.BoardRepresentation
 {
     /// <summary>
     ///     A class containing useful values and methods that may be used across the entire class library.

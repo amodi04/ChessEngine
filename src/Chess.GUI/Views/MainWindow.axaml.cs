@@ -1,16 +1,18 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
 using Chess.GUI.ViewModels;
-using Engine.Enums;
+using Engine.AI;
+using Engine.BoardRepresentation;
 using Engine.IO;
-using Engine.Types;
-using Engine.Types.MoveGeneration;
-using Engine.Types.Pieces;
+using Engine.MoveGeneration;
+using Engine.Pieces;
+using Engine.Player;
 using Engine.Util;
 
 namespace Chess.GUI.Views
@@ -282,6 +284,20 @@ namespace Chess.GUI.Views
             {
                 // ignored. Carry on if string not parsed (does not replace the board model)
             }
+        }
+
+        /// <summary>
+        /// Called when the Configure AI Settings menu button is clicked.
+        /// </summary>
+        /// <param name="sender">The object that owns the event.</param>
+        /// <param name="e">The event.</param>
+        private async void ConfigureAISettings_OnClick(object? sender, RoutedEventArgs e)
+        {
+            // Create a new window
+            AISettingsWindow aiSettingsWindow = new AISettingsWindow();
+            
+            // Await asynchronously for the window to be closed by the user
+            await aiSettingsWindow.ShowDialog(this);
         }
     }
 }

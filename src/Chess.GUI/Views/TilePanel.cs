@@ -9,12 +9,10 @@ using Avalonia.Media.Imaging;
 using Avalonia.Threading;
 using Chess.GUI.Models;
 using Chess.GUI.Util;
-using Engine.Enums;
-using Engine.Extensions;
-using Engine.Factories;
-using Engine.Types;
-using Engine.Types.MoveGeneration;
-using Engine.Types.Pieces;
+using Engine.BoardRepresentation;
+using Engine.MoveGeneration;
+using Engine.Pieces;
+using Engine.Player;
 
 namespace Chess.GUI.Views
 {
@@ -59,16 +57,10 @@ namespace Chess.GUI.Views
             {
                 // Get the piece
                 Piece piece = _mainWindow.BoardModel.GetTile(_tileIndex).Piece;
+
+                // Get the corresponding image
+                Image image = GUIUtilities.GenerateImage(piece);
                 
-                // Find the image
-                Image image = new Image
-                {
-                    // Image format: "{Coalition}{Piece}.png"
-                    // Example: WB.png => White Bishop
-                    // Example: BK => Black King
-                    Source = new Bitmap(GUIUtilities.AssetLoader.Open(new Uri(
-                        $"avares://Chess.GUI/Assets/{piece.PieceCoalition.ToAbbreviation()}{piece.PieceType.ToAbbreviation(Coalition.White)}.png")))
-                };
                 // Add the image to the panel
                 Children.Add(image);
             }
@@ -196,8 +188,8 @@ namespace Chess.GUI.Views
                     // Draw a grey circle above to indicate it is a move
                     Children.Add(new Ellipse
                     {
-                        Width = 20,
-                        Height = 20,
+                        Width = 100,
+                        Height = 100,
                         Fill = Brushes.Gray,
                     });
                 }

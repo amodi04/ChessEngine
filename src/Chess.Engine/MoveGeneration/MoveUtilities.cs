@@ -1,11 +1,10 @@
 ﻿using System.Text;
-using Engine.Enums;
-using Engine.Extensions;
-using Engine.Types;
-using Engine.Types.MoveGeneration;
-using static Engine.Util.BoardUtilities;
+using Engine.BoardRepresentation;
+using Engine.Pieces;
+using Engine.Player;
+using static Engine.BoardRepresentation.BoardUtilities;
 
-namespace Engine.Util
+namespace Engine.MoveGeneration
 {
     /// <summary>
     /// This class houses all utilities related to moves.

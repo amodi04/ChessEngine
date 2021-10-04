@@ -1,27 +1,20 @@
-﻿using System.Linq;
-using Engine.Enums;
-using Engine.Extensions;
-using Engine.Types.MoveGeneration;
+﻿using Engine.BoardRepresentation;
+using Engine.MoveGeneration;
+using Engine.Pieces;
+using static Engine.AI.AISettings;
 
-namespace Engine.Types.AI
+namespace Engine.AI
 {
     /// <summary>
     /// Class for holding default evaluation data.
     /// </summary>
     public class DefaultEvaluator : IEvaluator
     {
-        // Member fields
-        private const int CheckmateBonus = 100000;
-        private const int CheckBonus = 45;
-        private const int CastleBonus = 25;
-        private const int MobilityMultiplier = 5;
-        private const int AttackMultiplier = 1;
-        private const int TwoBishopsBonus = 25;
-        
         /// <summary>
         /// Gets the integer value of the move.
         /// </summary>
         /// <param name="board">The board for move context.</param>
+        /// <param name="depth">The current depth of the search.</param>
         /// <returns>A score value for the board.</returns>
         public int Evaluate(Board board, int depth)
         {
@@ -35,8 +28,9 @@ namespace Engine.Types.AI
         /// Scores a player.
         /// </summary>
         /// <param name="player">The player to score.</param>
+        /// <param name="depth">The current depth of the search.</param>
         /// <returns>An integer score value for the player.</returns>
-        private int Score(Player player, int depth)
+        private int Score(Player.Player player, int depth)
         {
             // Return the sum of all evaluations
             return EvaluateMobility(player)
@@ -51,11 +45,12 @@ namespace Engine.Types.AI
         /// </summary>
         /// <param name="player">The player to evaluate for.</param>
         /// <returns>An integer evaluation score.</returns>
-        private int EvaluatePieces(Player player)
+        private int EvaluatePieces(Player.Player player)
         {
             // Initialise values
             int pieceEvaluationScore = 0;
             int numBishops = 0;
+            int numRooks = 0;
             
             // Loop through each active piece for the player
             foreach (var piece in player.GetActiveAlliedPieces())
@@ -67,13 +62,19 @@ namespace Engine.Types.AI
                 if (piece.PieceType == PieceType.Bishop)
                 {
                     numBishops++;
+                } 
+                else if (piece.PieceType == PieceType.Rook)
+                {
+                    numRooks++;
                 }
             }
 
             // Return the piece evaluation score
             // If the number of bishops is two then add the two bishops bonus.
             // This is because two bishops are better than 1 when playing
-            return pieceEvaluationScore + (numBishops == 2 ? TwoBishopsBonus : 0);
+            pieceEvaluationScore += numBishops == 2 ? TwoBishopsBonus : 0;
+            pieceEvaluationScore += numRooks == 2 ? TwoRooksBonus : 0;
+            return pieceEvaluationScore * PieceMultiplier;
         }
 
         /// <summary>
@@ -81,7 +82,7 @@ namespace Engine.Types.AI
         /// </summary>
         /// <param name="player">The player to evaluate for.</param>
         /// <returns>An integer evaluation score.</returns>
-        private int EvaluateCastled(Player player)
+        private int EvaluateCastled(Player.Player player)
         {
             // Return the castle bonus if the player is castled
             return player.King.IsCastled ? CastleBonus : 0;
@@ -92,7 +93,7 @@ namespace Engine.Types.AI
         /// </summary>
         /// <param name="player">The player to evaluate for.</param>
         /// <returns>An integer evaluation score.</returns>
-        private int EvaluateAttacks(Player player)
+        private int EvaluateAttacks(Player.Player player)
         {
             // Initialise the attack score to 0.
             int attackScore = 0;
@@ -122,7 +123,7 @@ namespace Engine.Types.AI
         /// <param name="player">The player to evaluate for.</param>
         /// <param name="depth">The current search depth.</param>
         /// <returns>An integer evaluation score.</returns>
-        private int EvaluateKingThreats(Player player, int depth)
+        private int EvaluateKingThreats(Player.Player player, int depth)
         {
             // If the opponent is in checkmate (when searching for a move in the game tree),
             // Return the checkmate bonus (large value because checkmate is the best possible move since it wins the game
@@ -138,7 +139,7 @@ namespace Engine.Types.AI
         /// </summary>
         /// <param name="player">The player to evaluate for.</param>
         /// <returns>An integer evaluation score.</returns>
-        private int ComputeCheck(Player player)
+        private int ComputeCheck(Player.Player player)
         {
             // Return the check bonus if the player is in check otherwise return 0.
             return player.GetOpponent().IsInCheck() ? CheckBonus : 0;
@@ -154,7 +155,7 @@ namespace Engine.Types.AI
             // If the depth is 0, return 1
             // Otherwise return 100 multiplied by the depth
             // Higher depth values achieve a higher score
-            return depth == 0 ? 1 : 100 * depth;
+            return depth == 0 ? 1 : DepthMultiplier * depth;
         }
         
         /// <summary>
@@ -162,7 +163,7 @@ namespace Engine.Types.AI
         /// </summary>
         /// <param name="player">The player to evaluate for.</param>
         /// <returns>An integer evaluation score.</returns>
-        private int EvaluateMobility(Player player)
+        private int EvaluateMobility(Player.Player player)
         {
             // Return the mobility multiplier by the calculated ratio of player mobilities
             return MobilityMultiplier * ComputeMobilityRatio(player);
@@ -173,7 +174,7 @@ namespace Engine.Types.AI
         /// </summary>
         /// <param name="player">The player to evaluate for.</param>
         /// <returns>An integer evaluation score.</returns>
-        private int ComputeMobilityRatio(Player player)
+        private int ComputeMobilityRatio(Player.Player player)
         {
             // Return the number of moves that the player can make multiplied by ten divided by the number of moves the opponent can make
             // This gives the ratio of moves that the player can make compared to the number of moves the opponent can make.
