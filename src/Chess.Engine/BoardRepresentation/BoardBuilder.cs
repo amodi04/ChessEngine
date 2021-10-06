@@ -20,6 +20,7 @@ namespace Engine.BoardRepresentation
         public Piece[] BoardConfiguration { get; }
         public Coalition CoalitionToMove { get; private set; }
         public Pawn EnPassantPawn { get; private set; }
+        public int PlyCount { get; private set; }
 
         /// <summary>
         ///     Maps a tile position to a piece on the board.
@@ -55,9 +56,25 @@ namespace Engine.BoardRepresentation
             return this;
         }
 
+        /// <summary>
+        ///     Sets the current en passant pawn
+        /// </summary>
+        /// <param name="enPassantPawn">The pawn to set.</param>
+        /// <returns>A board builder instance containing board configuration. Useful for chaining method calls.</returns>
         public BoardBuilder SetEnPassantPawn(Pawn enPassantPawn)
         {
             EnPassantPawn = enPassantPawn;
+            return this;
+        }
+
+        /// <summary>
+        ///     Sets the number of ply's played so far.
+        /// </summary>
+        /// <param name="plyCount">The number of ply's to set</param>
+        /// <returns>A board builder instance containing board configuration. Useful for chaining method calls.</returns>
+        public BoardBuilder SetPlyCount(int plyCount)
+        {
+            PlyCount = plyCount;
             return this;
         }
 

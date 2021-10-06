@@ -2,7 +2,7 @@
 using Engine.BoardRepresentation;
 using Engine.Pieces;
 
-namespace Engine.MoveGeneration
+namespace Engine.MoveGeneration.Types
 {
     /// <inheritdoc cref="IMove" />
     /// <summary>

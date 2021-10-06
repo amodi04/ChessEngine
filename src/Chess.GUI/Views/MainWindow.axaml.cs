@@ -247,7 +247,7 @@ namespace Chess.GUI.Views
         private async void ToFEN_OnClick(object? sender, RoutedEventArgs e)
         {
             // Get the FEN string of the current board
-            string fen = FenParser.FenFromPosition(BoardModel);
+            string fen = FenParser.FenFromPosition(BoardModel, MoveStack);
             
             // Create a new FenOutputWindow object
             FenOutputWindow fenOutputWindow = new FenOutputWindow(fen);

@@ -1,5 +1,6 @@
 ﻿using System;
 using Engine.BoardRepresentation;
+using Engine.MoveGeneration.Types;
 using Engine.Pieces;
 
 namespace Engine.MoveGeneration

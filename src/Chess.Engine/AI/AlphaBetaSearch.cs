@@ -58,7 +58,7 @@ namespace Engine.AI
             _searchDepth = AISettings.Depth;
             AlphaBeta(board, _searchDepth, int.MinValue, int.MaxValue, _isWhite);
 
-            // TODO: DEBUG
+            // Output debug statistics
             watch.Stop();
             Debug.WriteLine($"Evaluated {_movesEvaluated} moves in {watch.ElapsedMilliseconds}ms");
             Debug.WriteLine($"Cutoffs Produced: {_cutoffsProduced}");

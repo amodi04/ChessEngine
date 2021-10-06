@@ -27,7 +27,7 @@ namespace Engine.AI
 		/// Performs a static evaluation of the current board.
 		/// </summary>
 		/// <param name="board">The board to evaluate.</param>
-		/// <param name="depth">The depth of the current search.</param> TODO: Revise this
+		/// <param name="depth">The depth of the current search.</param>
 		/// <returns>An integer evaluation score.</returns>
 		public int Evaluate (Board board, int depth) {
 			

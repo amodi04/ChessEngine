@@ -2,7 +2,6 @@
              xmlns:views="clr-namespace:Chess.GUI.Views"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              x:Class="Chess.GUI.App">
-    <!-- TODO: Move styles here -->
     <!-- Application Styles -->
     <Application.Styles>
         <!-- Set dark theme to application -->

@@ -1,5 +1,6 @@
 ﻿using System.Text;
 using Engine.BoardRepresentation;
+using Engine.MoveGeneration.Types;
 using Engine.Pieces;
 using Engine.Player;
 using static Engine.BoardRepresentation.BoardUtilities;

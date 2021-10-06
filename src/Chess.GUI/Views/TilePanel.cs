@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using Avalonia.Controls;
 using Avalonia.Controls.Shapes;
@@ -11,6 +12,7 @@ using Chess.GUI.Models;
 using Chess.GUI.Util;
 using Engine.BoardRepresentation;
 using Engine.MoveGeneration;
+using Engine.MoveGeneration.Types;
 using Engine.Pieces;
 using Engine.Player;
 
@@ -140,6 +142,7 @@ namespace Chess.GUI.Views
 
                             // Add move to move history log
                             _mainWindow.MoveStack.Push(move);
+                            Debug.WriteLine($"{_mainWindow.BoardModel.PlyCount}");
                             
                             // Update the move log
                             _mainWindow.MoveLogViewModel.UpdateMoveLog(move, boardTransition);

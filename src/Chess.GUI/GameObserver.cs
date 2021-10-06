@@ -72,7 +72,7 @@ namespace Chess.GUI
             // If there is an error
             if (args.Error != null)
             {
-                // TODO: Debug
+                // Output error to console
                 Debug.WriteLine(args.Error.ToString());
             }
             
@@ -94,6 +94,7 @@ namespace Chess.GUI
                 
                 // Update move stack
                 _mainWindow.MoveStack.Push(bestMove);
+                Debug.WriteLine($"{_mainWindow.BoardModel.PlyCount}");
                 
                 // Update the move log
                 _mainWindow.MoveLogViewModel.UpdateMoveLog(bestMove, boardTransition);

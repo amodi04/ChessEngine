@@ -1,6 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Text;
 using Engine.BoardRepresentation;
+using Engine.MoveGeneration;
+using Engine.MoveGeneration.Types;
 using Engine.Pieces;
 using Engine.Player;
 using static Engine.BoardRepresentation.BoardUtilities;
@@ -136,7 +140,7 @@ namespace Engine.IO
         /// </summary>
         /// <param name="board">The board to parse.</param>
         /// <returns>A string representation of the board.</returns>
-        public static string FenFromPosition(Board board)
+        public static string FenFromPosition(Board board, Stack<IMove> moveStack)
         {
             // Initialise the fen string
             string fen = "";
@@ -244,12 +248,25 @@ namespace Engine.IO
             else
             {
                 // Append the algebraic coordinate that the en passant pawn is on
-                fen += FileNames[FileIndex(enPassantPawn.PiecePosition)] +
+                fen += "" + FileNames[FileIndex(enPassantPawn.PiecePosition)] +
                        RankNames[RankIndex(enPassantPawn.PiecePosition)];
             }
             
-            // TODO: Implement properly (50 move counter and ply count)
-            fen += "0 1";
+            int count = 0;
+            foreach (var move in moveStack)
+            {
+                if (move is CaptureMove)
+                {
+                    count = 0;
+                }
+
+                count++;
+            }
+
+            count = (int) Math.Floor(count / 2d);
+
+            int plyCount = (int) Math.Floor(board.PlyCount / 2d) + 1;
+            fen += $" {count} {plyCount}";
 
             // Return the string
             return fen;

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using Engine.IO;
@@ -46,6 +47,7 @@ namespace Engine.BoardRepresentation
             
             // Set the current player via the board builder
             CurrentPlayer = boardBuilder.CoalitionToMove.ChoosePlayer(WhitePlayer, BlackPlayer);
+            PlyCount = boardBuilder.PlyCount;
         }
 
         // Properties
@@ -57,6 +59,7 @@ namespace Engine.BoardRepresentation
         public Player.Player CurrentPlayer { get; }
         public IEnumerable<IMove> AllMoves { get; }
         public Pawn EnPassantPawn { get; }
+        public int PlyCount { get; set; }
 
         /// <summary>
         ///     Gets all pieces on the current board.

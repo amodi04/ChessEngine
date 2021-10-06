@@ -2,7 +2,7 @@
 using Engine.BoardRepresentation;
 using Engine.Pieces;
 
-namespace Engine.MoveGeneration
+namespace Engine.MoveGeneration.Types
 {
     /// <inheritdoc cref="IMove" />
     /// <summary>
@@ -55,7 +55,7 @@ namespace Engine.MoveGeneration
             // Move the king piece, move the rook and set the next player to move
             boardBuilder.SetPieceAtTile(MovedPiece.MovePiece(this)).
                 SetPieceAtTile(PieceUtilities.RookLookup[CastlingRookEndPosition, CastlingRook.PieceCoalition]).RemovePieceAtTile(CastlingRook).
-                SetCoalitionToMove(Board.CurrentPlayer.GetOpponent().Coalition);
+                SetCoalitionToMove(Board.CurrentPlayer.GetOpponent().Coalition).SetPlyCount(Board.PlyCount + 1);
 
             // Build the board
             return boardBuilder.BuildBoard();

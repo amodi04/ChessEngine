@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Engine.BoardRepresentation;
 using Engine.MoveGeneration;
+using Engine.MoveGeneration.Types;
 using Engine.Pieces;
 
 namespace Engine.Player
@@ -236,7 +237,6 @@ namespace Engine.Player
                 _board.GetTile(kingPosition - 3).IsOccupied()) return castleMoves;
             {
                 // Get the rook on the queen side. Position is dependent on coalition
-                // TODO: Change hard coding rooks
                 var rookTile = _board.GetTile(Coalition.IsWhite() ? 0 : 56);
 
                 // If the rook tile is not occupied or the rook has moved, castling is invalid so return the calculated 

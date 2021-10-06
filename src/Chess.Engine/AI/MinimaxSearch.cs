@@ -42,8 +42,7 @@ namespace Engine.AI
             
             IMove bestMove = null;
             _movesEvaluated = 0;
-
-            // TODO: Remove DEBUG
+            
             var watch = new Stopwatch();
             watch.Start();
             
@@ -83,8 +82,7 @@ namespace Engine.AI
                     }
                 }
             }
-
-            // TODO: DEBUG
+            
             watch.Stop();
             Debug.WriteLine($"Evaluated {_movesEvaluated} moves in {watch.ElapsedMilliseconds}ms");
             

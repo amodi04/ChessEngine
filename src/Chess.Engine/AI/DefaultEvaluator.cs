@@ -1,5 +1,6 @@
 ﻿using Engine.BoardRepresentation;
 using Engine.MoveGeneration;
+using Engine.MoveGeneration.Types;
 using Engine.Pieces;
 using static Engine.AI.AISettings;
 

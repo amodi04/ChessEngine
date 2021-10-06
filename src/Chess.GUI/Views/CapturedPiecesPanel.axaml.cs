@@ -6,6 +6,7 @@ using Avalonia.Markup.Xaml;
 using Avalonia.Media.Imaging;
 using Chess.GUI.Util;
 using Engine.MoveGeneration;
+using Engine.MoveGeneration.Types;
 using Engine.Pieces;
 using Engine.Player;
 

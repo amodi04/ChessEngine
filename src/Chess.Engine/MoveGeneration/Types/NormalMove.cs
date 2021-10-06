@@ -2,7 +2,7 @@
 using Engine.BoardRepresentation;
 using Engine.Pieces;
 
-namespace Engine.MoveGeneration
+namespace Engine.MoveGeneration.Types
 {
     /// <inheritdoc cref="IMove" />
     /// <summary>
@@ -53,7 +53,7 @@ namespace Engine.MoveGeneration
             }
             
             // Set the next player to move
-            boardBuilder.SetCoalitionToMove(Board.CurrentPlayer.GetOpponent().Coalition);
+            boardBuilder.SetCoalitionToMove(Board.CurrentPlayer.GetOpponent().Coalition).SetPlyCount(Board.PlyCount + 1);
 
             // Build the board
             return boardBuilder.BuildBoard();
