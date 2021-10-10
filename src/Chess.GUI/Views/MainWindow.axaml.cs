@@ -1,11 +1,17 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
+using System.Linq;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
+using Avalonia.Markup.Xaml.Converters;
+using Avalonia.Media;
+using Chess.GUI.Libraries.ColorPicker.Converters;
+using Chess.GUI.Libraries.ColorPicker.Structures;
 using Chess.GUI.ViewModels;
 using Engine.AI;
 using Engine.BoardRepresentation;
@@ -32,7 +38,7 @@ namespace Chess.GUI.Views
         public Tile? FromTile { get; set; }
         public Piece? MovedPiece { get; set; }
         public bool HighlightLegalMoves { get; private set; }
-        public Stack<IMove> MoveStack { get; }
+        public Stack<IMove?> MoveStack { get; }
         public EventHandler? OnGuiUpdate;
 
         public MainWindow()
@@ -298,6 +304,65 @@ namespace Chess.GUI.Views
             
             // Await asynchronously for the window to be closed by the user
             await aiSettingsWindow.ShowDialog(this);
+        }
+
+        /// <summary>
+        /// Called when the change tile colours menu button is clicked.
+        /// </summary>
+        /// <param name="sender">The object that owns the event.</param>
+        /// <param name="e">The event.</param>
+        private async void ChangeTileColours_OnClick(object? sender, RoutedEventArgs e)
+        {
+            // Create a new tile colour picker window
+            TileColourPickerWindow tileColourPickerWindow = new TileColourPickerWindow();
+            
+            // Wait asynchronously for the window to close and store the passed out value
+            RGBColor color = await tileColourPickerWindow.ShowDialog<RGBColor>(this);
+            
+            // Create a new colour converter and convert rgb color data to a brush object
+            var converter = new RGBColorToBrushConverter();
+            var brush = (Brush) converter.Convert(color, typeof(RGBColor), null, CultureInfo.CurrentCulture);
+            
+            // Cast the sender to menu item so that the header can be accessed
+            var menuItem = (MenuItem) sender!;
+            
+            // Are we changing the light colour tiles?
+            bool changingLightColour = ReferenceEquals(menuItem?.Header, "Change Light Tile Colour");
+            foreach (var tilePanel in _tilePanels)
+            {
+                // If the user is changing the light tile colours
+                if (changingLightColour)
+                {
+                    // Change the light coloured tiles to the brush colour
+                    if ((tilePanel.TileIndex + tilePanel.TileIndex / 8) % 2 != 0)
+                    {
+                        tilePanel.Background = brush;
+                    }
+                }
+                // Else (user is changing dark tile colours
+                else
+                {
+                    // Change the dark coloured tiles to the brush colour
+                    if ((tilePanel.TileIndex + tilePanel.TileIndex / 8) % 2 == 0)
+                    {
+                        tilePanel.Background = brush;
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Called when the reset tile colours menu button is clicked.
+        /// </summary>
+        /// <param name="sender">The object that owns the event.</param>
+        /// <param name="e">The event.</param>
+        private void ResetTileColours_OnClick(object? sender, RoutedEventArgs e)
+        {
+            // Loop through each tile on the board and set respective colours based on index
+            foreach (var tilePanel in _tilePanels)
+            {
+                tilePanel.Background =(tilePanel.TileIndex + tilePanel.TileIndex / 8) % 2 == 0 ? Brushes.DarkSlateGray : Brushes.Ivory;
+            }
         }
     }
 }

@@ -24,7 +24,7 @@ namespace Chess.GUI.Views
     public class TilePanel : Panel
     {
         // Member fields
-        private readonly int _tileIndex;
+        public int TileIndex { get; }
         private readonly MainWindow _mainWindow;
 
         /// <summary>
@@ -35,11 +35,10 @@ namespace Chess.GUI.Views
         public TilePanel(int tileIndex, MainWindow mainWindow)
         {
             _mainWindow = mainWindow;
-            _tileIndex = tileIndex;
+            TileIndex = tileIndex;
             
             // Set colour depending on coordinate in grid
-            // TODO: Change to allow user defined colour
-            Background = (_tileIndex + _tileIndex / 8) % 2 == 0 ? Brushes.DarkSlateGray : Brushes.Ivory;
+            Background = (TileIndex + TileIndex / 8) % 2 == 0 ? Brushes.DarkSlateGray : Brushes.Ivory;
             // Draw the piece on the tile
             DrawPiece();
             // Add a press handler for handling clicks
@@ -55,10 +54,10 @@ namespace Chess.GUI.Views
             Children.Clear();
             
             // If the internal tile representation does have a piece on it
-            if (_mainWindow.BoardModel.GetTile(_tileIndex).IsOccupied())
+            if (_mainWindow.BoardModel.GetTile(TileIndex).IsOccupied())
             {
                 // Get the piece
-                Piece piece = _mainWindow.BoardModel.GetTile(_tileIndex).Piece;
+                Piece piece = _mainWindow.BoardModel.GetTile(TileIndex).Piece;
 
                 // Get the corresponding image
                 Image image = GUIUtilities.GenerateImage(piece);
@@ -86,7 +85,7 @@ namespace Chess.GUI.Views
                         // Handle first click
                         
                         // Set the initial tile to the panel
-                        _mainWindow.FromTile = _mainWindow.BoardModel.GetTile(_tileIndex);
+                        _mainWindow.FromTile = _mainWindow.BoardModel.GetTile(TileIndex);
 
                         // Set the piece to be moved to the piece on the tile
                         _mainWindow.MovedPiece = _mainWindow.FromTile.Piece;
@@ -102,7 +101,7 @@ namespace Chess.GUI.Views
                         // Handle second click
 
                         // Get the move that matches the tiles selected
-                        IMove move = MoveFactory.GetMove(_mainWindow.BoardModel, _mainWindow.FromTile.TileCoordinate, _tileIndex);
+                        IMove move = MoveFactory.GetMove(_mainWindow.BoardModel, _mainWindow.FromTile.TileCoordinate, TileIndex);
                         
                         // If the move is a promotion move,
                         if (move is PromotionMove)
@@ -120,7 +119,7 @@ namespace Chess.GUI.Views
                                 if (potentialPromotionMove is not PromotionMove promotionMove) continue;
                                 
                                 // If the move is the correct piece type and the to coordinate is correct
-                                if (promotionMove.PromotedPiece.PieceType == pieceType && promotionMove.ToCoordinate == _tileIndex)
+                                if (promotionMove.PromotedPiece.PieceType == pieceType && promotionMove.ToCoordinate == TileIndex)
                                 {
                                     // Set the move to the promotion move
                                     move = promotionMove;
@@ -186,7 +185,7 @@ namespace Chess.GUI.Views
             foreach (var move in GetPieceMoves())
             {
                 // If the tile is a potential move
-                if (move.ToCoordinate == _tileIndex)
+                if (move.ToCoordinate == TileIndex)
                 {
                     // Draw a grey circle above to indicate it is a move
                     Children.Add(new Ellipse

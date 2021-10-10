@@ -6,6 +6,7 @@
         <entry key="src/Chess.GUI/App.axaml" value="src/Chess.GUI/Chess.GUI.csproj" />
         <entry key="src/Chess.GUI/BoardView.axaml" value="src/Chess.GUI/Chess.GUI.csproj" />
         <entry key="src/Chess.GUI/CapturedPiecesPanel.axaml" value="src/Chess.GUI/Chess.GUI.csproj" />
+        <entry key="src/Chess.GUI/ColorWheel.axaml" value="src/Chess.GUI/Chess.GUI.csproj" />
         <entry key="src/Chess.GUI/MainWindow.axaml" value="src/Chess.GUI/Chess.GUI.csproj" />
         <entry key="src/Chess.GUI/MainWindow.xaml" value="src/Chess.GUI/Chess.GUI.csproj" />
         <entry key="src/Chess.GUI/MoveHistoryPanel.axaml" value="src/Chess.GUI/Chess.GUI.csproj" />
@@ -18,6 +19,8 @@
         <entry key="src/Chess.GUI/Views/AISettingElement.axaml" value="src/Chess.GUI/Chess.GUI.csproj" />
         <entry key="src/Chess.GUI/Views/AISettingsWindow.axaml" value="src/Chess.GUI/Chess.GUI.csproj" />
         <entry key="src/Chess.GUI/Views/CapturedPiecesPanel.axaml" value="src/Chess.GUI/Chess.GUI.csproj" />
+        <entry key="src/Chess.GUI/Views/ColourPicker.axaml" value="src/Chess.GUI/Chess.GUI.csproj" />
+        <entry key="src/Chess.GUI/Views/ColourWheel.axaml" value="src/Chess.GUI/Chess.GUI.csproj" />
         <entry key="src/Chess.GUI/Views/FenInputWindow.axaml" value="src/Chess.GUI/Chess.GUI.csproj" />
         <entry key="src/Chess.GUI/Views/FenOutputWindow.axaml" value="src/Chess.GUI/Chess.GUI.csproj" />
         <entry key="src/Chess.GUI/Views/GameSetupWindow.axaml" value="src/Chess.GUI/Chess.GUI.csproj" />
@@ -25,6 +28,7 @@
         <entry key="src/Chess.GUI/Views/MenuView.axaml" value="src/Chess.GUI/Chess.GUI.csproj" />
         <entry key="src/Chess.GUI/Views/MoveLogView.axaml" value="src/Chess.GUI/Chess.GUI.csproj" />
         <entry key="src/Chess.GUI/Views/PromotionWindow.axaml" value="src/Chess.GUI/Chess.GUI.csproj" />
+        <entry key="src/Chess.GUI/Views/TileColourPickerWindow.axaml" value="src/Chess.GUI/Chess.GUI.csproj" />
         <entry key="src/Chess.GUI/Views/TodoListView.axaml" value="src/Chess.GUI/Chess.GUI.csproj" />
       </map>
     </option>

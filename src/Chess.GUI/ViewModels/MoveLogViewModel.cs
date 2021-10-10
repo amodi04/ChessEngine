@@ -11,7 +11,7 @@ namespace Chess.GUI.ViewModels
     /// <summary>
     /// ViewModel for the MoveLog. 
     /// </summary>
-    public class MoveLogViewModel
+    public class MoveLogViewModel : ViewModelBase
     {
         // Properties
         public ObservableCollection<MoveModel> Moves { get; }

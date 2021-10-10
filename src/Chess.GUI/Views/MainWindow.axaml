@@ -2,7 +2,6 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:gui="clr-namespace:Chess.GUI"
         xmlns:views="clr-namespace:Chess.GUI.Views"
         mc:Ignorable="d" d:DesignWidth="1280" d:DesignHeight="720"
         x:Class="Chess.GUI.Views.MainWindow"
@@ -49,7 +48,9 @@
                 <!-- Defines the edit menu -->
                 <MenuItem Header="Edit">
                     <MenuItem Header="Preferences">
-                        <MenuItem Header="Change Tile Colours"/>
+                        <MenuItem Header="Change Light Tile Colour" Click="ChangeTileColours_OnClick"/>
+                        <MenuItem Header="Change Dark Tile Colour" Click="ChangeTileColours_OnClick"/>
+                        <MenuItem Header="Reset Tile Colours" Click="ResetTileColours_OnClick"/>
                         <MenuItem Header="Flip Board" Click="FlipBoardMenuItem_OnClick"/>
                         <MenuItem Header="Highlight Legal Moves" Click="HighlightLegalMovesMenuItem_OnClick"/>
                     </MenuItem>

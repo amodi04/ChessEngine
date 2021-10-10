@@ -3,15 +3,17 @@
         <OutputType>WinExe</OutputType>
         <TargetFramework>net5.0</TargetFramework>
         <Nullable>enable</Nullable>
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     </PropertyGroup>
     <ItemGroup>
         <AvaloniaResource Include="Assets\**" />
     </ItemGroup>
     <ItemGroup>
-        <PackageReference Include="Avalonia" Version="0.10.3" />
-        <PackageReference Include="Avalonia.Desktop" Version="0.10.3" />
-        <PackageReference Include="Avalonia.Diagnostics" Version="0.10.3" />
-        <PackageReference Include="Avalonia.ReactiveUI" Version="0.10.3" />
+        <PackageReference Include="Avalonia" Version="0.10.7" />
+        <PackageReference Include="Avalonia.Desktop" Version="0.10.7" />
+        <PackageReference Include="Avalonia.Diagnostics" Version="0.10.7" />
+        <PackageReference Include="Avalonia.ReactiveUI" Version="0.10.7" />
+        <PackageReference Include="MathNet.Numerics" Version="4.15.0" />
     </ItemGroup>
     <ItemGroup>
       <ProjectReference Include="..\Chess.Engine\Chess.Engine.csproj" />
@@ -31,6 +33,14 @@
       </Compile>
       <Compile Update="Views\PromotionWindow.axaml.cs">
         <DependentUpon>PromotionWindow.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="ColourPicker\ColourWheel.axaml.cs">
+        <DependentUpon>ColourWheel.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Libraries\ColorPicker\ColorWheel.axaml.cs">
+        <DependentUpon>ColorWheel.axaml</DependentUpon>
         <SubType>Code</SubType>
       </Compile>
     </ItemGroup>

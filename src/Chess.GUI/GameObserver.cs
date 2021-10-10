@@ -42,7 +42,7 @@ namespace Chess.GUI
         /// </summary>
         /// <param name="sender">The object that owns the event.</param>
         /// <param name="args">Arguments passed into the event.</param>
-        public void HandleUpdate(object sender, EventArgs args)
+        private void HandleUpdate(object? sender, EventArgs args)
         {
             // If the ai player is calculating move
             if (AIPlayer.Worker.IsBusy)
@@ -63,7 +63,7 @@ namespace Chess.GUI
         /// </summary>
         /// <param name="sender">The object that owns the event.</param>
         /// <param name="args">Arguments passed into the event.</param>
-        public void OnSearchComplete(object sender, RunWorkerCompletedEventArgs args)
+        private void OnSearchComplete(object? sender, RunWorkerCompletedEventArgs args)
         {
             // If the Current player is in checkmate or stalemate, return because the game is over.
             if (_mainWindow.BoardModel.CurrentPlayer.IsInCheckmate() ||
@@ -77,7 +77,7 @@ namespace Chess.GUI
             }
             
             // Get the best move from the argument passed in
-            IMove bestMove = (IMove) args.Result;
+            IMove bestMove = (IMove) args.Result!;
             
             // Make the move on the main board
             BoardTransition boardTransition =

@@ -1,0 +1,58 @@
+﻿<Window xmlns="https://github.com/avaloniaui"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	xmlns:colorPicker="clr-namespace:Chess.GUI.Libraries.ColorPicker"
+	xmlns:colorConverters="clr-namespace:Chess.GUI.Libraries.ColorPicker.Converters"
+	xmlns:vm="clr-namespace:Chess.GUI.ViewModels"
+	mc:Ignorable="d" d:DesignWidth="1200" d:DesignHeight="800"
+	x:Class="Chess.GUI.Views.TileColourPickerWindow"
+	Title="Tile Colour Picker"
+	Width="1200" Height="800">
+	<Design.DataContext>
+		<vm:TileColourPickerWindowViewModel/>
+	</Design.DataContext>
+	<Window.Resources>
+		<colorConverters:RGBColorToBrushConverter x:Key="ColorToBrushConverter"/>
+		<colorConverters:RGBColorToHexConverter x:Key="ColorToHexConverter"/>
+	</Window.Resources>
+	<Panel>
+		<!-- Set Background -->
+		<ExperimentalAcrylicBorder IsHitTestVisible="False">
+			<ExperimentalAcrylicBorder.Material>
+				<ExperimentalAcrylicMaterial 
+					BackgroundSource="Digger"
+					TintColor="Black"
+					TintOpacity="1"
+					MaterialOpacity="0.65" />
+			</ExperimentalAcrylicBorder.Material>
+		</ExperimentalAcrylicBorder>
+		
+		<TabControl>
+			<!-- Set Title -->
+			<TabItem Header="HSV Colour Wheel">
+				<Grid ColumnDefinitions="Auto, *" Margin="100">
+					<!-- Colour info panel -->
+					<Border Grid.Column="0" CornerRadius="10" ClipToBounds="True" Margin="15" MinWidth="150" Height="200">
+						<StackPanel Background="Gray">
+							<TextBlock Text="{Binding #Picker.SelectedColor,
+							Converter={StaticResource ColorToHexConverter}}" HorizontalAlignment="Center" 
+							           Margin="0,10" FontSize="18" FontWeight="SemiBold"/>
+							<Border Grid.Column="0" BorderBrush="Black" BorderThickness="2"
+							        Background="{Binding #Picker.SelectedColor,
+							        Converter={StaticResource ColorToBrushConverter}}" CornerRadius="10"
+							        ClipToBounds="True" Margin="15" Width="100" Height="45"/>
+							<Button Content="Set Colour" HorizontalAlignment="Center" Background="DarkSlateGray" Click="Button_OnClick"/>
+						</StackPanel>
+					</Border>
+				
+					<!-- Colour picker -->
+					<colorPicker:ColorWheel x:Name="Picker" Grid.Column="1" ThumbSize="24"
+					                        SelectedColor="{Binding SelectedColor}"
+					                        HorizontalAlignment="Stretch" MinWidth="500" MinHeight="500"
+					                        VerticalAlignment="Stretch"/>
+				</Grid>
+			</TabItem>
+		</TabControl>
+	</Panel>
+</Window>
