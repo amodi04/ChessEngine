@@ -186,6 +186,11 @@ namespace Engine.MoveGeneration
             {
                 notation.Append('+');
             }
+            // Append "½-½" if stalemate (no official symbol for stalemate)
+            else if (toBoard.CurrentPlayer.IsInStalemate())
+            {
+                notation.Append("½-½");
+            }
 
             // Return the string
             return notation.ToString();

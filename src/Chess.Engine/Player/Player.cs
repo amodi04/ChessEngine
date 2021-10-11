@@ -271,5 +271,10 @@ namespace Engine.Player
             // True if the king is not in check, not castled and can castle
             return !_isInCheck && !King.IsCastled && (King.KingsideCastleCapable || King.QueensideCastleCapable);
         }
+
+        public override string ToString()
+        {
+            return Coalition.IsWhite() ? "White" : "Black";
+        }
     }
 }

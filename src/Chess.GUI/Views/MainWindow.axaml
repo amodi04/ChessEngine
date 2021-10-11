@@ -33,7 +33,7 @@
                 </Menu.ItemsPanel>
                 <!-- Defines the game menu -->
                 <MenuItem Header="Game">
-                    <MenuItem Header="New" InputGesture="Ctrl+N" Click="NewGame_OnClick"/>
+                    <MenuItem Header="New" Click="NewGame_OnClick"/>
                     <MenuItem Header="Load">
                         <MenuItem Header="From FEN" Click="FromFEN_OnClick"/>
                         <MenuItem Header="From PGN"/>

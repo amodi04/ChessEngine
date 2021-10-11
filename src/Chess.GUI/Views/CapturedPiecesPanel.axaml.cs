@@ -43,7 +43,7 @@ namespace Chess.GUI.Views
         /// Draws the panels with an updated move stack.
         /// </summary>
         /// <param name="moveStack">The current move stack (move history).</param>
-        public void DrawPanels(IEnumerable<IMove> moveStack)
+        public void DrawPanels(Stack<IMove> moveStack)
         {
             // Clear elements
             _topGrid.Children.Clear();

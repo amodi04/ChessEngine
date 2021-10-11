@@ -16,7 +16,7 @@ namespace Chess.GUI
     public class GameObserver
     {
         // Member fields
-        private MainWindow _mainWindow;
+        private readonly MainWindow _mainWindow;
         public AIPlayer AIPlayer { get; }
 
         /// <summary>
@@ -88,7 +88,7 @@ namespace Chess.GUI
             {
                 // Set the new board
                 _mainWindow.BoardModel = boardTransition.ToBoard;
-
+                
                 // Call a move made update event on the main window
                 _mainWindow.MoveMadeUpdate();
                 
@@ -103,6 +103,13 @@ namespace Chess.GUI
             
             // Draw the board again
             _mainWindow.DrawBoard();
+           
+            // Check if endgame
+            if (_mainWindow.BoardModel.CurrentPlayer.IsInCheckmate() ||
+                _mainWindow.BoardModel.CurrentPlayer.IsInStalemate())
+            {
+                _mainWindow.ShowEndgameWindow();
+            }
         }
     }
 }

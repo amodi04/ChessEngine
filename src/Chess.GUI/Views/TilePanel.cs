@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Shapes;
 using Avalonia.Input;
+using Avalonia.Layout;
 using Avalonia.Media;
 using Avalonia.Media.Imaging;
 using Avalonia.Threading;
@@ -14,7 +16,7 @@ using Engine.BoardRepresentation;
 using Engine.MoveGeneration;
 using Engine.MoveGeneration.Types;
 using Engine.Pieces;
-using Engine.Player;
+using static Engine.BoardRepresentation.BoardUtilities;
 
 namespace Chess.GUI.Views
 {
@@ -65,6 +67,61 @@ namespace Chess.GUI.Views
                 // Add the image to the panel
                 Children.Add(image);
             }
+        }
+
+        /// <summary>
+        /// Draws the algebraic letters and numbers on the board.
+        /// </summary>
+        public void DrawAlgebraicNotation()
+        {
+            // If the board is not flipped (black perspective)
+            if (!_mainWindow.BoardFlipped)
+            {
+                // Add labels from black perspective
+                if (FileIndex(TileIndex) is 7)
+                {
+                    AddLabel(false);
+                }
+
+                if (RankIndex(TileIndex) is 7)
+                {
+                    AddLabel(true);
+                }
+            }
+            else
+            {
+                // Add labels from white perspective
+                if (FileIndex(TileIndex) is 0)
+                {
+                   AddLabel(false);
+                }
+
+                if (RankIndex(TileIndex) is 0)
+                {
+                   AddLabel(true);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Adds labels to the tile
+        /// </summary>
+        /// <param name="drawFile">Are we adding a file label (letter)</param>
+        private void AddLabel(bool drawFile)
+        {
+            Children.Add(new Label()
+            {
+                // Draw letter if drawing file otherwise draw number
+                Content = drawFile ? $"{FileNames[FileIndex(TileIndex)]}" : $"{RankNames[RankIndex(TileIndex)]}",
+                FontSize = 50,
+                Foreground = (TileIndex + TileIndex / 8) % 2 == 0 ? Brushes.White : Brushes.Black,
+                FontWeight = FontWeight.Bold,
+                
+                // Position letters and numbers accordingly in the corners of the tiles
+                HorizontalAlignment = drawFile ? HorizontalAlignment.Right : HorizontalAlignment.Left,
+                VerticalAlignment = drawFile ? VerticalAlignment.Bottom : VerticalAlignment.Top,
+                Margin = new Thickness(5),
+            });
         }
 
         /// <summary>
@@ -141,8 +198,7 @@ namespace Chess.GUI.Views
 
                             // Add move to move history log
                             _mainWindow.MoveStack.Push(move);
-                            Debug.WriteLine($"{_mainWindow.BoardModel.PlyCount}");
-                            
+
                             // Update the move log
                             _mainWindow.MoveLogViewModel.UpdateMoveLog(move, boardTransition);
                             _mainWindow.MoveLogView.DataGrid.ScrollIntoView(_mainWindow.MoveLogView.DataGrid.Items.Cast<MoveModel>().Last(), null);
@@ -152,6 +208,13 @@ namespace Chess.GUI.Views
                             
                             // Call the move made update
                             _mainWindow.MoveMadeUpdate();
+                            
+                            // Check if endgame
+                            if (_mainWindow.BoardModel.CurrentPlayer.IsInCheckmate() ||
+                                _mainWindow.BoardModel.CurrentPlayer.IsInStalemate())
+                            {
+                                _mainWindow.ShowEndgameWindow();
+                            }
                         }
 
                         // Reset tiles and pieces ready for a new move to be made

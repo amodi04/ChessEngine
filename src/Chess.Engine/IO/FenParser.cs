@@ -139,6 +139,7 @@ namespace Engine.IO
         /// Creates a FEN string from the current board state.
         /// </summary>
         /// <param name="board">The board to parse.</param>
+        /// <param name="moveStack">The stack of moves played on the board.</param>
         /// <returns>A string representation of the board.</returns>
         public static string FenFromPosition(Board board, Stack<IMove> moveStack)
         {

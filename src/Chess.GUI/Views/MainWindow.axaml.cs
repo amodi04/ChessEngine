@@ -1,25 +1,21 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Globalization;
-using System.Linq;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
-using Avalonia.Markup.Xaml.Converters;
 using Avalonia.Media;
 using Chess.GUI.Libraries.ColorPicker.Converters;
 using Chess.GUI.Libraries.ColorPicker.Structures;
 using Chess.GUI.ViewModels;
-using Engine.AI;
 using Engine.BoardRepresentation;
 using Engine.IO;
 using Engine.MoveGeneration;
 using Engine.Pieces;
 using Engine.Player;
-using Engine.Util;
+using static Engine.BoardRepresentation.BoardUtilities;
 
 namespace Chess.GUI.Views
 {
@@ -38,7 +34,8 @@ namespace Chess.GUI.Views
         public Tile? FromTile { get; set; }
         public Piece? MovedPiece { get; set; }
         public bool HighlightLegalMoves { get; private set; }
-        public Stack<IMove?> MoveStack { get; }
+        public bool BoardFlipped { get; private set; }
+        public Stack<IMove> MoveStack { get; }
         public EventHandler? OnGuiUpdate;
 
         public MainWindow()
@@ -89,7 +86,7 @@ namespace Chess.GUI.Views
         private void GenerateBoard()
         {
             // Loop over all 64 tiles
-            for (var i = 0; i < BoardUtilities.NumTiles; i++)
+            for (var i = 0; i < NumTiles; i++)
             {
                 // Create a front end tile panel for each tile on the board
                 TilePanel tilePanel = new TilePanel(i, this);
@@ -99,10 +96,10 @@ namespace Chess.GUI.Views
             }
 
             // Loop again because reflected indexes can only be used when list is populated
-            for (var i = 0; i < BoardUtilities.NumTiles; i++)
+            for (var i = 0; i < NumTiles; i++)
             {
                 // Add the tile panel at the correct position (starting from bottom left via reflected mapping)
-                _boardView.Children.Add(_tilePanels[BoardUtilities.ReflectBoard[i]]);
+                _boardView.Children.Add(_tilePanels[ReflectBoard[i]]);
             }
         }
 
@@ -117,14 +114,18 @@ namespace Chess.GUI.Views
             // Loop over stored tiles
             for (int i = 0; i < _tilePanels.Count; i++)
             {
+                var tilePanel = _tilePanels[i];
                 // Draw the piece
-                _tilePanels[i].DrawPiece();
+                tilePanel.DrawPiece();
                 
                 // Highlight legal moves
-                _tilePanels[i].HighlightLegalMoves();
+                tilePanel.HighlightLegalMoves();
                 
+                // Re-draw letter and number coordinates on the board
+                tilePanel.DrawAlgebraicNotation();
+
                 // Re-add panels
-                _boardView.Children.Add(_tilePanels[BoardUtilities.ReflectBoard[i]]);
+                _boardView.Children.Add(_tilePanels[ReflectBoard[i]]);
             }
             
             // Update the captured pieces panel
@@ -152,6 +153,8 @@ namespace Chess.GUI.Views
             // Reverse the array of tile panels
             // This is equal to a 180 degree rotation of the board
             _tilePanels.Reverse();
+
+            BoardFlipped = !BoardFlipped;
             
             // Redraw the board
             DrawBoard();
@@ -200,8 +203,8 @@ namespace Chess.GUI.Views
         private void SetupGame(Tuple<PlayerType, PlayerType> gameConfig)
         {
             // Set the player types in board utilities so they can be accessed throughout the game
-            BoardUtilities.WhitePlayerType = gameConfig.Item1;
-            BoardUtilities.BlackPlayerType = gameConfig.Item2;
+            WhitePlayerType = gameConfig.Item1;
+            BlackPlayerType = gameConfig.Item2;
             
             // Create a new standard board
             BoardModel = Board.CreateStandardBoard();
@@ -363,6 +366,18 @@ namespace Chess.GUI.Views
             {
                 tilePanel.Background =(tilePanel.TileIndex + tilePanel.TileIndex / 8) % 2 == 0 ? Brushes.DarkSlateGray : Brushes.Ivory;
             }
+        }
+
+        /// <summary>
+        /// Called when the current player is either in checkmate of stalemate.
+        /// </summary>
+        public async void ShowEndgameWindow()
+        {
+            EndgameWindow endgameWindow = new EndgameWindow();
+            string endgameStatus = BoardModel.CurrentPlayer.IsInCheckmate() ?
+                $"{BoardModel.CurrentPlayer.GetOpponent()} wins by Checkmate!" : "Draw by Stalemate!";
+            endgameWindow.ViewModel.EndgameStatus = endgameStatus;
+            await endgameWindow.ShowDialog(this);
         }
     }
 }
