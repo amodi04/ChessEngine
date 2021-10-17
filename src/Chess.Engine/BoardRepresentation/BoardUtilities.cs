@@ -8,9 +8,6 @@ namespace Engine.BoardRepresentation
     /// </summary>
     public static class BoardUtilities
     {
-        /// <summary>
-        ///     Constants that are used to reduce the use of magic numbers/values.
-        /// </summary>
         public const int NumTiles = 64;
         public const int NumTilesPerRank = 8;
         public const int NumTilesPerFile = 8;
@@ -18,7 +15,7 @@ namespace Engine.BoardRepresentation
         public const string RankNames = "12345678";
 
         // Stores a reflected mapping of tile coordinates so that the board starts at the bottom left
-        // Rather than the bottom right
+        // rather than the bottom right
         public static readonly int[] ReflectBoard = GenerateReflectedPositions();
 
         // Stores the respective player types for the players that can be accessed throughout the game
@@ -26,21 +23,18 @@ namespace Engine.BoardRepresentation
         public static PlayerType BlackPlayerType { get; set; } = PlayerType.Computer;
 
         /// <summary>
-        /// Generates the reflected mapping of tile positions.
+        ///     Generates the reflected mapping of tile positions.
         /// </summary>
         /// <returns>An array containing the index to value mapping.</returns>
         private static int[] GenerateReflectedPositions()
         {
-            int[] mapping = new int[64];
+            var mapping = new int[64];
             
-            // Loop over 64 times
             for (var i = 0; i < NumTiles; i++)
-            {
                 // Store at each index position the calculated value
                 // This calculated value produces a reflected mapping of coordinate
-                mapping[i] = (int) (16 * Math.Floor((double) (i / 8))+ 7 - i);
-            }
-            
+                mapping[i] = (int) (16 * Math.Floor((double) (i / 8)) + 7 - i);
+
             // Return the mapping
             return mapping;
         }
@@ -57,24 +51,24 @@ namespace Engine.BoardRepresentation
         }
 
         /// <summary>
-        /// Gets the rank number based on the tile coordinate.
+        ///     Gets the rank number based on the tile coordinate.
         /// </summary>
         /// <param name="tileCoordinate">The tile coordinate to get the rank from.</param>
         /// <returns>An integer rank position.</returns>
         public static int RankIndex(int tileCoordinate)
         {
-            // Return the tile coordinate value bit shifted right by 3
+            // Return the tile coordinate value bit shifted right by 3 (factor of 2^3 which is 8)
             return tileCoordinate >> 3;
         }
 
         /// <summary>
-        /// Gets the file number based on the tile coordinate.
+        ///     Gets the file number based on the tile coordinate.
         /// </summary>
         /// <param name="tileCoordinate">The tile coordinate to get the file from.</param>
         /// <returns>An integer file position.</returns>
         public static int FileIndex(int tileCoordinate)
         {
-            // Return the tile coordinate value ANDed with the binary value of 7
+            // Return the tile coordinate value ANDed with the binary value of 7 (0 to 7 files)
             return tileCoordinate & 0b000111;
         }
     }

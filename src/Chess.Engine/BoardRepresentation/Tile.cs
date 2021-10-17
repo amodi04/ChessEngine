@@ -9,7 +9,6 @@ namespace Engine.BoardRepresentation
     /// </summary>
     public class Tile
     {
-        // Member fields
         private static readonly IDictionary<int, Tile> EmptyTiles = InitialiseEmptyTiles();
         private readonly Piece _piece;
         private readonly TileType _tileType;
@@ -63,8 +62,7 @@ namespace Engine.BoardRepresentation
         private static IDictionary<int, Tile> InitialiseEmptyTiles()
         {
             var emptyTileDictionary = new Dictionary<int, Tile>();
-
-            // Loop through 64 times and create empty tiles.
+            
             for (var i = 0; i < BoardUtilities.NumTiles; i++) emptyTileDictionary[i] = new Tile(i);
 
             return emptyTileDictionary;

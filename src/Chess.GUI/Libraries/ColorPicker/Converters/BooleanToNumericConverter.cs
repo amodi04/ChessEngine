@@ -12,14 +12,14 @@ namespace Chess.GUI.Libraries.ColorPicker.Converters
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            bool cond = (bool)value;
+            var cond = (bool) value;
             return cond ? TrueValue : FalseValue;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
             // TODO - Probably not a good idea to compare doubles
-            double val = (double)value;
+            var val = (double) value;
 
             if (val == TrueValue)
                 return true;
@@ -27,7 +27,6 @@ namespace Chess.GUI.Libraries.ColorPicker.Converters
                 return false;
 
             return AvaloniaProperty.UnsetValue;
-
         }
     }
 }

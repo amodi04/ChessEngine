@@ -6,28 +6,19 @@ using static Engine.BoardRepresentation.BoardUtilities;
 
 namespace Engine.Pieces
 {
+    /// <inheritdoc cref="Piece" />
+    /// Refer to Piece.cs for description of abstractions.
     /// <summary>
     ///     This class contains queen data and methods that it can make such as moving and calculating legal moves.
     /// </summary>
     public sealed class Queen : Piece
     {
-        /// <summary>
-        ///     Constructor to create a queen.
-        /// </summary>
-        /// <param name="piecePosition">The position on the board to create the piece at.</param>
-        /// <param name="pieceCoalition">The colour of the piece.</param>
-        /// <param name="isFirstMove">Sets whether this is the pieces first move.</param>
         public Queen(int piecePosition, Coalition pieceCoalition, bool isFirstMove) :
             base(PieceType.Queen, piecePosition, pieceCoalition, isFirstMove)
         {
             // Empty
         }
-
-        /// <summary>
-        ///     This method generates the legal moves for the queen, given the board.
-        /// </summary>
-        /// <param name="board">The current board state.</param>
-        /// <returns>An IList of moves that can be made.</returns>
+        
         public override IEnumerable<IMove> GenerateLegalMoves(Board board)
         {
             // Directions that a queen can move in. Stored as vector offset because queens are sliding pieces.
@@ -42,34 +33,28 @@ namespace Engine.Pieces
 
             foreach (var vectorOffset in vectorOffsets)
             {
-                // Initialise destination coordinate to piece position
                 var destinationCoordinate = PiecePosition;
 
-                // While the destination coordinate is within the board range
-                // (we want to check all moves in this direction)
+                // Keep looping while the destination coordinate is on the board
                 while (IsValidTileCoordinate(destinationCoordinate))
                 {
-                    // If queen is on an edge case, skip any further generation of moves in this vector offset
+                    // Skip offset evaluation of tile if the bishop is dealing with an edge case
                     if (IsColumnExclusion(destinationCoordinate, vectorOffset)) break;
-
-                    // Step the destination coordinate by the vector offset
+                    
                     destinationCoordinate += vectorOffset;
 
-                    // Skip if not in board range
+                    // Skip to next offset when all valid diagonals in one direction has been covered.
                     if (!IsValidTileCoordinate(destinationCoordinate)) continue;
+                    
                     var tile = board.GetTile(destinationCoordinate);
-
-                    // If tile is empty, add normal move
+                    
                     if (!tile.IsOccupied())
                     {
-                        // Move move
                         moves.Add(MoveFactory.CreateMove(board, this, destinationCoordinate));
                     }
                     else
                     {
-                        // If enemy at tile, add attacking move
                         if (IsEnemyPieceAtTile(tile))
-                            // Attack Move
                             moves.Add(MoveFactory.CreateMove(board, this, destinationCoordinate, MoveType.CaptureMove,
                                 tile.Piece));
                         break;
@@ -79,23 +64,21 @@ namespace Engine.Pieces
 
             return moves;
         }
-
-        /// <summary>
-        ///     This method moves the queen by utilising passed in move data.
-        /// </summary>
-        /// <param name="move">The move struct containing the data needed to make a move.</param>
-        /// <returns>A piece at the destination location.</returns>
+        
         public override Piece MovePiece(IMove move)
         {
             return PieceUtilities.QueenLookup[move.ToCoordinate, move.MovedPiece.PieceCoalition];
         }
 
+        /// <summary>
+        /// Checks if the piece is moving out of bounds.
+        /// </summary>
+        /// <param name="currentPosition">The current position of the piece.</param>
+        /// <param name="offset">How many tiles the piece is moving by.</param>
+        /// <returns>True if moving out of bounds. False otherwise.</returns>
         private static bool IsColumnExclusion(int currentPosition, int offset)
         {
-            // Queen is on special edge case when its position is on the first file
-            // AND the offset is -9, -1 or 7 (going left).
-            // The second special edge case is when its position is on the eighth file
-            // AND the offset is -7, 1 or 9 (going right) 
+            // When the queen is on the edge files and moving out of bounds
             return FileIndex(currentPosition) == 0 && offset is -9 or -1 or 7 ||
                    FileIndex(currentPosition) == 7 && offset is -7 or 1 or 9;
         }

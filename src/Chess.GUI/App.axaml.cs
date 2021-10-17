@@ -6,12 +6,12 @@ using Chess.GUI.Views;
 namespace Chess.GUI
 {
     /// <summary>
-    /// Main application.
+    ///     Main application loop.
     /// </summary>
     public class App : Application
     {
         /// <summary>
-        /// Initialise the front end xaml.
+        ///     Initialises GUI components
         /// </summary>
         public override void Initialize()
         {
@@ -19,18 +19,14 @@ namespace Chess.GUI
         }
 
         /// <summary>
-        /// Called when application has loaded internally.
+        ///     Called when application has loaded internally.
         /// </summary>
         public override void OnFrameworkInitializationCompleted()
         {
-            // If the application is a desktop application
             if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
-            {
-                // Create the main window
+                // Load the main window
                 desktop.MainWindow = new MainWindow();
-            }
-
-            // Call the base completed event
+            
             base.OnFrameworkInitializationCompleted();
         }
     }

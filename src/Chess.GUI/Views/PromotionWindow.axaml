@@ -18,15 +18,15 @@
                     BackgroundSource="Digger"
                     TintColor="Black"
                     TintOpacity="1"
-                    MaterialOpacity="0.65"/>
+                    MaterialOpacity="0.65" />
             </ExperimentalAcrylicBorder.Material>
         </ExperimentalAcrylicBorder>
-        
+
         <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
-            <Button Click="Button_OnClick" Content="Queen" Classes="promotionButton"/>
-            <Button Click="Button_OnClick" Content="Rook" Classes="promotionButton"/>
-            <Button Click="Button_OnClick" Content="Bishop" Classes="promotionButton"/>
-            <Button Click="Button_OnClick" Content="Knight" Classes="promotionButton"/>
+            <Button Click="Button_OnClick" Content="Queen" Classes="promotionButton" />
+            <Button Click="Button_OnClick" Content="Rook" Classes="promotionButton" />
+            <Button Click="Button_OnClick" Content="Bishop" Classes="promotionButton" />
+            <Button Click="Button_OnClick" Content="Knight" Classes="promotionButton" />
         </StackPanel>
     </Panel>
 </Window>

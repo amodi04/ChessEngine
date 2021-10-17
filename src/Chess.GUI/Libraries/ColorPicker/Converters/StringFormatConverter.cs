@@ -9,7 +9,7 @@ namespace Chess.GUI.Libraries.ColorPicker.Converters
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            return String.Format((string)parameter, value);
+            return string.Format((string) parameter, value);
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

@@ -14,39 +14,22 @@ namespace Engine.Pieces
         /// <summary>
         ///     Constructor to create a piece.
         /// </summary>
-        /// <param name="pieceType">The type of piece to create.</param>
+        /// <param name="type">The type of piece to create.</param>
         /// <param name="piecePosition">The position on the board to create the piece at.</param>
         /// <param name="pieceCoalition">The colour of the piece.</param>
         /// <param name="isFirstMove">Sets whether this is the pieces first move.</param>
-        protected Piece(PieceType pieceType, int piecePosition, Coalition pieceCoalition, bool isFirstMove)
+        protected Piece(PieceType type, int piecePosition, Coalition pieceCoalition, bool isFirstMove)
         {
-            PieceType = pieceType;
+            Type = type;
             PiecePosition = piecePosition;
             PieceCoalition = pieceCoalition;
             IsFirstMove = isFirstMove;
         }
-
-        // Member fields
-        public PieceType PieceType { get; }
+        
+        public PieceType Type { get; }
         public int PiecePosition { get; }
         public Coalition PieceCoalition { get; }
         public bool IsFirstMove { get; }
-
-        /// <summary>
-        ///     IEquatable Implementation of Equals.
-        /// </summary>
-        /// <param name="other">The Piece object to compare to.</param>
-        /// <returns>True if equal, false if not.</returns>
-        public bool Equals(Piece other)
-        {
-            // Referential equality checks (same instance)
-            if (ReferenceEquals(null, other)) return false;
-            if (ReferenceEquals(this, other)) return true;
-
-            // Return true if all value types are equal
-            return PieceType == other.PieceType && PiecePosition == other.PiecePosition &&
-                   PieceCoalition == other.PieceCoalition && IsFirstMove == other.IsFirstMove;
-        }
 
         /// <summary>
         ///     Checks if there is an enemy piece at a given tile.
@@ -61,10 +44,10 @@ namespace Engine.Pieces
         /// <summary>
         ///     Gets the string representation of the piece.
         /// </summary>
-        /// <returns>A letter which is uppercase if white or lowercase if black. The letters are defined in PieceTypeExtension.</returns>
+        /// <returns>A single character representing the piece type.</returns>
         public override string ToString()
         {
-            return PieceType.ToAbbreviation(PieceCoalition);
+            return Type.ToAbbreviation(PieceCoalition);
         }
 
         /// <summary>
@@ -81,49 +64,34 @@ namespace Engine.Pieces
         /// <param name="move">The move struct containing the data needed to make a move.</param>
         /// <returns>A piece at the destination location.</returns>
         public abstract Piece MovePiece(IMove move);
-
-        /// <summary>
-        ///     Checks if two objects are equal.
-        /// </summary>
-        /// <param name="obj">The object to compare to.</param>
-        /// <returns>True if equal, false if not.</returns>
+        
+        public bool Equals(Piece other)
+        {
+            if (ReferenceEquals(null, other)) return false;
+            if (ReferenceEquals(this, other)) return true;
+            
+            return Type == other.Type && PiecePosition == other.PiecePosition &&
+                   PieceCoalition == other.PieceCoalition && IsFirstMove == other.IsFirstMove;
+        }
+        
         public override bool Equals(object obj)
         {
-            // Referential equality checks
             if (ReferenceEquals(null, obj)) return false;
             if (ReferenceEquals(this, obj)) return true;
-
-            // If both types are equal and they are equal then return true
+            
             return obj.GetType() == GetType() && Equals((Piece) obj);
         }
-
-        /// <summary>
-        ///     Gets the hash code of the current move struct in memory.
-        /// </summary>
-        /// <returns>The hash code combination of all value types within the struct.</returns>
+        
         public override int GetHashCode()
         {
-            // Combine hash codes of all value types
-            return HashCode.Combine((int) PieceType, PiecePosition, (int) PieceCoalition, IsFirstMove);
+            return HashCode.Combine((int) Type, PiecePosition, (int) PieceCoalition, IsFirstMove);
         }
-
-        /// <summary>
-        ///     Shorthand operator for equal comparison.
-        /// </summary>
-        /// <param name="left">The object to compare.</param>
-        /// <param name="right">The object to compare against.</param>
-        /// <returns>True if equal, false if not.</returns>
+        
         public static bool operator ==(Piece left, Piece right)
         {
             return Equals(left, right);
         }
-
-        /// <summary>
-        ///     Shorthand operator for not equal comparison.
-        /// </summary>
-        /// <param name="left">The object to compare.</param>
-        /// <param name="right">The object to compare against.</param>
-        /// <returns>True if not equal, false if equal.</returns>
+        
         public static bool operator !=(Piece left, Piece right)
         {
             return !Equals(left, right);

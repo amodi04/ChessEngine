@@ -1,5 +1,4 @@
-﻿using System;
-using MathNet.Numerics.LinearAlgebra;
+﻿using MathNet.Numerics.LinearAlgebra;
 using MathNet.Numerics.LinearAlgebra.Double;
 
 
@@ -16,67 +15,69 @@ using MathNet.Numerics.LinearAlgebra.Double;
 namespace Chess.GUI.Libraries.ColorPicker.Structures
 {
     /// <summary>
-    /// Defines the RGB primaries to use when converting XYZ to RGB colorspace.
-    /// This is because XYZ is device-independant.
+    ///     Defines the RGB primaries to use when converting XYZ to RGB colorspace.
+    ///     This is because XYZ is device-independant.
     /// </summary>
     public class CIERGBDefinition
     {
         // Primaries as defined in BT709 standard:
-        public static readonly CIERGBDefinition sRGB = new CIERGBDefinition(
-            new CIEXYYColor(0.64, 0.33),  // red
-            new CIEXYYColor(0.30, 0.60),  // green
-            new CIEXYYColor(0.15, 0.06),  // blue
+        public static readonly CIERGBDefinition sRGB = new(
+            new CIEXYYColor(0.64, 0.33), // red
+            new CIEXYYColor(0.30, 0.60), // green
+            new CIEXYYColor(0.15, 0.06), // blue
             new CIEXYYColor(0.3127, 0.3290) // reference white (D65)
         );
 
         // Primaries as defined by the CIE1931 standard:
-        public static readonly CIERGBDefinition CIERGB = new CIERGBDefinition(
+        public static readonly CIERGBDefinition CIERGB = new(
             new CIEXYYColor(0.735, 0.265),
             new CIEXYYColor(0.274, 0.717),
             new CIEXYYColor(0.167, 0.009),
             new CIEXYYColor(1 / 3.0, 1 / 3.0)
         );
 
-        public CIEXYZColor Red { get; private set; }
-        public CIEXYZColor Green { get; private set; }
-        public CIEXYZColor Blue { get; private set; }
-        public CIEXYZColor White { get; private set; }
-
-        public Matrix<double> rgb2xyz { get; private set; }
-        public Matrix<double> xyz2rgb { get; private set; }
-
 
         public CIERGBDefinition(CIEXYZColor red, CIEXYZColor green, CIEXYZColor blue, CIEXYZColor white)
         {
-            this.Red = red;
-            this.Green = green;
-            this.Blue = blue;
-            this.White = white;
+            Red = red;
+            Green = green;
+            Blue = blue;
+            White = white;
 
             // Calculate the RGB transform model
-            var m = DenseMatrix.OfArray(new double[,] {
+            var m = DenseMatrix.OfArray(new[,]
+            {
                 {Red.X, Green.X, Blue.X},
                 {Red.Y, Green.Y, Blue.Y}, //NB: Y should be 1.0
                 {Red.Z, Green.Z, Blue.Z}
             });
             var mi = m.Inverse();
 
-            var refwhite = (Vector<double>)White;
+            var refwhite = (Vector<double>) White;
             var srgb = mi * refwhite;
 
-            this.rgb2xyz = DenseMatrix.OfArray(new double[,] {
-                {srgb[0]*m[0,0], srgb[1]*m[0,1], srgb[2]*m[0,2]},
-                {srgb[0]*m[1,0], srgb[1]*m[1,1], srgb[2]*m[1,2]},
-                {srgb[0]*m[2,0], srgb[1]*m[2,1], srgb[2]*m[2,2]},
+            rgb2xyz = DenseMatrix.OfArray(new[,]
+            {
+                {srgb[0] * m[0, 0], srgb[1] * m[0, 1], srgb[2] * m[0, 2]},
+                {srgb[0] * m[1, 0], srgb[1] * m[1, 1], srgb[2] * m[1, 2]},
+                {srgb[0] * m[2, 0], srgb[1] * m[2, 1], srgb[2] * m[2, 2]}
             }).Transpose();
-            this.xyz2rgb = rgb2xyz.Inverse();
+            xyz2rgb = rgb2xyz.Inverse();
         }
+
+        public CIEXYZColor Red { get; }
+        public CIEXYZColor Green { get; }
+        public CIEXYZColor Blue { get; }
+        public CIEXYZColor White { get; }
+
+        public Matrix<double> rgb2xyz { get; }
+        public Matrix<double> xyz2rgb { get; }
     }
 
     /// <summary>
-    /// Defines a color using XYZ tristimulus colorspace. Y is equivalent to luminance, all values must be positive.
-    /// All values are linear, but do not represent perceptual linearity.
-    /// XYZ and xyY can be implicitly converted between each other.
+    ///     Defines a color using XYZ tristimulus colorspace. Y is equivalent to luminance, all values must be positive.
+    ///     All values are linear, but do not represent perceptual linearity.
+    ///     XYZ and xyY can be implicitly converted between each other.
     /// </summary>
     public struct CIEXYZColor
     {
@@ -96,20 +97,15 @@ namespace Chess.GUI.Libraries.ColorPicker.Structures
             var rgb = mat * this;
 
             if (limitGamut && (rgb.Maximum() > 1.0 || rgb.Minimum() < 0.0))
-            {
                 // Outside the gamut
                 return new RGBColor(float.NaN, float.NaN, float.NaN);
-            }
-            else
-            {
-                return new RGBColor((float)rgb[0], (float)rgb[1], (float)rgb[2]);
-            }
+            return new RGBColor((float) rgb[0], (float) rgb[1], (float) rgb[2]);
         }
 
         public static CIEXYZColor FromRGB(RGBColor rgb, CIERGBDefinition primaries)
         {
             var mat = primaries.rgb2xyz;
-            var rgbvec = DenseVector.OfArray(new double[] { rgb.r, rgb.g, rgb.b });
+            var rgbvec = DenseVector.OfArray(new double[] {rgb.r, rgb.g, rgb.b});
             var xyz = mat * rgbvec;
             return new CIEXYZColor(xyz[0], xyz[1], xyz[2]);
         }
@@ -121,25 +117,25 @@ namespace Chess.GUI.Libraries.ColorPicker.Structures
 
         public static implicit operator CIEXYZColor(RGBColor rgb)
         {
-            return CIEXYZColor.FromRGB(rgb, CIERGBDefinition.sRGB);
+            return FromRGB(rgb, CIERGBDefinition.sRGB);
         }
 
         public static implicit operator Vector<double>(CIEXYZColor xyz)
         {
-            return DenseVector.OfArray(new double[] { xyz.X, xyz.Y, xyz.Z });
+            return DenseVector.OfArray(new[] {xyz.X, xyz.Y, xyz.Z});
         }
 
- 
+
         public override string ToString()
         {
-            return String.Format("xyz({0:0.00},{1:0.00},{2:0.00})", X, Y, Z);
+            return string.Format("xyz({0:0.00},{1:0.00},{2:0.00})", X, Y, Z);
         }
     }
 
     /// <summary>
-    /// Defines a color using xyY colorspace. Y is luminance, xy is chrominance.
-    /// All values are linear, but do not represent perceptual linearity.
-    /// XYZ and xyY can be implicitly converted between each other.
+    ///     Defines a color using xyY colorspace. Y is luminance, xy is chrominance.
+    ///     All values are linear, but do not represent perceptual linearity.
+    ///     XYZ and xyY can be implicitly converted between each other.
     /// </summary>
     public struct CIEXYYColor
     {
@@ -158,19 +154,17 @@ namespace Chess.GUI.Libraries.ColorPicker.Structures
             {
                 return new CIEXYZColor(0, 0, 0);
             }
-            else
-            {
-                double X, Z;
-                X = (xyy.Y / xyy.y) * xyy.x;
-                Z = (xyy.Y / xyy.y) * (1 - xyy.x - xyy.y);
-                return new CIEXYZColor(X, xyy.Y, Z);
-            }
+
+            double X, Z;
+            X = xyy.Y / xyy.y * xyy.x;
+            Z = xyy.Y / xyy.y * (1 - xyy.x - xyy.y);
+            return new CIEXYZColor(X, xyy.Y, Z);
         }
 
         public static implicit operator CIEXYYColor(CIEXYZColor xyz)
         {
             double x, y, s;
-            s = (xyz.X + xyz.Y + xyz.Z);
+            s = xyz.X + xyz.Y + xyz.Z;
             x = xyz.X / s;
             y = xyz.Y / s;
             return new CIEXYYColor(x, y, xyz.Y);
@@ -178,14 +172,13 @@ namespace Chess.GUI.Libraries.ColorPicker.Structures
 
         public static implicit operator RGBColor(CIEXYYColor xyy)
         {
-            return (RGBColor)(CIEXYZColor)xyy;
+            return (CIEXYZColor) xyy;
         }
 
 
         public override string ToString()
         {
-            return String.Format("xyz({0:0.00},{1:0.00},{2:0.00})", x, y, Y);
+            return string.Format("xyz({0:0.00},{1:0.00},{2:0.00})", x, y, Y);
         }
-
     }
 }

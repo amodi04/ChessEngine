@@ -25,17 +25,15 @@ namespace Engine.Pieces
                 PieceType.Rook => coalition.IsWhite() ? "R" : "r",
                 PieceType.Queen => coalition.IsWhite() ? "Q" : "q",
                 PieceType.King => coalition.IsWhite() ? "K" : "k",
-                // Default case will never be processed
                 _ => "-"
             };
         }
 
         /// <summary>
-        /// Gets the value of the piece.
+        ///     Gets the value of the piece.
         /// </summary>
         /// <param name="pieceType">The piece type to get the value for.</param>
         /// <returns>An integer value of the piece type.</returns>
-        /// <exception cref="ArgumentOutOfRangeException">Thrown when an unknown piece type is used</exception>
         public static int ToValue(this PieceType pieceType)
         {
             return pieceType switch
@@ -46,7 +44,7 @@ namespace Engine.Pieces
                 PieceType.Rook => AISettings.RookValue,
                 PieceType.Queen => AISettings.QueenValue,
                 PieceType.King => 0,
-                _ => throw new ArgumentOutOfRangeException(nameof(pieceType), pieceType, null)
+                _ => 0
             };
         }
     }

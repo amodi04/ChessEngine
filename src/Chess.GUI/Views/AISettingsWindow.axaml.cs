@@ -7,59 +7,50 @@ using static Engine.AI.AISettings;
 namespace Chess.GUI.Views
 {
     /// <summary>
-    /// This class handles UI logic for the AISettings window
+    ///     This class handles UI logic for the AISettings window
     /// </summary>
     public class AISettingsWindow : Window
     {
-        // Member fields
-        private readonly AISettingElement _depth;
-        private readonly AISettingElement _checkmateBonus;
-        private readonly AISettingElement _checkBonus;
-        private readonly AISettingElement _castleBonus;
-        private readonly AISettingElement _mobilityMultiplier;
-        private readonly AISettingElement _pieceMultiplier;
-        private readonly AISettingElement _attackMultiplier;
-        private readonly AISettingElement _depthMultiplier;
-        private readonly AISettingElement _twoBishopsBonus;
-        private readonly AISettingElement _twoRooksBonus;
-
-        private readonly AISettingElement _pawnValue;
-        private readonly AISettingElement _knightValue;
-        private readonly AISettingElement _bishopValue;
-        private readonly AISettingElement _rookValue;
-        private readonly AISettingElement _queenValue;
+        private readonly AISettingControl _attackMultiplier;
+        private readonly AISettingControl _bishopValue;
+        private readonly AISettingControl _castleBonus;
+        private readonly AISettingControl _checkBonus;
+        private readonly AISettingControl _checkmateBonus;
+        private readonly AISettingControl _depth;
+        private readonly AISettingControl _depthMultiplier;
+        private readonly AISettingControl _knightValue;
+        private readonly AISettingControl _mobilityMultiplier;
+        private readonly AISettingControl _pawnValue;
+        private readonly AISettingControl _pieceMultiplier;
+        private readonly AISettingControl _queenValue;
+        private readonly AISettingControl _rookValue;
+        private readonly AISettingControl _twoBishopsBonus;
+        private readonly AISettingControl _twoRooksBonus;
 
         private readonly CheckBox _useBetterEvaluator;
         
-        /// <summary>
-        /// Constructor
-        /// </summary>
         public AISettingsWindow()
         {
-            // Initialise components first
             InitializeComponent();
-            
-            // Find all of the elements required from the xaml
-            _depth = this.Find<AISettingElement>("Depth");
-            _checkmateBonus = this.Find<AISettingElement>("CheckmateBonus");
-            _checkBonus = this.Find<AISettingElement>("CheckBonus");
-            _castleBonus = this.Find<AISettingElement>("CastleBonus");
-            _mobilityMultiplier = this.Find<AISettingElement>("MobilityMultiplier");
-            _pieceMultiplier = this.Find<AISettingElement>("PieceMultiplier");
-            _attackMultiplier = this.Find<AISettingElement>("AttackMultiplier");
-            _depthMultiplier = this.Find<AISettingElement>("DepthMultiplier");
-            _twoBishopsBonus = this.Find<AISettingElement>("TwoBishopsBonus");
-            _twoRooksBonus = this.Find<AISettingElement>("TwoRooksBonus");
-            
-            _pawnValue = this.Find<AISettingElement>("PawnValue");
-            _knightValue = this.Find<AISettingElement>("KnightValue");
-            _bishopValue = this.Find<AISettingElement>("BishopValue");
-            _rookValue = this.Find<AISettingElement>("RookValue");
-            _queenValue = this.Find<AISettingElement>("QueenValue");
 
+            // Find all of the elements required from the xaml
+            _depth = this.Find<AISettingControl>("Depth");
+            _checkmateBonus = this.Find<AISettingControl>("CheckmateBonus");
+            _checkBonus = this.Find<AISettingControl>("CheckBonus");
+            _castleBonus = this.Find<AISettingControl>("CastleBonus");
+            _mobilityMultiplier = this.Find<AISettingControl>("MobilityMultiplier");
+            _pieceMultiplier = this.Find<AISettingControl>("PieceMultiplier");
+            _attackMultiplier = this.Find<AISettingControl>("AttackMultiplier");
+            _depthMultiplier = this.Find<AISettingControl>("DepthMultiplier");
+            _twoBishopsBonus = this.Find<AISettingControl>("TwoBishopsBonus");
+            _twoRooksBonus = this.Find<AISettingControl>("TwoRooksBonus");
+            _pawnValue = this.Find<AISettingControl>("PawnValue");
+            _knightValue = this.Find<AISettingControl>("KnightValue");
+            _bishopValue = this.Find<AISettingControl>("BishopValue");
+            _rookValue = this.Find<AISettingControl>("RookValue");
+            _queenValue = this.Find<AISettingControl>("QueenValue");
             _useBetterEvaluator = this.Find<CheckBox>("UseBetterEvaluator");
             
-            // Set the values, passing in the current AISettings data
             SetValues(Depth, CheckmateBonus, CheckBonus, CastleBonus, MobilityMultiplier, PieceMultiplier,
                 AttackMultiplier, DepthMultiplier, TwoBishopsBonus, TwoRooksBonus, PawnValue, KnightValue, BishopValue,
                 RookValue, QueenValue, UseBetterEvaluator);
@@ -69,7 +60,7 @@ namespace Chess.GUI.Views
         }
 
         /// <summary>
-        /// Sets the values on the slider from the passed in data.
+        ///     Sets the values on the slider from the passed in data.
         /// </summary>
         /// <param name="depth">Depth value.</param>
         /// <param name="checkmateBonus">Checkmate Bonus value.</param>
@@ -113,16 +104,15 @@ namespace Chess.GUI.Views
         }
         
         /// <summary>
-        /// Initialises components
+        ///     Initialises GUI components
         /// </summary>
         private void InitializeComponent()
         {
-            // Load xaml
             AvaloniaXamlLoader.Load(this);
         }
-        
+
         /// <summary>
-        /// Restore the default values of the AISettings.
+        ///     Restore the default values of the AISettings.
         /// </summary>
         /// <param name="sender">The object that owns the event.</param>
         /// <param name="e">The event.</param>
@@ -133,9 +123,9 @@ namespace Chess.GUI.Views
                 100, 20, 50, 100, 300, 320, 500,
                 900, false);
         }
-        
+
         /// <summary>
-        /// Called when the confirm button is clicked.
+        ///     Called when the confirm button is clicked.
         /// </summary>
         /// <param name="sender">The object that owns the event.</param>
         /// <param name="e">The event.</param>
@@ -158,14 +148,13 @@ namespace Chess.GUI.Views
             BishopValue = _bishopValue.SliderValue;
             RookValue = _rookValue.SliderValue;
             QueenValue = _queenValue.SliderValue;
-            
+
             // TODO: Save to JSON
-            // Close the window
             Close();
         }
 
         /// <summary>
-        /// Called when the checkbox for using the better evaluator is checked
+        ///     Called when the checkbox for using the better evaluator is checked
         /// </summary>
         /// <param name="sender">The object that owns the event.</param>
         /// <param name="e">The event.</param>
@@ -175,7 +164,7 @@ namespace Chess.GUI.Views
         }
 
         /// <summary>
-        /// Called when the checkbox for using the better evaluator is unchecked
+        ///     Called when the checkbox for using the better evaluator is unchecked
         /// </summary>
         /// <param name="sender">The object that owns the event.</param>
         /// <param name="e">The event.</param>

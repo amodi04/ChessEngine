@@ -1,115 +1,105 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using Chess.GUI.Models;
 using Chess.GUI.Views;
 using Engine.AI;
-using Engine.BoardRepresentation;
 using Engine.MoveGeneration;
 
 namespace Chess.GUI
 {
     /// <summary>
-    /// This class observes the current game in progress.
+    ///     This class observes the current game in progress.
     /// </summary>
     public class GameObserver
     {
-        // Member fields
         private readonly MainWindow _mainWindow;
-        public AIPlayer AIPlayer { get; }
 
         /// <summary>
-        /// Constructor creates a GameObserver object.
+        ///     Constructor creates a GameObserver object.
         /// </summary>
         /// <param name="mainWindow">The main window to observer.</param>
         public GameObserver(MainWindow mainWindow)
         {
             _mainWindow = mainWindow;
-            
-            // Create a new AIPlayer passing in the current board in play
-            AIPlayer = new AIPlayer(mainWindow.BoardModel);
-            
+            _aiPlayer = new AIPlayer();
+
             // Subscribe the HandleUpdate method to the main window OnGUIUpdate event
             _mainWindow.OnGuiUpdate += HandleUpdate;
-            
+
             // Subscribe the OnSearchComplete method to the AIPlayer BackgroundWorker RunWorkerCompleted event
-            AIPlayer.Worker.RunWorkerCompleted += OnSearchComplete;
+            _aiPlayer.Worker.RunWorkerCompleted += OnSearchComplete;
         }
-        
+
+        private readonly AIPlayer _aiPlayer;
+
         /// <summary>
-        /// Handles an update in the GUI.
+        ///     Handles an update in the GUI.
         /// </summary>
         /// <param name="sender">The object that owns the event.</param>
         /// <param name="args">Arguments passed into the event.</param>
         private void HandleUpdate(object? sender, EventArgs args)
         {
             // If the ai player is calculating move
-            if (AIPlayer.Worker.IsBusy)
+            if (_aiPlayer.Worker.IsBusy)
             {
                 // Cancel its process
-                AIPlayer.Worker.CancelAsync();
+                _aiPlayer.Worker.CancelAsync();
             }
             else
             {
+                // Calculate list of all moves played
+                var prevMoves = new List<string>();
+                foreach (var move in _mainWindow.MoveLogViewModel.Moves)
+                {
+                    prevMoves.Add(move.WhiteMove);
+                    if (move.BlackMove is not null)
+                        prevMoves.Add(move.BlackMove);
+                }
+                
                 // Run the BackgroundWorker (invokes the DoWork event)
-                // Pass in the Board as an argument
-                AIPlayer.Worker.RunWorkerAsync(_mainWindow.BoardModel);
+                _aiPlayer.Worker.RunWorkerAsync(Tuple.Create(_mainWindow.BoardModel, prevMoves));
             }
         }
 
         /// <summary>
-        /// Called when the search for the move has completed.
+        ///     Called when the search for the move has completed.
         /// </summary>
         /// <param name="sender">The object that owns the event.</param>
         /// <param name="args">Arguments passed into the event.</param>
         private void OnSearchComplete(object? sender, RunWorkerCompletedEventArgs args)
         {
-            // If the Current player is in checkmate or stalemate, return because the game is over.
+            // Game over
             if (_mainWindow.BoardModel.CurrentPlayer.IsInCheckmate() ||
                 _mainWindow.BoardModel.CurrentPlayer.IsInStalemate()) return;
             
-            // If there is an error
             if (args.Error != null)
-            {
                 // Output error to console
                 Debug.WriteLine(args.Error.ToString());
-            }
             
-            // Get the best move from the argument passed in
             IMove bestMove = (IMove) args.Result!;
             
-            // Make the move on the main board
-            BoardTransition boardTransition =
-                _mainWindow.BoardModel.CurrentPlayer.MakeMove(bestMove);
-
-            // If the move completed
+            var boardTransition = _mainWindow.BoardModel.CurrentPlayer.MakeMove(bestMove);
+            
             if (boardTransition.Status == MoveStatus.Done)
             {
-                // Set the new board
                 _mainWindow.BoardModel = boardTransition.ToBoard;
-                
-                // Call a move made update event on the main window
-                _mainWindow.MoveMadeUpdate();
-                
-                // Update move stack
                 _mainWindow.MoveStack.Push(bestMove);
-                Debug.WriteLine($"{_mainWindow.BoardModel.PlyCount}");
                 
-                // Update the move log
                 _mainWindow.MoveLogViewModel.UpdateMoveLog(bestMove, boardTransition);
-                _mainWindow.MoveLogView.DataGrid.ScrollIntoView(_mainWindow.MoveLogView.DataGrid.Items.Cast<MoveModel>().Last(), null);
+                _mainWindow.MoveLogView.DataGrid.ScrollIntoView(
+                    _mainWindow.MoveLogView.DataGrid.Items.Cast<MoveModel>().Last(), null);
+                
+                _mainWindow.MoveMadeUpdate();
             }
-            
-            // Draw the board again
             _mainWindow.DrawBoard();
-           
-            // Check if endgame
+            
+            // Game over
             if (_mainWindow.BoardModel.CurrentPlayer.IsInCheckmate() ||
                 _mainWindow.BoardModel.CurrentPlayer.IsInStalemate())
-            {
                 _mainWindow.ShowEndgameWindow();
-            }
         }
     }
 }

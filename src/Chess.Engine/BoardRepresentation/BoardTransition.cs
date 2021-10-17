@@ -7,7 +7,6 @@ namespace Engine.BoardRepresentation
     /// </summary>
     public readonly struct BoardTransition
     {
-        // Member fields
         public Board FromBoard { get; }
         public Board ToBoard { get; }
         public MoveStatus Status { get; }

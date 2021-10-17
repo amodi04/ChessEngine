@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using Engine.IO;
@@ -17,7 +16,7 @@ namespace Engine.BoardRepresentation
     {
         // Member fields
         private readonly Tile[] _board;
-        
+
         /// <summary>
         ///     Internal constructor - only used by board builder.
         /// </summary>
@@ -25,32 +24,24 @@ namespace Engine.BoardRepresentation
         internal Board(BoardBuilder boardBuilder)
         {
             _board = InitialiseBoard(boardBuilder);
-
-            // Calculate each colour's pieces for any board instance
+            
             WhitePieces = CalculateActivePieces(_board, Coalition.White);
             BlackPieces = CalculateActivePieces(_board, Coalition.Black);
             AllPieces = WhitePieces.Concat(BlackPieces);
-
-            // Get the en passant pawn from the board builder and set it internally
+            
             EnPassantPawn = boardBuilder.EnPassantPawn;
             
-            // Calculate each colour's legal moves for any board instance
             var whiteMoves = CalculateLegalMoves(WhitePieces);
             var blackMoves = CalculateLegalMoves(BlackPieces);
-
-            // Initialise players
-            WhitePlayer = new Player.Player(Coalition.White, this, whiteMoves, blackMoves);
-            BlackPlayer = new Player.Player(Coalition.Black, this, blackMoves, whiteMoves);
-            
-            // Store all possible moves for the current board
             AllMoves = WhitePlayer.Moves.Concat(BlackPlayer.Moves);
             
-            // Set the current player via the board builder
+            WhitePlayer = new Player.Player(Coalition.White, this, whiteMoves, blackMoves);
+            BlackPlayer = new Player.Player(Coalition.Black, this, blackMoves, whiteMoves);
             CurrentPlayer = boardBuilder.CoalitionToMove.ChoosePlayer(WhitePlayer, BlackPlayer);
+            
             PlyCount = boardBuilder.PlyCount;
         }
-
-        // Properties
+        
         public IEnumerable<Piece> BlackPieces { get; }
         public IEnumerable<Piece> WhitePieces { get; }
         public IEnumerable<Piece> AllPieces { get; }
@@ -59,7 +50,7 @@ namespace Engine.BoardRepresentation
         public Player.Player CurrentPlayer { get; }
         public IEnumerable<IMove> AllMoves { get; }
         public Pawn EnPassantPawn { get; }
-        public int PlyCount { get; set; }
+        public int PlyCount { get; }
 
         /// <summary>
         ///     Gets all pieces on the current board.
@@ -70,12 +61,12 @@ namespace Engine.BoardRepresentation
         private static IEnumerable<Piece> CalculateActivePieces(IEnumerable<Tile> board, Coalition coalition)
         {
             var pieces = new List<Piece>();
-
-            // Loop through each tile
+            
             foreach (var tile in board)
             {
                 // If empty, skip to next tile
                 if (!tile.IsOccupied()) continue;
+                
                 var piece = tile.Piece;
                 // If piece is ally to passed in colour, then add it.
                 if (piece.PieceCoalition == coalition) pieces.Add(piece);
@@ -93,15 +84,11 @@ namespace Engine.BoardRepresentation
         {
             var legalMoves = new List<IMove>();
             
-            // Loop through all pieces
+            // Foreach piece, generate their moves and add it to the list of legal moves
             foreach (var piece in pieces)
-                
-                // Loop through each move the piece can make
                 foreach (var legalMove in piece.GenerateLegalMoves(this))
-                    
-                    // Add it to the list
                     legalMoves.Add(legalMove);
-            
+
             return legalMoves;
         }
 
@@ -114,12 +101,12 @@ namespace Engine.BoardRepresentation
         {
             var tiles = new Tile[BoardUtilities.NumTiles];
             
-            // Create board by looping through and setting tile based on board builder configuration
             for (var i = 0; i < BoardUtilities.NumTiles; i++)
+                // Create tile at index based on board builder configuration
                 tiles[i] = Tile.CreateTile(i, boardBuilder.BoardConfiguration[i]);
             return tiles;
         }
-        
+
         /// <summary>
         ///     Generates the standard board of chess.
         /// </summary>
@@ -130,12 +117,12 @@ namespace Engine.BoardRepresentation
         }
 
         /// <summary>
-        /// Creates a board from a custom fen string.
+        ///     Creates a board from a custom fen string.
         /// </summary>
         /// <param name="fen">The fen string to use.</param>
         /// <returns>A board parsed from the fen string.</returns>
         public static Board CreateBoardFromFen(string fen)
-        { 
+        {
             return FenParser.PositionFromFen(fen);
         }
 
@@ -146,7 +133,6 @@ namespace Engine.BoardRepresentation
         /// <returns>Tile data at given position.</returns>
         public Tile GetTile(int tileCoordinate)
         {
-            // Return the tile at passed in index
             return _board[tileCoordinate];
         }
 
@@ -159,10 +145,9 @@ namespace Engine.BoardRepresentation
             var stringBuilder = new StringBuilder();
             for (var i = 0; i < BoardUtilities.NumTiles; i++)
             {
-                // Get the string of the tile at current index
+                // Get the string of the tile at current index (reflected so that a1 starts bottom left)
                 var tile = _board[BoardUtilities.ReflectBoard[i]].ToString();
-
-                // Append the tile string with a padding of 3
+                
                 stringBuilder.Append(tile.PadRight(3));
 
                 // If the current index + 1 (because of zero offset) mod 8 (tiles per rank) is 0 then create new line
@@ -173,6 +158,8 @@ namespace Engine.BoardRepresentation
             // Reverse string so that it is from white's perspective
             var charArray = stringBuilder.ToString().ToCharArray();
             Array.Reverse(charArray);
+            
+            // Return string representation of board
             return new string(charArray);
         }
     }

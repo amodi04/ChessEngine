@@ -5,14 +5,12 @@ using Engine.Pieces;
 namespace Engine.MoveGeneration.Types
 {
     /// <inheritdoc cref="IMove" />
+    /// Refer to IMove.cs for description of abstractions.
     /// <summary>
     ///     This struct stores normal move data.
     /// </summary>
     public readonly struct NormalMove : IMove, IEquatable<NormalMove>
     {
-        /// <summary>
-        ///     Move Data
-        /// </summary>
         public Board Board { get; }
         public int FromCoordinate { get; }
         public int ToCoordinate { get; }
@@ -41,45 +39,32 @@ namespace Engine.MoveGeneration.Types
             foreach (var piece in Board.AllPieces)
                 if (!MovedPiece.Equals(piece))
                     boardBuilder.SetPieceAtTile(piece);
-
-            // Move the moved piece
-            boardBuilder.SetPieceAtTile(MovedPiece.MovePiece(this));
             
+            boardBuilder.SetPieceAtTile(MovedPiece.MovePiece(this));
+
             // If the moved piece has moved 2 tiles forwards and the piece is a pawn (only a pawn jump)
             if ((ToCoordinate - FromCoordinate == 16 || ToCoordinate - FromCoordinate == -16) && MovedPiece is Pawn)
-            {
-                // Set the en passant pawn to this piece
-                boardBuilder.SetEnPassantPawn((Pawn)MovedPiece.MovePiece(this));
-            }
+                boardBuilder.SetEnPassantPawn((Pawn) MovedPiece.MovePiece(this));
             
-            // Set the next player to move
-            boardBuilder.SetCoalitionToMove(Board.CurrentPlayer.GetOpponent().Coalition).SetPlyCount(Board.PlyCount + 1);
-
-            // Build the board
+            boardBuilder.SetCoalitionToMove(Board.CurrentPlayer.GetOpponent().Coalition)
+                .SetPlyCount(Board.PlyCount + 1);
+            
             return boardBuilder.BuildBoard();
         }
-
-        /// <summary>
-        ///     IEquatable Implementation of Equals.
-        /// </summary>
-        /// <param name="other">The NormalMove struct to compare to.</param>
-        /// <returns>True if equal, false if not.</returns>
+        
         public bool Equals(NormalMove other)
         {
-            // Return true if all value types are equal
             return Equals(Board, other.Board) && FromCoordinate == other.FromCoordinate &&
                    ToCoordinate == other.ToCoordinate && Equals(MovedPiece, other.MovedPiece);
         }
 
         public override bool Equals(object obj)
         {
-            // Return true if object is of type NormalMove and they are equal
             return obj is NormalMove other && Equals(other);
         }
 
         public override int GetHashCode()
         {
-            // Combine the hash codes of all value types stored
             return HashCode.Combine(Board, FromCoordinate, ToCoordinate, MovedPiece);
         }
 

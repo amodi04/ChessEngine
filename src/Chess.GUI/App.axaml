@@ -5,18 +5,18 @@
     <!-- Application Styles -->
     <Application.Styles>
         <!-- Set dark theme to application -->
-        <FluentTheme Mode="Dark"/>
-        <StyleInclude Source="avares://Avalonia.Controls.DataGrid/Themes/Fluent.xaml"/>
+        <FluentTheme Mode="Dark" />
+        <StyleInclude Source="avares://Avalonia.Controls.DataGrid/Themes/Fluent.xaml" />
         <!-- Set style for move log cells -->
         <Style Selector="DataGridCell.moveLogStyle">
             <Setter Property="HorizontalAlignment" Value="Center" />
         </Style>
         <!-- Set style for the buttons on the promotion dialogue -->
         <Style Selector="Button.promotionButton">
-            <Setter Property="Width" Value="100"/>
-            <Setter Property="Height" Value="60"/>
-            <Setter Property="HorizontalContentAlignment" Value="Center"/>
-            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Width" Value="100" />
+            <Setter Property="Height" Value="60" />
+            <Setter Property="HorizontalContentAlignment" Value="Center" />
+            <Setter Property="VerticalContentAlignment" Value="Center" />
         </Style>
         <!-- Set style for the text box acting as labels on the fen input/output dialogues -->
         <Style Selector="TextBox.textBoxAsLabel">
@@ -25,10 +25,10 @@
             <Setter Property="TextWrapping" Value="Wrap" />
         </Style>
         <!-- Set style for the the sliders in the AI Setting window -->
-        <Style Selector="views|AISettingElement">
-            <Setter Property="Margin" Value="20, 0, 0, 0"/>
-            <Setter Property="Width" Value="400"/>
-            <Setter Property="VerticalAlignment" Value="Center"/>
+        <Style Selector="views|AISettingControl">
+            <Setter Property="Margin" Value="20, 0, 0, 0" />
+            <Setter Property="Width" Value="400" />
+            <Setter Property="VerticalAlignment" Value="Center" />
         </Style>
     </Application.Styles>
 </Application>

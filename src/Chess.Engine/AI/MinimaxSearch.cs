@@ -6,7 +6,7 @@ using Engine.Player;
 namespace Engine.AI
 {
     /// <summary>
-    /// Class responsible for searching through moves.
+    ///     Class responsible for searching through moves.
     /// </summary>
     public class MinimaxSearch
     {
@@ -16,7 +16,7 @@ namespace Engine.AI
         private int _movesEvaluated;
 
         /// <summary>
-        /// Constructor
+        ///     Constructor
         /// </summary>
         /// <param name="depth">The depth for the search to use.</param>
         public MinimaxSearch(int depth)
@@ -28,30 +28,30 @@ namespace Engine.AI
         }
 
         /// <summary>
-        /// Gets the move to execute by calculating score.
+        ///     Gets the move to execute by calculating score.
         /// </summary>
         /// <param name="board">The board to execute the move on.</param>
         /// <returns>A move to execute.</returns>
         public IMove SearchMove(Board board)
         {
             // Initialise the max evaluation to a minimum
-            int maxEval = int.MinValue;
-            
+            var maxEval = int.MinValue;
+
             // Initialise the min evaluation to a maximum
-            int minEval = int.MaxValue;
-            
+            var minEval = int.MaxValue;
+
             IMove bestMove = null;
             _movesEvaluated = 0;
-            
+
             var watch = new Stopwatch();
             watch.Start();
-            
+
             // Loop through each legal move that can be made for the current player
             foreach (var move in board.CurrentPlayer.Moves)
             {
                 // Make the move
-                BoardTransition boardTransition = board.CurrentPlayer.MakeMove(move);
-                
+                var boardTransition = board.CurrentPlayer.MakeMove(move);
+
                 // If the move was completed
                 if (boardTransition.Status == MoveStatus.Done)
                 {
@@ -67,31 +67,32 @@ namespace Engine.AI
                     {
                         // Set the new max evaluation
                         maxEval = currentEval;
-                        
+
                         // Set the best move
                         bestMove = move;
-                        
-                    // Else if the player is black and the current evaluation is less than the min evaluation
-                    } else if (!board.CurrentPlayer.Coalition.IsWhite() && currentEval <= minEval)
+
+                        // Else if the player is black and the current evaluation is less than the min evaluation
+                    }
+                    else if (!board.CurrentPlayer.Coalition.IsWhite() && currentEval <= minEval)
                     {
                         // Set the new min evaluation
                         minEval = currentEval;
-                        
+
                         // Set the best move
                         bestMove = move;
                     }
                 }
             }
-            
+
             watch.Stop();
             Debug.WriteLine($"Evaluated {_movesEvaluated} moves in {watch.ElapsedMilliseconds}ms");
-            
+
             // Return the best move
             return bestMove;
         }
 
         /// <summary>
-        /// Minimises the score on the board.
+        ///     Minimises the score on the board.
         /// </summary>
         /// <param name="board">The board to minimise.</param>
         /// <param name="depth">The depth to search at.</param>
@@ -107,26 +108,24 @@ namespace Engine.AI
             }
 
             // Initialise the minimum value to the maximum value
-            int minEval = int.MaxValue;
-            
+            var minEval = int.MaxValue;
+
             // Loop through each available move
-            foreach (IMove move in board.CurrentPlayer.Moves)
+            foreach (var move in board.CurrentPlayer.Moves)
             {
                 // Make the move
-                BoardTransition boardTransition = board.CurrentPlayer.MakeMove(move);
-                
+                var boardTransition = board.CurrentPlayer.MakeMove(move);
+
                 // If the move completed
                 if (boardTransition.Status == MoveStatus.Done)
                 {
                     // Maximise the board
-                    int currentEval = Maximise(boardTransition.ToBoard, depth - 1);
-                    
+                    var currentEval = Maximise(boardTransition.ToBoard, depth - 1);
+
                     // If the evaluation is less than the minimum evaluation
                     if (currentEval <= minEval)
-                    {
                         // Set the current minimum to the new minimum 
                         minEval = currentEval;
-                    }
                 }
             }
 
@@ -135,7 +134,7 @@ namespace Engine.AI
         }
 
         /// <summary>
-        /// Maximises the score on the board.
+        ///     Maximises the score on the board.
         /// </summary>
         /// <param name="board">The board to maximise.</param>
         /// <param name="depth">The depth to search at.</param>
@@ -150,26 +149,24 @@ namespace Engine.AI
             }
 
             // Initialise the maximum value to the minimum value
-            int maxEval = int.MinValue;
-            
+            var maxEval = int.MinValue;
+
             // Loop through each available move
-            foreach (IMove move in board.CurrentPlayer.Moves)
+            foreach (var move in board.CurrentPlayer.Moves)
             {
                 // Make the move
-                BoardTransition boardTransition = board.CurrentPlayer.MakeMove(move);
-                
+                var boardTransition = board.CurrentPlayer.MakeMove(move);
+
                 // If the move completed
                 if (boardTransition.Status == MoveStatus.Done)
                 {
                     // Minimise the board
-                    int currentEval = Minimise(boardTransition.ToBoard, depth - 1);
-                    
+                    var currentEval = Minimise(boardTransition.ToBoard, depth - 1);
+
                     // If the evaluation is more than the maximum evaluation
                     if (currentEval >= maxEval)
-                    {
                         // Set the current maximum to the new maximum 
                         maxEval = currentEval;
-                    }
                 }
             }
 
@@ -178,7 +175,7 @@ namespace Engine.AI
         }
 
         /// <summary>
-        /// Checks if the game has ended.
+        ///     Checks if the game has ended.
         /// </summary>
         /// <param name="board">The board to check.</param>
         /// <returns>True if the player is in checkmate or in stalemate.</returns>

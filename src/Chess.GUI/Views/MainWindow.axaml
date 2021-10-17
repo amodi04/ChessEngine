@@ -14,7 +14,7 @@
         <!-- Sets the background of the window -->
         <ExperimentalAcrylicBorder IsHitTestVisible="False">
             <ExperimentalAcrylicBorder.Material>
-                <ExperimentalAcrylicMaterial 
+                <ExperimentalAcrylicMaterial
                     BackgroundSource="Digger"
                     TintColor="Black"
                     TintOpacity="1"
@@ -28,51 +28,51 @@
                 <Menu.ItemsPanel>
                     <!-- Allow items in menu to take up the entire width of the window -->
                     <ItemsPanelTemplate>
-                        <DockPanel HorizontalAlignment="Stretch"/>
+                        <DockPanel HorizontalAlignment="Stretch" />
                     </ItemsPanelTemplate>
                 </Menu.ItemsPanel>
                 <!-- Defines the game menu -->
                 <MenuItem Header="Game">
-                    <MenuItem Header="New" Click="NewGame_OnClick"/>
+                    <MenuItem Header="New" Click="NewGame_OnClick" />
                     <MenuItem Header="Load">
-                        <MenuItem Header="From FEN" Click="FromFEN_OnClick"/>
-                        <MenuItem Header="From PGN"/>
+                        <MenuItem Header="From FEN" Click="FromFEN_OnClick" />
+                        <MenuItem Header="From PGN" />
                     </MenuItem>
                     <MenuItem Header="Save">
-                        <MenuItem Header="To FEN" Click="ToFEN_OnClick"/>
-                        <MenuItem Header="To PGN"/>
+                        <MenuItem Header="To FEN" Click="ToFEN_OnClick" />
+                        <MenuItem Header="To PGN" />
                     </MenuItem>
-                    <Separator/>
-                    <MenuItem Header="_Exit" Click="QuitMenuItem_OnClick"/>
+                    <Separator />
+                    <MenuItem Header="_Exit" Click="QuitMenuItem_OnClick" />
                 </MenuItem>
                 <!-- Defines the edit menu -->
                 <MenuItem Header="Edit">
                     <MenuItem Header="Preferences">
-                        <MenuItem Header="Change Light Tile Colour" Click="ChangeTileColours_OnClick"/>
-                        <MenuItem Header="Change Dark Tile Colour" Click="ChangeTileColours_OnClick"/>
-                        <MenuItem Header="Reset Tile Colours" Click="ResetTileColours_OnClick"/>
-                        <MenuItem Header="Flip Board" Click="FlipBoardMenuItem_OnClick"/>
-                        <MenuItem Header="Highlight Legal Moves" Click="HighlightLegalMovesMenuItem_OnClick"/>
+                        <MenuItem Header="Change Light Tile Colour" Click="ChangeTileColours_OnClick" />
+                        <MenuItem Header="Change Dark Tile Colour" Click="ChangeTileColours_OnClick" />
+                        <MenuItem Header="Reset Tile Colours" Click="ResetTileColours_OnClick" />
+                        <MenuItem Header="Flip Board" Click="FlipBoardMenuItem_OnClick" />
+                        <MenuItem Header="Highlight Legal Moves" Click="HighlightLegalMovesMenuItem_OnClick" />
                     </MenuItem>
-                    <Separator/>
-                    <MenuItem Header="Configure AI settings" Click="ConfigureAISettings_OnClick"/>
+                    <Separator />
+                    <MenuItem Header="Configure AI settings" Click="ConfigureAISettings_OnClick" />
                 </MenuItem>
                 <!-- Defines the about menu -->
                 <MenuItem Header="About">
-                    <MenuItem Header="Version"/>
-                    <MenuItem Header="Author"/>
+                    <MenuItem Header="Version" />
+                    <MenuItem Header="Author" />
                 </MenuItem>
                 <MenuItem HorizontalAlignment="Right">
                     <MenuItem.Header>
-                        <TextBlock Text="Chess Status"></TextBlock>
+                        <TextBlock Text="Chess Status" />
                     </MenuItem.Header>
                 </MenuItem>
             </Menu>
-            
+
             <Grid ColumnDefinitions="*, *, *, *, *">
                 <!-- The captured pieces panel is docked left -->
-                <views:CapturedPiecesPanel Grid.Column="0" x:Name="CapturedPiecesPanel"/>
-                
+                <views:CapturedPiecesPanel Grid.Column="0" x:Name="CapturedPiecesPanel" />
+
                 <!-- A general box to keep the board in with a margin -->
                 <Viewbox Grid.Column="1" Grid.ColumnSpan="3" Margin="20" HorizontalAlignment="Center">
                     <Border BorderThickness="0.1" BorderBrush="Black">
@@ -81,12 +81,12 @@
                     Grid is keyed with "BoardGrid" so it can be accessed in the code behind
                      -->
                         <UniformGrid Rows="8" Columns="8" x:Name="BoardGrid" VerticalAlignment="Bottom"
-                                     HorizontalAlignment="Left"/>
+                                     HorizontalAlignment="Left" />
                     </Border>
                 </Viewbox>
-                
+
                 <!-- The move log is docked right -->
-                <views:MoveLogView Grid.Column="4" x:Name="MoveLogView"/>
+                <views:MoveLogView Grid.Column="4" x:Name="MoveLogView" />
             </Grid>
         </DockPanel>
     </Panel>

@@ -13,7 +13,7 @@
         ExtendClientAreaChromeHints="-1"
         WindowStartupLocation="CenterOwner">
     <Design.DataContext>
-        <vm:EndgameWindowViewModel/>
+        <vm:EndgameWindowViewModel />
     </Design.DataContext>
     <Panel>
         <!-- Set Background -->
@@ -26,14 +26,14 @@
                     MaterialOpacity="0.65" />
             </ExperimentalAcrylicBorder.Material>
         </ExperimentalAcrylicBorder>
-        
+
         <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
-            <Label Content="Game Over" FontSize="60" Margin="15" HorizontalAlignment="Center"/>
+            <Label Content="Game Over" FontSize="60" Margin="15" HorizontalAlignment="Center" />
             <Label Content="{Binding EndgameStatus}" FontSize="48" Margin="15"
-                   HorizontalAlignment="Center"/>
-            
+                   HorizontalAlignment="Center" />
+
             <Button Content="Close" Margin="10" HorizontalAlignment="Center" FontSize="32"
-                    Click="CloseButton_OnClick"/>
+                    Click="CloseButton_OnClick" />
         </StackPanel>
     </Panel>
 </Window>

@@ -3,25 +3,22 @@ using ReactiveUI;
 
 namespace Chess.GUI.ViewModels
 {
+    /// <summary>
+    /// TileColourPickerWindow View Model class. Responsible for passing data in and out of window.
+    /// </summary>
     public class TileColourPickerWindowViewModel : ViewModelBase
     {
-        // Backing fields
         private RGBColor _selectedColor;
+        
+        public TileColourPickerWindowViewModel()
+        {
+            SelectedColor = new RGBColor();
+        }
 
         public RGBColor SelectedColor
         {
-            // Return selected colour for getter
             get => _selectedColor;
-            
-            // Set the value and raise the set event so that binding can occur
             set => this.RaiseAndSetIfChanged(ref _selectedColor, value);
-        }
-
-        // Constructor
-        public TileColourPickerWindowViewModel()
-        {
-            // Create new RGBColor struct to store colour data
-            SelectedColor = new RGBColor();
         }
     }
 }

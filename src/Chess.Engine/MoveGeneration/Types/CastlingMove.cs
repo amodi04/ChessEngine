@@ -5,21 +5,19 @@ using Engine.Pieces;
 namespace Engine.MoveGeneration.Types
 {
     /// <inheritdoc cref="IMove" />
+    /// Refer to IMove.cs for description of abstractions.
     /// <summary>
     ///     This struct stores castling move data.
     /// </summary>
     public readonly struct CastlingMove : IMove, IEquatable<CastlingMove>
     {
-        /// <summary>
-        ///     Move Data
-        /// </summary>
         public Board Board { get; }
         public int FromCoordinate { get; }
         public int ToCoordinate { get; }
         public Piece MovedPiece { get; }
-        public Piece CastlingRook { get; }
-        public int CastlingRookStartPosition { get; }
-        public int CastlingRookEndPosition { get; }
+        private readonly Piece _castlingRook;
+        private readonly int _castlingRookStartPosition;
+        private readonly int _castlingRookEndPosition;
 
         /// <summary>
         ///     Constructor creates a capture move.
@@ -38,9 +36,9 @@ namespace Engine.MoveGeneration.Types
             FromCoordinate = fromCoordinate;
             ToCoordinate = toCoordinate;
             MovedPiece = movedPiece;
-            CastlingRook = castlingRook;
-            CastlingRookStartPosition = castlingRookStartPosition;
-            CastlingRookEndPosition = castlingRookEndPosition;
+            _castlingRook = castlingRook;
+            _castlingRookStartPosition = castlingRookStartPosition;
+            _castlingRookEndPosition = castlingRookEndPosition;
         }
 
         public Board ExecuteMove()
@@ -51,42 +49,33 @@ namespace Engine.MoveGeneration.Types
             foreach (var piece in Board.AllPieces)
                 if (!MovedPiece.Equals(piece))
                     boardBuilder.SetPieceAtTile(piece);
-
-            // Move the king piece, move the rook and set the next player to move
-            boardBuilder.SetPieceAtTile(MovedPiece.MovePiece(this)).
-                SetPieceAtTile(PieceUtilities.RookLookup[CastlingRookEndPosition, CastlingRook.PieceCoalition]).RemovePieceAtTile(CastlingRook).
-                SetCoalitionToMove(Board.CurrentPlayer.GetOpponent().Coalition).SetPlyCount(Board.PlyCount + 1);
-
-            // Build the board
+            
+            boardBuilder.SetPieceAtTile(MovedPiece.MovePiece(this))
+                .SetPieceAtTile(PieceUtilities.RookLookup[_castlingRookEndPosition, _castlingRook.PieceCoalition])
+                .RemovePieceAtTile(_castlingRook).SetCoalitionToMove(Board.CurrentPlayer.GetOpponent().Coalition)
+                .SetPlyCount(Board.PlyCount + 1);
+            
             return boardBuilder.BuildBoard();
         }
-
-        /// <summary>
-        ///     IEquatable Implementation of Equals.
-        /// </summary>
-        /// <param name="other">The CastlingMove struct to compare to.</param>
-        /// <returns>True if equal, false if not.</returns>
+        
         public bool Equals(CastlingMove other)
         {
-            // Return true if all value types are equal
             return Equals(Board, other.Board) && FromCoordinate == other.FromCoordinate &&
                    ToCoordinate == other.ToCoordinate && Equals(MovedPiece, other.MovedPiece) &&
-                   Equals(CastlingRook, other.CastlingRook) &&
-                   CastlingRookStartPosition == other.CastlingRookStartPosition &&
-                   CastlingRookEndPosition == other.CastlingRookEndPosition;
+                   Equals(_castlingRook, other._castlingRook) &&
+                   _castlingRookStartPosition == other._castlingRookStartPosition &&
+                   _castlingRookEndPosition == other._castlingRookEndPosition;
         }
 
         public override bool Equals(object obj)
         {
-            // Return true if object is of type CaptureMove and they are equal
             return obj is CastlingMove other && Equals(other);
         }
 
         public override int GetHashCode()
         {
-            // Combine the hash codes of all value types stored
-            return HashCode.Combine(Board, FromCoordinate, ToCoordinate, MovedPiece, CastlingRook,
-                CastlingRookStartPosition, CastlingRookEndPosition);
+            return HashCode.Combine(Board, FromCoordinate, ToCoordinate, MovedPiece, _castlingRook,
+                _castlingRookStartPosition, _castlingRookEndPosition);
         }
 
         public static bool operator ==(CastlingMove left, CastlingMove right)

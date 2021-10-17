@@ -9,22 +9,22 @@ using Engine.Player;
 namespace Chess.GUI.Util
 {
     /// <summary>
-    /// GUI utility class
+    ///     GUI utility class
     /// </summary>
     public static class GUIUtilities
     {
         // Static reference to the asset loader for loading images
-        public static readonly IAssetLoader AssetLoader = AvaloniaLocator.Current.GetService<IAssetLoader>();
+        private static readonly IAssetLoader AssetLoader = AvaloniaLocator.Current.GetService<IAssetLoader>();
 
         public static Image GenerateImage(Piece piece)
         {
-            return new Image
+            return new()
             {
                 // Image format: "{Coalition}{Piece}.png"
                 // Example: WB.png => White Bishop
                 // Example: BK => Black King
                 Source = new Bitmap(AssetLoader.Open(new Uri(
-                    $"avares://Chess.GUI/Assets/{piece.PieceCoalition.ToAbbreviation()}{piece.PieceType.ToAbbreviation(Coalition.White)}.png")))
+                    $"avares://Chess.GUI/Assets/{piece.PieceCoalition.ToAbbreviation()}{piece.Type.ToAbbreviation(Coalition.White)}.png")))
             };
         }
     }

@@ -4,10 +4,10 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             x:Class="Chess.GUI.Views.AISettingElement">
+             x:Class="Chess.GUI.Views.AISettingControl">
     <!-- Design time rendering of data (not compiled in application -->
     <Design.DataContext>
-        <views:AISettingElement/>
+        <views:AISettingControl />
     </Design.DataContext>
     <DockPanel>
         <!-- This AISetting element represents a slider with a bound textbox for showing values -->
@@ -17,10 +17,10 @@
                 TickPlacement="{Binding TickPlacement}"
                 TickFrequency="{Binding TickFrequency}"
                 IsSnapToTickEnabled="{Binding SnapToTick}"
-                Name="Slider" VerticalAlignment="Center" Value="{Binding SliderValue}"/>
+                Name="Slider" VerticalAlignment="Center" Value="{Binding SliderValue}" />
         <!-- Bind the text of the textbox to the slider value. This allows for two way editing of the value -->
         <TextBox DockPanel.Dock="Right" Text="{Binding ElementName=Slider, Path=Value}"
                  IsReadOnly="{Binding IsTextBoxReadonly}" Margin="20, 0, 0, 0"
-                 VerticalContentAlignment="Center" VerticalAlignment="Center"/>
+                 VerticalContentAlignment="Center" VerticalAlignment="Center" />
     </DockPanel>
 </UserControl>

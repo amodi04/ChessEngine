@@ -1,6 +1,6 @@
 ﻿using System;
+using Avalonia;
 using Chess.GUI.Libraries.ColorPicker.Structures;
-using Point = Avalonia.Point;
 
 namespace Chess.GUI.Libraries.ColorPicker.Wheels
 {
@@ -10,15 +10,15 @@ namespace Chess.GUI.Libraries.ColorPicker.Wheels
 
         public override RGBColor ColorMapping(double radius, double theta, double value)
         {
-            HSVColor hsv = new HSVColor((float)theta, (float)Math.Pow(radius, whiteFactor), (float)value);
-            RGBColor rgb = hsv.ToRGB();
+            var hsv = new HSVColor((float) theta, (float) Math.Pow(radius, whiteFactor), (float) value);
+            var rgb = hsv.ToRGB();
             return rgb;
         }
 
         public override Point InverseColorMapping(RGBColor rgb)
         {
             double theta, rad;
-            HSVColor hsv = (HSVColor)rgb;
+            HSVColor hsv = rgb;
             theta = hsv.hue;
             rad = Math.Pow(hsv.sat, 1.0 / whiteFactor);
 

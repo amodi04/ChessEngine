@@ -6,28 +6,19 @@ using static Engine.BoardRepresentation.BoardUtilities;
 
 namespace Engine.Pieces
 {
+    /// <inheritdoc cref="Piece" />
+    /// Refer to Piece.cs for description of abstractions.
     /// <summary>
     ///     This class contains knight data and methods that it can make such as moving and calculating legal moves.
     /// </summary>
     public sealed class Knight : Piece
     {
-        /// <summary>
-        ///     Constructor to create a knight.
-        /// </summary>
-        /// <param name="piecePosition">The position on the board to create the piece at.</param>
-        /// <param name="pieceCoalition">The colour of the piece.</param>
-        /// <param name="isFirstMove">Sets whether this is the pieces first move.</param>
         public Knight(int piecePosition, Coalition pieceCoalition, bool isFirstMove) :
             base(PieceType.Knight, piecePosition, pieceCoalition, isFirstMove)
         {
             // Empty
         }
-
-        /// <summary>
-        ///     This method generates the legal moves for the knight, given the board.
-        /// </summary>
-        /// <param name="board">The current board state.</param>
-        /// <returns>An IList of moves that can be made.</returns>
+        
         public override IEnumerable<IMove> GenerateLegalMoves(Board board)
         {
             // Directions that a knight can move in. Stored as position offsets because knights are non-sliding pieces.
@@ -44,7 +35,6 @@ namespace Engine.Pieces
 
             foreach (var positionOffset in positionOffsets)
             {
-                // Initialise destination to piece position plus position offset
                 var destinationCoordinate = PiecePosition + positionOffset;
 
                 // If tile not in board or is on an edge case, skip offset.
@@ -53,14 +43,13 @@ namespace Engine.Pieces
                     continue;
 
                 var tile = board.GetTile(destinationCoordinate);
-                // If tile is empty, add normal move
+                
                 if (!tile.IsOccupied())
                 {
                     moves.Add(MoveFactory.CreateMove(board, this, destinationCoordinate));
                 }
                 else
                 {
-                    // If enemy at tile, create attacking move
                     if (IsEnemyPieceAtTile(tile))
 
                         moves.Add(MoveFactory.CreateMove(board, this, destinationCoordinate, MoveType.CaptureMove,
@@ -70,28 +59,20 @@ namespace Engine.Pieces
 
             return moves;
         }
-
-        /// <summary>
-        ///     This method moves the knight by utilising passed in move data.
-        /// </summary>
-        /// <param name="move">The move struct containing the data needed to make a move.</param>
-        /// <returns>A piece at the destination location.</returns>
+        
         public override Piece MovePiece(IMove move)
         {
-            // Return the knight at the lookup table location given the two indexes passed in
             return PieceUtilities.KnightLookup[move.ToCoordinate, move.MovedPiece.PieceCoalition];
         }
 
+        /// <summary>
+        /// Checks if the piece is moving out of bounds.
+        /// </summary>
+        /// <param name="currentPosition">The current position of the piece.</param>
+        /// <param name="offset">How many tiles the piece is moving by.</param>
         private static bool IsColumnExclusion(int currentPosition, int offset)
         {
-            // Knight is on special edge case when its position is on the first file
-            // AND the offset is -17, -10, 6 or 15 (going left).
-            // The second special edge case is when its position is on the second file
-            // AND the offset is -10 or 6 (going left).
-            // The third special edge case is when its position is on the seventh file
-            // AND the offset is -6 or 10 (going right).
-            // The fourth special edge case is when its position is on the eighth file
-            // AND the offset is -15, -6, 10 or 17 (going right).
+            // When the knight is on the first 2 and last 2 edge files and moving out of bounds
             return FileIndex(currentPosition) == 0 && offset is -17 or -10 or 6 or 15 ||
                    FileIndex(currentPosition) == 1 && offset is -10 or 6 ||
                    FileIndex(currentPosition) == 6 && offset is -6 or 10 ||

@@ -4,22 +4,20 @@ using Avalonia.Markup.Xaml;
 namespace Chess.GUI.Views
 {
     /// <summary>
-    /// Code behind for the view.
+    ///     Responsible passing data between engine and move log UI.
     /// </summary>
     public class MoveLogView : UserControl
     {
-        public DataGrid DataGrid { get; }
-        /// <summary>
-        /// Initialise class with constructor.
-        /// </summary>
         public MoveLogView()
         {
             InitializeComponent();
             DataGrid = this.Find<DataGrid>("MoveLogDataGrid");
         }
 
+        public DataGrid DataGrid { get; }
+
         /// <summary>
-        /// Load xaml object associated with class.
+        ///     Initialises GUI components
         /// </summary>
         private void InitializeComponent()
         {

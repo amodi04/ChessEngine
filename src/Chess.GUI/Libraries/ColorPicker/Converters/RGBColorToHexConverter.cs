@@ -10,14 +10,9 @@ namespace Chess.GUI.Libraries.ColorPicker.Converters
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if(value is RGBColor color)
-            {
+            if (value is RGBColor color)
                 return color.ToHexRGB();
-            }
-            else
-            {
-                return AvaloniaProperty.UnsetValue;
-            }
+            return AvaloniaProperty.UnsetValue;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

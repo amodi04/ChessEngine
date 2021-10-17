@@ -1,17 +1,16 @@
-﻿using System.Linq;
-using Engine.BoardRepresentation;
+﻿using Engine.BoardRepresentation;
 using NUnit.Framework;
 
 namespace Chess.Engine.Tests
 {
     /// <summary>
-    /// Board testing class
+    ///     Board testing class
     /// </summary>
     [TestFixture]
     public class BoardTest
     {
         /// <summary>
-        /// Tests the initial board setup
+        ///     Tests the initial board setup
         /// </summary>
         [Test]
         public void TestInitialBoard()

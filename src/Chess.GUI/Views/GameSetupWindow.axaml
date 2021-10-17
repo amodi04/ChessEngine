@@ -19,37 +19,41 @@
                     BackgroundSource="Digger"
                     TintColor="Black"
                     TintOpacity="1"
-                    MaterialOpacity="0.65"/>
+                    MaterialOpacity="0.65" />
             </ExperimentalAcrylicBorder.Material>
         </ExperimentalAcrylicBorder>
         <!-- Main panel -->
         <StackPanel Margin="30">
-        <Label Height="50" FontSize="32" Content="New Game" HorizontalContentAlignment="Center"/>
-        <Separator Height="15"/>
-        
-        <!-- White player settings -->
-        <Label Height="25" Content="White"/>
-            <Separator Height="5"/>
+            <Label Height="50" FontSize="32" Content="New Game" HorizontalContentAlignment="Center" />
+            <Separator Height="15" />
+
+            <!-- White player settings -->
+            <Label Height="25" Content="White" />
+            <Separator Height="5" />
             <Grid RowDefinitions="*" ColumnDefinitions="*, *">
                 <!-- Buttons bound to RadioButton_Checked method in code behind -->
-                <RadioButton Grid.Row="0" Grid.Column="0" GroupName="White" Content="Human" Checked="RadioButton_Checked"/>
-                <RadioButton Grid.Row="0" Grid.Column="1" GroupName="White" Content="Computer" Checked="RadioButton_Checked"/>
+                <RadioButton Grid.Row="0" Grid.Column="0" GroupName="White" Content="Human"
+                             Checked="RadioButton_Checked" />
+                <RadioButton Grid.Row="0" Grid.Column="1" GroupName="White" Content="Computer"
+                             Checked="RadioButton_Checked" />
             </Grid>
-            <Separator Height="50"/>
-        <!-- Blacks player settings -->
-            <Label Height="25" Content="Black"/>
-            <Separator Height="5"/>
+            <Separator Height="50" />
+            <!-- Blacks player settings -->
+            <Label Height="25" Content="Black" />
+            <Separator Height="5" />
             <Grid RowDefinitions="*" ColumnDefinitions="*, *">
                 <!-- Buttons bound to RadioButton_Checked method in code behind -->
-                <RadioButton Grid.Row="0" Grid.Column="0" GroupName="Black" Content="Human" Checked="RadioButton_Checked"/>
-                <RadioButton Grid.Row="0" Grid.Column="1" GroupName="Black" Content="Computer" Checked="RadioButton_Checked"/>
+                <RadioButton Grid.Row="0" Grid.Column="0" GroupName="Black" Content="Human"
+                             Checked="RadioButton_Checked" />
+                <RadioButton Grid.Row="0" Grid.Column="1" GroupName="Black" Content="Computer"
+                             Checked="RadioButton_Checked" />
             </Grid>
-        <Separator Height="250"/>
-        <Grid RowDefinitions="*" ColumnDefinitions="*, *" HorizontalAlignment="Stretch">
-            <!-- Buttons bound to CloseButton_OnClick method in code behind -->
-            <Button Grid.Column="0" Content="New Game" Click="CloseButton_OnClick"/>
-            <Button Grid.Column="1" Content="Cancel" Click="CloseButton_OnClick"/>
-        </Grid>
-    </StackPanel>
+            <Separator Height="250" />
+            <Grid RowDefinitions="*" ColumnDefinitions="*, *" HorizontalAlignment="Stretch">
+                <!-- Buttons bound to CloseButton_OnClick method in code behind -->
+                <Button Grid.Column="0" Content="New Game" Click="CloseButton_OnClick" />
+                <Button Grid.Column="1" Content="Cancel" Click="CloseButton_OnClick" />
+            </Grid>
+        </StackPanel>
     </Panel>
 </Window>

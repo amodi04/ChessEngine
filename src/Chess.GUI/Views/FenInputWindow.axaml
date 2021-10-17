@@ -16,17 +16,18 @@
                     BackgroundSource="Digger"
                     TintColor="Black"
                     TintOpacity="1"
-                    MaterialOpacity="0.65"/>
+                    MaterialOpacity="0.65" />
             </ExperimentalAcrylicBorder.Material>
         </ExperimentalAcrylicBorder>
         <!-- Main panel -->
         <Grid Margin="30" RowDefinitions="*, *" ColumnDefinitions="*">
-            <TextBox x:Name="FenInputLabel" Grid.Row="0" Grid.Column="0" Height="50" FontSize="18" Text="Input FEN string..." 
+            <TextBox x:Name="FenInputLabel" Grid.Row="0" Grid.Column="0" Height="50" FontSize="18"
+                     Text="Input FEN string..."
                      HorizontalAlignment="Center" VerticalAlignment="Center" VerticalContentAlignment="Center"
-                     IsReadOnly="False" BorderThickness="0" TextWrapping="NoWrap"/>
+                     IsReadOnly="False" BorderThickness="0" TextWrapping="NoWrap" />
             <Grid Grid.Row="1" Grid.Column="0" RowDefinitions="*" ColumnDefinitions="*, *" HorizontalAlignment="Center">
                 <!-- Buttons bound to CloseButton_OnClick method in code behind -->
-                <Button Grid.Column="0" Content="Create Board" Click="CreateBoard_OnClick" Margin="20"/>
+                <Button Grid.Column="0" Content="Create Board" Click="CreateBoard_OnClick" Margin="20" />
             </Grid>
         </Grid>
     </Panel>

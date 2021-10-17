@@ -8,6 +8,6 @@
         NormalMove,
         CaptureMove,
         CastleMove,
-        PromotionMove,
+        PromotionMove
     }
 }

@@ -1,14 +1,14 @@
 ﻿namespace Engine.AI
 {
     /// <summary>
-    /// Static class holds global AI setting data.
+    ///     Static class holds global AI setting data.
     /// </summary>
     public static class AISettings
     {
         // Depth (used by both evaluators)
         public static int Depth = 4;
-        
-        // Properties used by the default evaluator
+
+        // Properties (used by the default evaluator)
         public static int CheckmateBonus = 100000;
         public static int CheckBonus = 50;
         public static int CastleBonus = 25;

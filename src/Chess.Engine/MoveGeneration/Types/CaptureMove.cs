@@ -5,14 +5,12 @@ using Engine.Pieces;
 namespace Engine.MoveGeneration.Types
 {
     /// <inheritdoc cref="IMove" />
+    /// Refer to IMove.cs for description of abstractions.
     /// <summary>
-    ///     This struct stores capture move data
+    ///     This struct stores capture move data.
     /// </summary>
     public readonly struct CaptureMove : IMove, IEquatable<CaptureMove>
     {
-        /// <summary>
-        ///     Move Data
-        /// </summary>
         public Board Board { get; }
         public int FromCoordinate { get; }
         public int ToCoordinate { get; }
@@ -48,24 +46,18 @@ namespace Engine.MoveGeneration.Types
             foreach (var piece in Board.AllPieces)
                 if (!MovedPiece.Equals(piece))
                     boardBuilder.SetPieceAtTile(piece);
-
-            // If the captured piece is the en passant pawn
+            
             if (IsEnPassant)
-            {
-                // Remove the en passant pawn
-                // All capture moves overwrite the captured piece so we do not need to remove it first for all other capture moves
+                // Most capture moves overwrite the captured piece with the moved piece
+                // So we only need to remove the piece for an en passant move.
                 boardBuilder.RemovePieceAtTile(CapturedPiece);
-            }
             
-            // Set the piece
-            boardBuilder.SetPieceAtTile(MovedPiece.MovePiece(this)).
-                SetCoalitionToMove(Board.CurrentPlayer.GetOpponent().Coalition).
-                SetPlyCount(Board.PlyCount + 1);
+            boardBuilder.SetPieceAtTile(MovedPiece.MovePiece(this))
+                .SetCoalitionToMove(Board.CurrentPlayer.GetOpponent().Coalition).SetPlyCount(Board.PlyCount + 1);
             
-            // Build the board
             return boardBuilder.BuildBoard();
         }
-
+        
         public bool Equals(CaptureMove other)
         {
             return Equals(Board, other.Board) && FromCoordinate == other.FromCoordinate &&

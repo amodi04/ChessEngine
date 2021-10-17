@@ -8,15 +8,11 @@ namespace Engine.BoardRepresentation
     /// </summary>
     public class BoardBuilder
     {
-        /// <summary>
-        ///     Constructor initialises board configuration.
-        /// </summary>
         public BoardBuilder()
         {
             BoardConfiguration = new Piece[BoardUtilities.NumTiles];
         }
-
-        // Member fields
+        
         public Piece[] BoardConfiguration { get; }
         public Coalition CoalitionToMove { get; private set; }
         public Pawn EnPassantPawn { get; private set; }
@@ -29,13 +25,12 @@ namespace Engine.BoardRepresentation
         /// <returns>A board builder instance containing board configuration. Useful for chaining method calls.</returns>
         public BoardBuilder SetPieceAtTile(Piece piece)
         {
-            // Updates board config with a new piece at position
             BoardConfiguration[piece.PiecePosition] = piece;
             return this;
         }
 
         /// <summary>
-        /// Removes a piece from the board.
+        ///     Removes a piece from the board.
         /// </summary>
         /// <param name="piece">The piece to remove.</param>
         /// <returns>A board builder instance containing board configuration. Useful for chaining method calls.</returns>
@@ -86,7 +81,6 @@ namespace Engine.BoardRepresentation
         /// <returns>The created board object.</returns>
         public Board BuildBoard()
         {
-            // Create a new board, passing in the board builder object to the board constructor.
             return new Board(this);
         }
     }

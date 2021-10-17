@@ -5,24 +5,24 @@ namespace Chess.GUI.Libraries.ColorPicker.Structures
     public struct HSVColor
     {
         /// <summary>
-        /// Hue (0.0 to 360.0)
+        ///     Hue (0.0 to 360.0)
         /// </summary>
         public float hue;
 
         /// <summary>
-        /// Saturation (0.0 to 1.0)
+        ///     Saturation (0.0 to 1.0)
         /// </summary>
         public float sat;
 
         /// <summary>
-        /// Value (0.0 to 1.0)
+        ///     Value (0.0 to 1.0)
         /// </summary>
         public float value;
 
         public HSVColor(float hue, float saturation, float value)
         {
             this.hue = hue;
-            this.sat = saturation;
+            sat = saturation;
             this.value = value;
         }
 
@@ -37,35 +37,60 @@ namespace Chess.GUI.Libraries.ColorPicker.Structures
         }
 
         /// <summary>
-        /// Convert this HSV color to RGB colorspace
+        ///     Convert this HSV color to RGB colorspace
         /// </summary>
         public RGBColor ToRGB()
         {
-            float hue = this.hue;
-            float sat = this.sat;
-            float value = this.value;
+            var hue = this.hue;
+            var sat = this.sat;
+            var value = this.value;
             float r = 0;
             float g = 0;
             float b = 0;
 
-            int hi = (int)Math.Floor(hue / 60) % 6;
-            float f = hue / 60 - (float)Math.Floor(hue / 60);
+            var hi = (int) Math.Floor(hue / 60) % 6;
+            var f = hue / 60 - (float) Math.Floor(hue / 60);
 
             value = value * 255;
-            int v = (int)value;
-            int p = (int)(value * (1.0 - sat));
-            int q = (int)(value * (1.0 - f * sat));
-            int t = (int)(value * (1.0 - (1.0 - f) * sat));
+            var v = (int) value;
+            var p = (int) (value * (1.0 - sat));
+            var q = (int) (value * (1.0 - f * sat));
+            var t = (int) (value * (1.0 - (1.0 - f) * sat));
 
             switch (hi)
             {
-                case 0: r = v; g = t; b = p; break;
-                case 1: r = q; g = v; b = p; break;
-                case 2: r = p; g = v; b = t; break;
-                case 3: r = p; g = q; b = v; break;
-                case 4: r = t; g = p; b = v; break;
-                case 5: r = v; g = p; b = q; break;
+                case 0:
+                    r = v;
+                    g = t;
+                    b = p;
+                    break;
+                case 1:
+                    r = q;
+                    g = v;
+                    b = p;
+                    break;
+                case 2:
+                    r = p;
+                    g = v;
+                    b = t;
+                    break;
+                case 3:
+                    r = p;
+                    g = q;
+                    b = v;
+                    break;
+                case 4:
+                    r = t;
+                    g = p;
+                    b = v;
+                    break;
+                case 5:
+                    r = v;
+                    g = p;
+                    b = q;
+                    break;
             }
+
             r /= 255.0f;
             g /= 255.0f;
             b /= 255.0f;
@@ -75,14 +100,14 @@ namespace Chess.GUI.Libraries.ColorPicker.Structures
 
         public static HSVColor FromRGB(RGBColor rgb)
         {
-            HSVColor hsv = new HSVColor();
+            var hsv = new HSVColor();
 
-            float max = (float)Math.Max(rgb.r, Math.Max(rgb.g, rgb.b));
-            float min = (float)Math.Min(rgb.r, Math.Min(rgb.g, rgb.b));
+            var max = Math.Max(rgb.r, Math.Max(rgb.g, rgb.b));
+            var min = Math.Min(rgb.r, Math.Min(rgb.g, rgb.b));
 
             hsv.value = max;
 
-            float delta = max - min;
+            var delta = max - min;
 
             if (max > float.Epsilon)
             {
@@ -97,7 +122,7 @@ namespace Chess.GUI.Libraries.ColorPicker.Structures
             }
 
             if (rgb.r == max)
-                hsv.hue = (rgb.g - rgb.b) / delta;    // Between yellow and magenta
+                hsv.hue = (rgb.g - rgb.b) / delta; // Between yellow and magenta
             else if (rgb.g == max)
                 hsv.hue = 2 + (rgb.b - rgb.r) / delta; // Between cyan and yellow
             else
@@ -117,7 +142,7 @@ namespace Chess.GUI.Libraries.ColorPicker.Structures
 
         public static implicit operator HSVColor(RGBColor rgb)
         {
-            return HSVColor.FromRGB(rgb);
+            return FromRGB(rgb);
         }
     }
 }

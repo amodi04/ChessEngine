@@ -4,14 +4,14 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="Chess.GUI.Views.CapturedPiecesPanel">
-    
+
     <!-- DockPanel to split white and black captured pieces -->
     <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" RowDefinitions="*, *" Background="#FF333333">
-        
+
         <!-- Top Players Grid of captured pieces -->
-        <UniformGrid Grid.Row="0" x:Name="TopGrid" Rows="8" Columns="3"/>
-        
+        <UniformGrid Grid.Row="0" x:Name="TopGrid" Rows="8" Columns="3" />
+
         <!-- Bottom Players Grid of captured pieces -->
-        <UniformGrid Grid.Row="1" x:Name="BottomGrid" Rows="8" Columns="4"/>
+        <UniformGrid Grid.Row="1" x:Name="BottomGrid" Rows="8" Columns="4" />
     </Grid>
 </UserControl>

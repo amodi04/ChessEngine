@@ -12,8 +12,8 @@
         /// <returns>Positive 1 if white and negative 1 if black.</returns>
         public static int GetDirection(this Coalition coalition)
         {
-            // white, +1 because traversing towards the 64th tile
-            // black, -1 because traversing towards the 0th tile
+            // white, +1 because traversing in positive direction
+            // black, -1 because traversing in negative direction
             return coalition.IsWhite() ? 1 : -1;
         }
 
@@ -40,7 +40,7 @@
         }
 
         /// <summary>
-        /// Utility method for converting the enum to strings.
+        ///     Utility method for converting the enum to strings.
         /// </summary>
         /// <param name="coalition">The coalition to get an abbreviation for.</param>
         /// <returns>A single character, either "W" or "B" depending on coalition.</returns>

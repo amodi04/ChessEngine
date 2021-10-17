@@ -1,5 +1,4 @@
 ﻿using Engine.BoardRepresentation;
-using Engine.MoveGeneration;
 using Engine.MoveGeneration.Types;
 using Engine.Pieces;
 using static Engine.AI.AISettings;
@@ -7,12 +6,12 @@ using static Engine.AI.AISettings;
 namespace Engine.AI
 {
     /// <summary>
-    /// Class for holding default evaluation data.
+    ///     Class for holding default evaluation data.
     /// </summary>
     public class DefaultEvaluator : IEvaluator
     {
         /// <summary>
-        /// Gets the integer value of the move.
+        ///     Gets the integer value of the move.
         /// </summary>
         /// <param name="board">The board for move context.</param>
         /// <param name="depth">The current depth of the search.</param>
@@ -26,7 +25,7 @@ namespace Engine.AI
         }
 
         /// <summary>
-        /// Scores a player.
+        ///     Scores a player.
         /// </summary>
         /// <param name="player">The player to score.</param>
         /// <param name="depth">The current depth of the search.</param>
@@ -42,31 +41,28 @@ namespace Engine.AI
         }
 
         /// <summary>
-        /// Evaluates the piece values of the player.
+        ///     Evaluates the piece values of the player.
         /// </summary>
         /// <param name="player">The player to evaluate for.</param>
         /// <returns>An integer evaluation score.</returns>
         private int EvaluatePieces(Player.Player player)
         {
-            // Initialise values
-            int pieceEvaluationScore = 0;
-            int numBishops = 0;
-            int numRooks = 0;
+            var pieceEvaluationScore = 0;
+            var numBishops = 0;
+            var numRooks = 0;
             
-            // Loop through each active piece for the player
             foreach (var piece in player.GetActiveAlliedPieces())
             {
-                // Increase the score by the piece value
-                pieceEvaluationScore += piece.PieceType.ToValue();
-                
-                // If the piece is a bishop, increase the number of bishops score
-                if (piece.PieceType == PieceType.Bishop)
+                pieceEvaluationScore += piece.Type.ToValue();
+
+                switch (piece.Type)
                 {
-                    numBishops++;
-                } 
-                else if (piece.PieceType == PieceType.Rook)
-                {
-                    numRooks++;
+                    case PieceType.Bishop:
+                        numBishops++;
+                        break;
+                    case PieceType.Rook:
+                        numRooks++;
+                        break;
                 }
             }
 
@@ -79,7 +75,7 @@ namespace Engine.AI
         }
 
         /// <summary>
-        /// Evaluates whether the player is castled.
+        ///     Evaluates whether the player is castled.
         /// </summary>
         /// <param name="player">The player to evaluate for.</param>
         /// <returns>An integer evaluation score.</returns>
@@ -90,36 +86,23 @@ namespace Engine.AI
         }
 
         /// <summary>
-        /// Evaluates the sum of possible attacks.
+        ///     Evaluates the sum of possible attacks.
         /// </summary>
         /// <param name="player">The player to evaluate for.</param>
         /// <returns>An integer evaluation score.</returns>
         private int EvaluateAttacks(Player.Player player)
         {
-            // Initialise the attack score to 0.
-            int attackScore = 0;
+            var attackScore = 0;
             
-            // Loop through each move the player can make
             foreach (var move in player.Moves)
-            {
-                // If the move is an attak score
                 if (move is CaptureMove captureMove)
-                {
-                    // If the moved piece value is less than the captured piece value
-                    if (captureMove.MovedPiece.PieceType.ToValue() <= captureMove.CapturedPiece.PieceType.ToValue())
-                    {
-                        // Increase the attack score by 1
+                    if (captureMove.MovedPiece.Type.ToValue() <= captureMove.CapturedPiece.Type.ToValue())
                         attackScore++;
-                    }
-                }
-            }
-
-            // Return the attack score multiplied by the attack multiplier
             return attackScore * AttackMultiplier;
         }
 
         /// <summary>
-        /// Evaluates the threats on the opponent king.
+        ///     Evaluates the threats on the opponent king.
         /// </summary>
         /// <param name="player">The player to evaluate for.</param>
         /// <param name="depth">The current search depth.</param>
@@ -136,7 +119,7 @@ namespace Engine.AI
         }
 
         /// <summary>
-        /// Evaluates check on the opponent king.
+        ///     Evaluates check on the opponent king.
         /// </summary>
         /// <param name="player">The player to evaluate for.</param>
         /// <returns>An integer evaluation score.</returns>
@@ -147,20 +130,20 @@ namespace Engine.AI
         }
 
         /// <summary>
-        /// Computes the bonus to apply depending on the depth.
+        ///     Computes the bonus to apply depending on the depth.
         /// </summary>
         /// <param name="depth">The current depth of the search.</param>
         /// <returns>An integer evaluation score.</returns>
         private int ComputeDepthBonus(int depth)
         {
             // If the depth is 0, return 1
-            // Otherwise return 100 multiplied by the depth
+            // Otherwise return depth multiplier multiplied by the depth
             // Higher depth values achieve a higher score
             return depth == 0 ? 1 : DepthMultiplier * depth;
         }
-        
+
         /// <summary>
-        /// Evaluate the moves that can be made by the player.
+        ///     Evaluate the moves that can be made by the player.
         /// </summary>
         /// <param name="player">The player to evaluate for.</param>
         /// <returns>An integer evaluation score.</returns>
@@ -171,16 +154,14 @@ namespace Engine.AI
         }
 
         /// <summary>
-        /// Computes the mobility ratio.
+        ///     Computes the mobility ratio.
         /// </summary>
         /// <param name="player">The player to evaluate for.</param>
         /// <returns>An integer evaluation score.</returns>
         private int ComputeMobilityRatio(Player.Player player)
         {
-            // Return the number of moves that the player can make multiplied by ten divided by the number of moves the opponent can make
             // This gives the ratio of moves that the player can make compared to the number of moves the opponent can make.
             // This maximises the AIs moves compared to the player (a good chess strategy)
-            // Cast to an int and return
             return (int) (player.Moves.Count * 10.0f / player.GetOpponent().Moves.Count);
         }
     }
