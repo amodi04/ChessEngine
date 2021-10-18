@@ -14,14 +14,14 @@
     <!-- Bound to the moves collection stored in the view model associated with this class -->
     <DataGrid x:Name="MoveLogDataGrid" AutoGenerateColumns="False" Items="{Binding Moves}" Background="#FF333333"
               CanUserSortColumns="False" IsReadOnly="True" ColumnWidth="*" AlternatingRowBackground="#FF383838"
-              MinWidth="200">
+              MinWidth="200" Width="400">
         <!-- Define columns and headers -->
         <!-- Bind values -->
         <DataGrid.Columns>
             <DataGridTextColumn Header="Move Number" Binding="{Binding MoveNumber}" Width="*"
-                                CellStyleClasses="moveLogStyle" />
-            <DataGridTextColumn Header="White" Binding="{Binding WhiteMove}" Width="*" CellStyleClasses="moveLogStyle" />
-            <DataGridTextColumn Header="Black" Binding="{Binding BlackMove}" Width="*" CellStyleClasses="moveLogStyle" />
+                                CellStyleClasses="moveLogStyle"/>
+            <DataGridTextColumn Header="White" Binding="{Binding WhiteMove}" Width="*" CellStyleClasses="moveLogStyle"/>
+            <DataGridTextColumn Header="Black" Binding="{Binding BlackMove}" Width="*" CellStyleClasses="moveLogStyle"/>
         </DataGrid.Columns>
     </DataGrid>
 </UserControl>

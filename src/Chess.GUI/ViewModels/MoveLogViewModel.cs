@@ -33,6 +33,7 @@ namespace Chess.GUI.ViewModels
                 if (boardTransition.FromBoard.CurrentPlayer.Coalition.IsWhite())
                     Moves.Add(new MoveModel
                     {
+                        MoveNumber = "1",
                         WhiteMove = ToSan(move, boardTransition),
                         BlackMove = null
                     });
@@ -40,6 +41,7 @@ namespace Chess.GUI.ViewModels
                 else
                     Moves.Add(new MoveModel
                     {
+                        MoveNumber = "1",
                         WhiteMove = "-",
                         BlackMove = ToSan(move, boardTransition)
                     });
@@ -49,6 +51,7 @@ namespace Chess.GUI.ViewModels
             {
                 Moves.Add(new MoveModel
                 {
+                    MoveNumber = $"{Moves.Count + 1}",
                     WhiteMove = ToSan(move, boardTransition),
                     BlackMove = null
                 });
@@ -61,6 +64,7 @@ namespace Chess.GUI.ViewModels
                 var whiteMove = Moves[^1].WhiteMove;
                 Moves[^1] = new MoveModel
                 {
+                    MoveNumber = $"{Moves.Count}",
                     WhiteMove = whiteMove,
                     BlackMove = ToSan(move, boardTransition)
                 };

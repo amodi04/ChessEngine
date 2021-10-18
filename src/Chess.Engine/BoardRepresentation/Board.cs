@@ -33,10 +33,10 @@ namespace Engine.BoardRepresentation
             
             var whiteMoves = CalculateLegalMoves(WhitePieces);
             var blackMoves = CalculateLegalMoves(BlackPieces);
-            AllMoves = WhitePlayer.Moves.Concat(BlackPlayer.Moves);
             
             WhitePlayer = new Player.Player(Coalition.White, this, whiteMoves, blackMoves);
             BlackPlayer = new Player.Player(Coalition.Black, this, blackMoves, whiteMoves);
+            AllMoves = WhitePlayer.Moves.Concat(BlackPlayer.Moves);
             CurrentPlayer = boardBuilder.CoalitionToMove.ChoosePlayer(WhitePlayer, BlackPlayer);
             
             PlyCount = boardBuilder.PlyCount;

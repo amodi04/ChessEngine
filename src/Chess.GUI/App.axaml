@@ -9,7 +9,8 @@
         <StyleInclude Source="avares://Avalonia.Controls.DataGrid/Themes/Fluent.xaml" />
         <!-- Set style for move log cells -->
         <Style Selector="DataGridCell.moveLogStyle">
-            <Setter Property="HorizontalAlignment" Value="Center" />
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
         </Style>
         <!-- Set style for the buttons on the promotion dialogue -->
         <Style Selector="Button.promotionButton">
