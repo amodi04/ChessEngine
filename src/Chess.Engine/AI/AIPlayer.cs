@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using Engine.BoardRepresentation;
@@ -21,8 +20,7 @@ namespace Engine.AI
         {
             Worker = new BackgroundWorker();
             Search = new AlphaBetaSearch();
-            // TODO: Convert to AISetting
-            UseBook = true;
+            UseBook = false;
 
             // Subscribe the StartThreadedSearch method to the BackgroundWorker DoWork event
             Worker.DoWork += InitialiseSearch;
@@ -48,10 +46,8 @@ namespace Engine.AI
 
             // If the AI is in checkmate or stalemate then return because the game is over
             if (board.CurrentPlayer.IsInCheckmate() || board.CurrentPlayer.IsInStalemate()) return;
-
-            // Use book if the game has just begun (ply count is either 0 or 1) or if we are still using the book
-            // (e.g. valid book moves are still being played)
-            UseBook = UseBook || board.PlyCount < 2;
+            
+            UseBook = UseBook || board.PlyCount < 2 && AISettings.UseBook;
             
             var bestMove = UseBook ? PickRandomWeightedBookMove(board, prevMoves, openingBook) : Search.SearchMove(board);
             

@@ -53,7 +53,7 @@ namespace Chess.GUI
             else
             {
                 // Calculate list of all moves played
-                var prevMoves = new List<string>();
+                var prevMoves = new List<string?>();
                 foreach (var move in _mainWindow.MoveLogViewModel.Moves)
                 {
                     prevMoves.Add(move.WhiteMove);
@@ -63,7 +63,7 @@ namespace Chess.GUI
                 
                 // Run the BackgroundWorker (invokes the DoWork event)
                 _aiPlayer.Worker.RunWorkerAsync(Tuple.Create(_mainWindow.BoardModel, prevMoves,
-                    _aiPlayer.UseBook ? IOUtilities.GetOpeningBook() : null));
+                    AISettings.UseBook ? IOUtilities.GetOpeningBook() : null));
             }
         }
 

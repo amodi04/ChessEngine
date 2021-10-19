@@ -1,4 +1,8 @@
-﻿namespace Engine.AI
+﻿using System.Diagnostics;
+using System.IO;
+using System.Text.Json;
+
+namespace Engine.AI
 {
     /// <summary>
     ///     Static class holds global AI setting data.
@@ -25,8 +29,8 @@
         public static int BishopValue = 320;
         public static int RookValue = 500;
         public static int QueenValue = 900;
-
-        // Used to decide whether the better evaluator will be used
+        
         public static bool UseBetterEvaluator = false;
+        public static bool UseBook = false;
     }
 }

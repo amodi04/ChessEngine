@@ -1,7 +1,12 @@
-﻿using Avalonia;
+﻿using System;
+using System.Diagnostics;
+using System.IO;
+using System.Text.Json;
+using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
+using Engine.AI;
 using static Engine.AI.AISettings;
 
 namespace Chess.GUI.Views
@@ -28,6 +33,7 @@ namespace Chess.GUI.Views
         private readonly AISettingControl _twoRooksBonus;
 
         private readonly CheckBox _useBetterEvaluator;
+        private readonly CheckBox _useBook;
         
         public AISettingsWindow()
         {
@@ -50,10 +56,11 @@ namespace Chess.GUI.Views
             _rookValue = this.Find<AISettingControl>("RookValue");
             _queenValue = this.Find<AISettingControl>("QueenValue");
             _useBetterEvaluator = this.Find<CheckBox>("UseBetterEvaluator");
-            
+            _useBook = this.Find<CheckBox>("UseBook");
+
             SetValues(Depth, CheckmateBonus, CheckBonus, CastleBonus, MobilityMultiplier, PieceMultiplier,
                 AttackMultiplier, DepthMultiplier, TwoBishopsBonus, TwoRooksBonus, PawnValue, KnightValue, BishopValue,
-                RookValue, QueenValue, UseBetterEvaluator);
+                RookValue, QueenValue, UseBetterEvaluator, UseBook);
 #if DEBUG
             this.AttachDevTools();
 #endif
@@ -78,9 +85,11 @@ namespace Chess.GUI.Views
         /// <param name="rookValue">Rook value.</param>
         /// <param name="queenValue">Queen value.</param>
         /// <param name="useBetterEvaluator">Use Better Evaluation function value.</param>
+        /// <param name="useBook">Use book value.</param>
         private void SetValues(int depth, int checkmateBonus, int checkBonus, int castleBonus, int mobilityMultiplier,
             int pieceMultiplier, int attackMultiplier, int depthMultiplier, int twoBishopsBonus, int twoRooksBonus,
-            int pawnValue, int knightValue, int bishopValue, int rookValue, int queenValue, bool useBetterEvaluator)
+            int pawnValue, int knightValue, int bishopValue, int rookValue, int queenValue, bool useBetterEvaluator,
+            bool useBook)
         {
             // Set all values
             _depth.SliderValue = depth;
@@ -101,6 +110,7 @@ namespace Chess.GUI.Views
             _queenValue.SliderValue = queenValue;
 
             _useBetterEvaluator.IsChecked = useBetterEvaluator;
+            _useBook.IsChecked = useBook;
         }
         
         /// <summary>
@@ -118,10 +128,10 @@ namespace Chess.GUI.Views
         /// <param name="e">The event.</param>
         private void RestoreDefaults_OnClick(object? sender, RoutedEventArgs e)
         {
-            // Set values TODO: Get rid of magic values
+            // Set values
             SetValues(4, 100000, 50, 25, 1, 1, 1,
                 100, 20, 50, 100, 300, 320, 500,
-                900, false);
+                900, false, false);
         }
 
         /// <summary>
@@ -148,8 +158,7 @@ namespace Chess.GUI.Views
             BishopValue = _bishopValue.SliderValue;
             RookValue = _rookValue.SliderValue;
             QueenValue = _queenValue.SliderValue;
-
-            // TODO: Save to JSON
+            
             Close();
         }
 
@@ -171,6 +180,26 @@ namespace Chess.GUI.Views
         private void UseBetterEvaluator_OnUnchecked(object? sender, RoutedEventArgs e)
         {
             UseBetterEvaluator = false;
+        }
+        
+        /// <summary>
+        ///     Called when the checkbox for using the better evaluator is checked
+        /// </summary>
+        /// <param name="sender">The object that owns the event.</param>
+        /// <param name="e">The event.</param>
+        private void UseBook_OnChecked(object? sender, RoutedEventArgs e)
+        {
+            UseBook = true;
+        }
+
+        /// <summary>
+        ///     Called when the checkbox for using the better evaluator is unchecked
+        /// </summary>
+        /// <param name="sender">The object that owns the event.</param>
+        /// <param name="e">The event.</param>
+        private void UseBook_OnUnchecked(object? sender, RoutedEventArgs e)
+        {
+            UseBook = false;
         }
     }
 }

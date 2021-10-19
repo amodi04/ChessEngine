@@ -11,8 +11,7 @@ namespace Engine.AI
     /// </summary>
     public class MoveOrdering
     {
-        // TODO: Remove magic values
-        private const int MaxMoveCount = 218;
+        private const int MaxMoveCount = 256;
         private const int CapturedPieceValueMultiplier = 10;
         
         private readonly int[] _moveScores;

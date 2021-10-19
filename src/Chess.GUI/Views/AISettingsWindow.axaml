@@ -84,7 +84,7 @@
                                             IsTextBoxReadonly="False" x:Name="TwoRooksBonus" />
                 </Grid>
                 <!-- Piece value grid -->
-                <Grid Grid.Row="0" Grid.Column="1" RowDefinitions="*, *, *, *, *, *" ColumnDefinitions="*, Auto"
+                <Grid Grid.Row="0" Grid.Column="1" RowDefinitions="*, *, *, *, *, *, *" ColumnDefinitions="*, Auto"
                       Margin="50"
                       VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
                     <Label Content="Pawn Value" Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" />
@@ -120,6 +120,10 @@
                     <Label Content="Use Better Evaluator" Grid.Row="5" Grid.Column="0" VerticalAlignment="Center" />
                     <CheckBox Grid.Row="5" Grid.Column="1" Margin="25" x:Name="UseBetterEvaluator" IsChecked="False"
                               Checked="UseBetterEvaluator_OnChecked" Unchecked="UseBetterEvaluator_OnUnchecked" />
+                    
+                    <Label Content="Use Opening Book" Grid.Row="6" Grid.Column="0" VerticalAlignment="Center" />
+                    <CheckBox Grid.Row="6" Grid.Column="1" Margin="25" x:Name="UseBook" IsChecked="False"
+                              Checked="UseBook_OnChecked" Unchecked="UseBook_OnUnchecked" />
 
                 </Grid>
             </Grid>
