@@ -3,10 +3,15 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:views="clr-namespace:Chess.GUI.Views"
+        xmlns:vm="clr-namespace:Chess.GUI.ViewModels"
+        xmlns:vlc="clr-namespace:LibVLCSharp.Avalonia;assembly=LibVLCSharp.Avalonia"
         mc:Ignorable="d" d:DesignWidth="1280" d:DesignHeight="720"
         x:Class="Chess.GUI.Views.MainWindow"
         Icon="/Assets/avalonia-logo.ico"
         Title="Chess.GUI">
+    <Design.DataContext>
+        <vm:MainWindowViewModel/>
+    </Design.DataContext>
     <!-->
     This file defines static gui which can call events and methods in the code-behind
     <!-->
@@ -82,5 +87,7 @@
                 <views:MoveLogView Grid.Column="4" x:Name="MoveLogView" />
             </Grid>
         </DockPanel>
+        
+        <vlc:VideoView MediaPlayer="{Binding MediaPlayer}" Width="0" Height="0"/>
     </Panel>
 </Window>

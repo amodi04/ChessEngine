@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Avalonia;
@@ -14,6 +15,7 @@ using Engine.BoardRepresentation;
 using Engine.MoveGeneration;
 using Engine.MoveGeneration.Types;
 using Engine.Pieces;
+using MathNet.Numerics.Providers.LinearAlgebra;
 using static Engine.BoardRepresentation.BoardUtilities;
 
 namespace Chess.GUI.Views
@@ -143,16 +145,15 @@ namespace Chess.GUI.Views
                         {
                             // Set the current board in memory to the new board
                             _mainWindow.BoardModel = boardTransition.ToBoard;
-                            
                             _mainWindow.MoveStack.Push(move);
-                            
                             _mainWindow.MoveLogViewModel.UpdateMoveLog(move, boardTransition);
                             
+                            _mainWindow.DrawBoard();
+                            _mainWindow.PlaySound(move);
+
                             // Scroll move log for user
                             _mainWindow.MoveLogView.DataGrid.ScrollIntoView(
                                 _mainWindow.MoveLogView.DataGrid.Items.Cast<MoveModel>().Last(), null);
-                            
-                            _mainWindow.DrawBoard();
                             _mainWindow.MoveMadeUpdate();
 
                             // Game over scenario
@@ -175,7 +176,10 @@ namespace Chess.GUI.Views
             }
 
             // Redraw board asynchronously
-            await Dispatcher.UIThread.InvokeAsync(() => { _mainWindow.DrawBoard(); });
+            await Dispatcher.UIThread.InvokeAsync(() =>
+            {
+                _mainWindow.DrawBoard();
+            });
         }
 
         private async Task<IMove> HandlePromotion(IMove move)

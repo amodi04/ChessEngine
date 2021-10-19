@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
+using Avalonia.Threading;
 using Chess.GUI.Models;
+using Chess.GUI.Util;
 using Chess.GUI.Views;
 using Engine.AI;
 using Engine.MoveGeneration;
@@ -94,7 +96,9 @@ namespace Chess.GUI
                 
                 _mainWindow.MoveMadeUpdate();
             }
+            
             _mainWindow.DrawBoard();
+            _mainWindow.PlaySound(bestMove);
             
             // Game over
             if (_mainWindow.BoardModel.CurrentPlayer.IsInCheckmate() ||

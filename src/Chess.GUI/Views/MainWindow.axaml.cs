@@ -9,6 +9,7 @@ using Avalonia.Markup.Xaml;
 using Avalonia.Media;
 using Chess.GUI.Libraries.ColorPicker.Converters;
 using Chess.GUI.Libraries.ColorPicker.Structures;
+using Chess.GUI.Util;
 using Chess.GUI.ViewModels;
 using Engine.BoardRepresentation;
 using Engine.IO;
@@ -33,7 +34,6 @@ namespace Chess.GUI.Views
             InitializeComponent();
 
             BoardModel = Board.CreateStandardBoard();
-            
             _tilePanels = new List<TilePanel>();
             _boardView = this.Find<UniformGrid>("BoardGrid");
             CapturedPiecesPanel = this.Find<CapturedPiecesPanel>("CapturedPiecesPanel");
@@ -329,8 +329,18 @@ namespace Chess.GUI.Views
                 ? $"{BoardModel.CurrentPlayer.GetOpponent()} wins by Checkmate!"
                 : "Draw by Stalemate!";
             endgameWindow.ViewModel.EndgameStatus = endgameStatus;
-            // Show window asynchonously
+            // Show window asynchronously
             await endgameWindow.ShowDialog(this);
+        }
+
+        /// <summary>
+        /// Plays audio for moves played.
+        /// </summary>
+        /// <param name="move">The move to play the audio for.</param>
+        public void PlaySound(IMove move)
+        {
+            var vm = DataContext as MainWindowViewModel;
+            vm?.Play(AudioUtilities.GetSoundStream(move));
         }
     }
 }
