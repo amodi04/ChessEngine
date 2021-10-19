@@ -49,4 +49,7 @@
         <SubType>Code</SubType>
       </Compile>
     </ItemGroup>
+    <ItemGroup>
+      <Content Include="Assets\Games.txt" />
+    </ItemGroup>
 </Project>

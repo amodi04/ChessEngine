@@ -52,7 +52,7 @@ namespace Engine.IO
             if (movedPieceType != PieceType.Pawn && movedPieceType != PieceType.King)
                 foreach (var altMove in fromBoard.AllMoves)
                 {
-                    // Move to next move if coordinates are different
+                    // Skip if destinations coordinates are different
                     if (altMove.FromCoordinate == move.FromCoordinate ||
                         altMove.ToCoordinate != move.ToCoordinate) continue;
                     
@@ -61,7 +61,7 @@ namespace Engine.IO
                     var fromFileIndex = FileIndex(move.FromCoordinate);
                     var altFromFileIndex = FileIndex(altMove.FromCoordinate);
                     var fromRankIndex = RankIndex(move.FromCoordinate);
-                    var altFromRankIndex = RankIndex(move.FromCoordinate);
+                    var altFromRankIndex = RankIndex(altMove.FromCoordinate);
                     
                     if (fromFileIndex != altFromFileIndex)
                     {
@@ -69,7 +69,7 @@ namespace Engine.IO
                         notation.Append(FileNames[fromFileIndex]);
                         break;
                     }
-                    
+
                     if (fromRankIndex != altFromRankIndex)
                     {
                         // Append the rank number and break because we have found a solution to the ambiguity

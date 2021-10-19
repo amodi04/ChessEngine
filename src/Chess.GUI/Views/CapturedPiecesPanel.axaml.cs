@@ -101,7 +101,7 @@ namespace Chess.GUI.Views
         {
             foreach (var capturedPiece in capturedPieces)
             {
-                Image image = GUIUtilities.GenerateImage(capturedPiece);
+                Image image = IOUtilities.GenerateImage(capturedPiece);
                 grid.Children.Add(image);
             }
         }

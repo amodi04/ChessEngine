@@ -340,7 +340,7 @@ namespace Chess.GUI.Views
         public void PlaySound(IMove move)
         {
             var vm = DataContext as MainWindowViewModel;
-            vm?.Play(AudioUtilities.GetSoundStream(move));
+            vm?.Play(IOUtilities.GetSoundStream(move));
         }
     }
 }

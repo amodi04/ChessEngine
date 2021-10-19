@@ -62,7 +62,8 @@ namespace Chess.GUI
                 }
                 
                 // Run the BackgroundWorker (invokes the DoWork event)
-                _aiPlayer.Worker.RunWorkerAsync(Tuple.Create(_mainWindow.BoardModel, prevMoves));
+                _aiPlayer.Worker.RunWorkerAsync(Tuple.Create(_mainWindow.BoardModel, prevMoves,
+                    _aiPlayer.UseBook ? IOUtilities.GetOpeningBook() : null));
             }
         }
 

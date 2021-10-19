@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using Engine.BoardRepresentation;
 using Engine.IO;
 using Engine.MoveGeneration;
@@ -14,14 +15,14 @@ namespace Engine.AI
     /// </summary>
     public class AIPlayer
     {
-        private bool _useBook;
-        
+        public bool UseBook { get; private set; }
+
         public AIPlayer()
         {
             Worker = new BackgroundWorker();
             Search = new AlphaBetaSearch();
             // TODO: Convert to AISetting
-            _useBook = true;
+            UseBook = true;
 
             // Subscribe the StartThreadedSearch method to the BackgroundWorker DoWork event
             Worker.DoWork += InitialiseSearch;
@@ -43,16 +44,16 @@ namespace Engine.AI
         private void InitialiseSearch(object sender, DoWorkEventArgs args)
         {
             // Get the board from the passed in argument and unpack
-            var (board, prevMoves) = (Tuple<Board, List<string>>) args.Argument;
+            var (board, prevMoves, openingBook) = (Tuple<Board, List<string>, Stream?>) args.Argument;
 
             // If the AI is in checkmate or stalemate then return because the game is over
             if (board.CurrentPlayer.IsInCheckmate() || board.CurrentPlayer.IsInStalemate()) return;
 
             // Use book if the game has just begun (ply count is either 0 or 1) or if we are still using the book
             // (e.g. valid book moves are still being played)
-            _useBook = _useBook || board.PlyCount < 2;
+            UseBook = UseBook || board.PlyCount < 2;
             
-            var bestMove = _useBook ? PickRandomWeightedBookMove(board, prevMoves) : Search.SearchMove(board);
+            var bestMove = UseBook ? PickRandomWeightedBookMove(board, prevMoves, openingBook) : Search.SearchMove(board);
             
             // Store the result in the argument which will be passed on once the method has exited
             args.Result = bestMove;
@@ -63,28 +64,36 @@ namespace Engine.AI
         /// </summary>
         /// <param name="board">The board to apply the move to.</param>
         /// <param name="prevMoves">The list of previous moves played.</param>
+        /// <param name="openingBook"></param>
         /// <returns>The move to play.</returns>
-        private IMove PickRandomWeightedBookMove(Board board, List<string> prevMoves)
+        private IMove PickRandomWeightedBookMove(Board board, List<string> prevMoves, Stream? openingBook)
         {
-            var lines = File.ReadAllLines("Games.txt");
-            var possibleMoves = new List<string>();
-            
-            foreach (var line in lines)
+            List<string?> lines = new();
+            var possibleMoves = new List<string?>();
+            if (openingBook != null)
             {
-                var stringMoves = line.Split(' ');
-                
+                using StreamReader reader = new(openingBook);
+                while (!reader.EndOfStream)
+                {
+                    lines.Add(reader.ReadLine());
+                }
+            }
+
+            // Loop and split each line to get each move seperately
+            foreach (var stringMoves in lines.Select(line => line?.Split(' ')))
+            {
                 // If the AI makes the first move
                 if (board.PlyCount == 0)
                 {
                     // Add the first move of the line to the list of potential moves
-                    possibleMoves.Add(stringMoves[0]);
+                    possibleMoves.Add(stringMoves?[0]);
                 }
                 else
                 {
                     // If previous moves match with the sequence of moves from the current line of the text file,
                     // Add the move following the matched sequence to the list of potential moves
                     if (PreviousMoveIsSame(board.PlyCount - 1, prevMoves, stringMoves))
-                        possibleMoves.Add(stringMoves[board.PlyCount]);
+                        possibleMoves.Add(stringMoves?[board.PlyCount]);
                 }
             }
 
@@ -92,7 +101,7 @@ namespace Engine.AI
             if (possibleMoves.Count == 0)
             {
                 // We don't want to evaluate book moves anymore because there are no more matches
-                _useBook = false;
+                UseBook = false;
                 
                 // Search for a move using AB pruning
                 return Search.SearchMove(board);
@@ -113,7 +122,7 @@ namespace Engine.AI
         /// <param name="prevMoves">The list of previous moves played.</param>
         /// <param name="stringMoves">The line of moves to check against.</param>
         /// <returns></returns>
-        private bool PreviousMoveIsSame(int ply, List<string> prevMoves, string[] stringMoves)
+        private bool PreviousMoveIsSame(int ply, List<string> prevMoves, string[]? stringMoves)
         {
             if (ply > 0)
                 // Return false if the previous move is not the same (the sequence does not match)

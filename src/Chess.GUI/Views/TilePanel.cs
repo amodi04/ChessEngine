@@ -57,7 +57,7 @@ namespace Chess.GUI.Views
             if (!_mainWindow.BoardModel.GetTile(TileIndex).IsOccupied()) return;
             
             Piece piece = _mainWindow.BoardModel.GetTile(TileIndex).Piece;
-            Image image = GUIUtilities.GenerateImage(piece);
+            Image image = IOUtilities.GenerateImage(piece);
             Children.Add(image);
         }
 
