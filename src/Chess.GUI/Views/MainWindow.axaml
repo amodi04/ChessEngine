@@ -33,7 +33,7 @@
                 <Menu.ItemsPanel>
                     <!-- Allow items in menu to take up the entire width of the window -->
                     <ItemsPanelTemplate>
-                        <DockPanel HorizontalAlignment="Stretch" />
+                        <DockPanel HorizontalAlignment="Left" />
                     </ItemsPanelTemplate>
                 </Menu.ItemsPanel>
                 <!-- Defines the game menu -->
@@ -61,9 +61,9 @@
                     <MenuItem Header="Configure AI settings" Click="ConfigureAISettings_OnClick" />
                 </MenuItem>
                 <!-- Defines the about menu -->
-                <MenuItem Header="About">
-                    <MenuItem Header="Version" />
-                    <MenuItem Header="Author" />
+                <MenuItem Header="NEA Information">
+                    <MenuItem Header="Author: Arjun Modi"/>
+                    <MenuItem Header="Candidate Number: 4498"></MenuItem>
                 </MenuItem>
             </Menu>
 
