@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Linq;
 using Engine.BoardRepresentation;
 using Engine.MoveGeneration;
+using Engine.MoveGeneration.Types;
 using Engine.Player;
 
 namespace Engine.AI
@@ -29,6 +30,8 @@ namespace Engine.AI
             _movesEvaluated = 0;
             _cutoffsProduced = 0;
             _isWhite = false;
+            _evaluation = new DefaultEvaluator();
+            _bestMove = new NormalMove();
         }
 
         /// <summary>

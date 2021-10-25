@@ -15,7 +15,7 @@ namespace Engine.MoveGeneration.Types
         public int FromCoordinate { get; }
         public int ToCoordinate { get; }
         public Piece MovedPiece { get; }
-        public Piece CapturedPiece { get; }
+        public Piece? CapturedPiece { get; }
         private readonly IMove _wrappedMove;
         private readonly Pawn _promotingPawn;
         public Piece PromotedPiece { get; }

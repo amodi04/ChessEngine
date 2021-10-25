@@ -92,7 +92,7 @@ namespace Engine.Pieces
             return Equals(left, right);
         }
         
-        public static bool operator !=(Piece left, Piece right)
+        public static bool operator !=(Piece left, Piece? right)
         {
             return !Equals(left, right);
         }

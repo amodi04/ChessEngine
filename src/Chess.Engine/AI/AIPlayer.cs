@@ -14,24 +14,20 @@ namespace Engine.AI
     /// </summary>
     public class AIPlayer
     {
-        public bool UseBook { get; private set; }
+        private bool _useBook;
 
         public AIPlayer()
         {
             Worker = new BackgroundWorker();
             Search = new AlphaBetaSearch();
-            UseBook = false;
+            _useBook = false;
 
             // Subscribe the StartThreadedSearch method to the BackgroundWorker DoWork event
             Worker.DoWork += InitialiseSearch;
         }
-
-        #region Properties
         
         private AlphaBetaSearch Search { get; }
         public BackgroundWorker Worker { get; }
-        
-        #endregion
 
 
         /// <summary>
@@ -47,9 +43,9 @@ namespace Engine.AI
             // If the AI is in checkmate or stalemate then return because the game is over
             if (board.CurrentPlayer.IsInCheckmate() || board.CurrentPlayer.IsInStalemate()) return;
             
-            UseBook = UseBook || board.PlyCount < 2 && AISettings.UseBook;
+            _useBook = _useBook || board.PlyCount < 2 && AISettings.UseBook;
             
-            var bestMove = UseBook ? PickRandomWeightedBookMove(board, prevMoves, openingBook) : Search.SearchMove(board);
+            var bestMove = _useBook ? PickRandomWeightedBookMove(board, prevMoves, openingBook) : Search.SearchMove(board);
             
             // Store the result in the argument which will be passed on once the method has exited
             args.Result = bestMove;
@@ -97,7 +93,7 @@ namespace Engine.AI
             if (possibleMoves.Count == 0)
             {
                 // We don't want to evaluate book moves anymore because there are no more matches
-                UseBook = false;
+                _useBook = false;
                 
                 // Search for a move using AB pruning
                 return Search.SearchMove(board);
@@ -118,7 +114,7 @@ namespace Engine.AI
         /// <param name="prevMoves">The list of previous moves played.</param>
         /// <param name="stringMoves">The line of moves to check against.</param>
         /// <returns></returns>
-        private bool PreviousMoveIsSame(int ply, List<string> prevMoves, string[]? stringMoves)
+        private bool PreviousMoveIsSame(int ply, IReadOnlyList<string> prevMoves, IReadOnlyList<string> stringMoves)
         {
             if (ply > 0)
                 // Return false if the previous move is not the same (the sequence does not match)

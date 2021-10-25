@@ -41,9 +41,9 @@ namespace Engine.BoardRepresentation
             
             PlyCount = boardBuilder.PlyCount;
         }
-        
-        public IEnumerable<Piece> BlackPieces { get; }
+
         public IEnumerable<Piece> WhitePieces { get; }
+        public IEnumerable<Piece> BlackPieces { get; }
         public IEnumerable<Piece> AllPieces { get; }
         public Player.Player WhitePlayer { get; }
         public Player.Player BlackPlayer { get; }

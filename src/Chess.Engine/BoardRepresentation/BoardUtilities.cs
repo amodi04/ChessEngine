@@ -19,8 +19,8 @@ namespace Engine.BoardRepresentation
         public static readonly int[] ReflectBoard = GenerateReflectedPositions();
 
         // Stores the respective player types for the players that can be accessed throughout the game
-        public static PlayerType WhitePlayerType { get; set; } = PlayerType.Human;
-        public static PlayerType BlackPlayerType { get; set; } = PlayerType.Computer;
+        public static PlayerType WhitePlayerType = PlayerType.Human;
+        public static PlayerType BlackPlayerType = PlayerType.Computer;
 
         /// <summary>
         ///     Generates the reflected mapping of tile positions.

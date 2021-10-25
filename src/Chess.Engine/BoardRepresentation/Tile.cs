@@ -9,8 +9,8 @@ namespace Engine.BoardRepresentation
     /// </summary>
     public class Tile
     {
-        private static readonly IDictionary<int, Tile> EmptyTiles = InitialiseEmptyTiles();
-        private readonly Piece _piece;
+        private static readonly Tile[] EmptyTiles = InitialiseEmptyTiles();
+        private readonly Piece? _piece;
         private readonly TileType _tileType;
 
         /// <summary>
@@ -38,34 +38,34 @@ namespace Engine.BoardRepresentation
         }
 
         public int TileCoordinate { get; }
-        public Piece Piece => IsOccupied() ? _piece : null;
+        public Piece? Piece => IsOccupied() ? _piece : null;
 
         /// <summary>
         ///     Gets the string representation of the tile object.
         /// </summary>
         /// <returns>"-" if tile is empty. If occupied, the string representation of the piece is returned.</returns>
         /// <exception cref="ArgumentOutOfRangeException">Called when an unknown tile state is passed in.</exception>
-        public override string ToString()
+        public override string? ToString()
         {
             return _tileType switch
             {
                 TileType.Empty => "-",
-                TileType.Occupied => Piece.ToString(),
+                TileType.Occupied => Piece?.ToString(),
                 _ => throw new ArgumentOutOfRangeException()
             };
         }
 
         /// <summary>
-        ///     Loops from 0 to 64 to generate 64 empty tiles.
+        ///     Creates an array of 64 empty tiles.
         /// </summary>
-        /// <returns>An IDictionary containing references to the 64 empty tiles.</returns>
-        private static IDictionary<int, Tile> InitialiseEmptyTiles()
+        /// <returns>An array containing references to the 64 empty tiles.</returns>
+        private static Tile[] InitialiseEmptyTiles()
         {
-            var emptyTileDictionary = new Dictionary<int, Tile>();
+            var emptyTilesArray = new Tile[BoardUtilities.NumTiles];
             
-            for (var i = 0; i < BoardUtilities.NumTiles; i++) emptyTileDictionary[i] = new Tile(i);
+            for (var i = 0; i < BoardUtilities.NumTiles; i++) emptyTilesArray[i] = new Tile(i);
 
-            return emptyTileDictionary;
+            return emptyTilesArray;
         }
 
         /// <summary>
@@ -78,7 +78,7 @@ namespace Engine.BoardRepresentation
         }
 
         /// <summary>
-        ///     Public interface for creating tiles. Tile is created based on piece passed in.
+        ///     Factory method for creating tiles. Tile is created based on piece passed in.
         /// </summary>
         /// <param name="tileCoordinate">The position of the tile in a grid of 64 tiles.</param>
         /// <param name="piece">The piece object that occupies the tile.</param>
@@ -88,8 +88,6 @@ namespace Engine.BoardRepresentation
         /// </returns>
         public static Tile CreateTile(int tileCoordinate, Piece piece)
         {
-            // Create an occupied tile if their is a piece.
-            // otherwise return the lookup reference in the empty tiles dictionary.
             return piece != null ? new Tile(tileCoordinate, piece) : EmptyTiles[tileCoordinate];
         }
     }
