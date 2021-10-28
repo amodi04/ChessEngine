@@ -11,7 +11,8 @@ namespace Engine.AI
     /// </summary>
     public class MoveOrdering
     {
-        private const int MaxMoveCount = 256;
+        // Maximum number of moves in any given board state
+        private const int MaxMoveCount = 218;
         private const int CapturedPieceValueMultiplier = 10;
         
         private readonly int[] _moveScores;
@@ -63,7 +64,7 @@ namespace Engine.AI
             }
 
             // Sort the moves
-            BubbleSort(moves);
+            InsertionSort(moves);
 
             // Return the sorted moves
             return moves;
@@ -73,7 +74,7 @@ namespace Engine.AI
         ///     Sorts a list of moves.
         /// </summary>
         /// <param name="moves">The moves to sort.</param>
-        private void BubbleSort(IList<IMove> moves)
+        private void InsertionSort(IList<IMove> moves)
         {
             for (var i = 0; i < moves.Count; i++)
             {
