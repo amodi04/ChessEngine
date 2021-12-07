@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
 using Engine.BoardRepresentation;
 using Engine.MoveGeneration;
 using Engine.MoveGeneration.Types;
@@ -13,14 +15,10 @@ namespace Engine.AI
     /// </summary>
     public class MoveOrdering
     {
-        // Constants
         // Maximum number of moves in any given board state
         private const int MaxMoveCount = 218;
         private const int CapturedPieceValueMultiplier = 10;
-        private const int MoveLengthThreshold = 10;
-
         private int[] _moveScores;
-        private bool _useQuickSort;
 
         public MoveOrdering()
         {
@@ -35,8 +33,7 @@ namespace Engine.AI
         /// <returns>An IEnumerable collection of moves.</returns>
         public IEnumerable<IMove> OrderMoves(Board board, List<IMove> moves)
         {
-            _useQuickSort = moves.Count > MoveLengthThreshold;
-            _moveScores = _useQuickSort ? new int[moves.Count] : new int[MaxMoveCount];
+            _moveScores = new int[moves.Count];
             for (var i = 0; i < moves.Count; i++)
             {
                 var move = moves[i];
@@ -71,44 +68,15 @@ namespace Engine.AI
             }
 
             // Sort the moves
-            if (_useQuickSort)
-            {
-                QuickSort(moves);
-            }
-            else
-            {
-                InsertionSort(moves);
-            }
+            QuickSort(moves);
 
             // Return the sorted moves
             return moves;
         }
-        
-        /// <summary>
-        ///     Sorts a list of moves using insertion sort.
-        /// </summary>
-        /// <param name="moves">The moves to sort.</param>
-        private void InsertionSort(IList<IMove> moves)
-        {
-            for (var i = 0; i < moves.Count; i++)
-            {
-                for (var j = i + 1; j > 0; j--)
-                {
-                    var swapIndex = j - 1;
-                    if (_moveScores[swapIndex] < _moveScores[j])
-                    {
-                        // Swap the moves
-                        (moves[j], moves[swapIndex]) = (moves[swapIndex], moves[j]);
 
-                        // Swap the move scores
-                        (_moveScores[j], _moveScores[swapIndex]) = (_moveScores[swapIndex], _moveScores[j]);
-                    }
-                }
-            }
-        }
-        
         /// <summary>
-        /// Auxiliary QuickSort function for readability
+        /// Auxiliary QuickSort function for readability.
+        /// Makes the initial call to the recursive function.
         /// </summary>
         /// <param name="moves">The moves to sort.</param>
         private void QuickSort(IList<IMove> moves)
@@ -147,32 +115,32 @@ namespace Engine.AI
         /// <returns>A partition index signifying where to split the array.</returns>
         private int Partition(IList<IMove> moves, int low, int high)
         {
-            // Set the pivot to the right of the sub array.
-            int pivot = _moveScores[high];
+            // Set the pivot to the middle of the array
+            int pivot = _moveScores[(int) Math.Floor((high + low) / 2d)];
             
-            // Temporary pivot index
+            // Left index
             int i = low - 1;
-
-            for (int j = low; j <= high - 1; j++)
-            {
-                // If current element is larger than the pivot element
-                if (_moveScores[j] > pivot)
-                {
-                    // Increment index of smaller element
-                    i++;
-                    
-                    // Swap current value with value at temporary pivot index
-                    (_moveScores[i], _moveScores[j]) = (_moveScores[j], _moveScores[i]);
-                    (moves[i], moves[j]) = (moves[j], moves[i]);
-                }
-            }
-
-            // Move the pivot element to the correct pivot position (between smaller and larger elements)
-            (_moveScores[i + 1], _moveScores[high]) = (_moveScores[high], _moveScores[i + 1]);
-            (moves[i + 1], moves[high]) = (moves[high], moves[i + 1]);
             
-            // The pivot index
-            return i + 1;
+            // Right index
+            int j = high + 1;
+
+            while (true)
+            {
+                // Move the left index to the right at least once and while the element
+                // at the left index is greater than the pivot
+                do { i++; } while (_moveScores[i] > pivot);
+                
+                // Move the right index to the left at least once and while the element
+                // at the right index is less than the pivot
+                do { j--; } while (_moveScores[j] < pivot);
+
+                // If the indices have crossed return the new pivot point (point of crossing)
+                if (i >= j) return j;
+                
+                // Swap elements at left and right indices
+                (_moveScores[i], _moveScores[j]) = (_moveScores[j], _moveScores[i]);
+                (moves[i], moves[j]) = (moves[j], moves[i]);
+            }
         }
 
         /// <summary>
