@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using Engine.BoardRepresentation;
 using Engine.MoveGeneration;
 using Engine.MoveGeneration.Types;
@@ -11,12 +13,15 @@ namespace Engine.AI
     /// </summary>
     public class MoveOrdering
     {
+        // Constants
         // Maximum number of moves in any given board state
         private const int MaxMoveCount = 218;
         private const int CapturedPieceValueMultiplier = 10;
-        
-        private readonly int[] _moveScores;
-        
+        private const int MoveLengthThreshold = 10;
+
+        private int[] _moveScores;
+        private bool _useQuickSort;
+
         public MoveOrdering()
         {
             _moveScores = new int[MaxMoveCount];
@@ -30,6 +35,8 @@ namespace Engine.AI
         /// <returns>An IEnumerable collection of moves.</returns>
         public IEnumerable<IMove> OrderMoves(Board board, List<IMove> moves)
         {
+            _useQuickSort = moves.Count > MoveLengthThreshold;
+            _moveScores = _useQuickSort ? new int[moves.Count] : new int[MaxMoveCount];
             for (var i = 0; i < moves.Count; i++)
             {
                 var move = moves[i];
@@ -64,14 +71,21 @@ namespace Engine.AI
             }
 
             // Sort the moves
-            InsertionSort(moves);
+            if (_useQuickSort)
+            {
+                QuickSort(moves);
+            }
+            else
+            {
+                InsertionSort(moves);
+            }
 
             // Return the sorted moves
             return moves;
         }
         
         /// <summary>
-        ///     Sorts a list of moves.
+        ///     Sorts a list of moves using insertion sort.
         /// </summary>
         /// <param name="moves">The moves to sort.</param>
         private void InsertionSort(IList<IMove> moves)
@@ -91,6 +105,74 @@ namespace Engine.AI
                     }
                 }
             }
+        }
+        
+        /// <summary>
+        /// Auxiliary QuickSort function for readability
+        /// </summary>
+        /// <param name="moves">The moves to sort.</param>
+        private void QuickSort(IList<IMove> moves)
+        {
+            QuickSort(moves, 0, moves.Count - 1);
+        }
+        
+        /// <summary>
+        /// Sorts a list of moves using quicksort.
+        /// Sorts a portion of an array, divides it into partitions, then sorts those.
+        /// </summary>
+        /// <param name="moves">The moves to sort.</param>
+        /// <param name="low">The lower bound of the partition.</param>
+        /// <param name="high">The higher bound of the partition.</param>
+        private void QuickSort(IList<IMove> moves, int low, int high)
+        {
+            if (low >= 0 && high >= 0 && low < high)
+            {
+                // Pivot is the partitioning index
+                var pivot = Partition(moves, low, high); 
+                
+                // Sort left sub array
+                QuickSort(moves, low, pivot);
+                
+                // Sort right sub array
+                QuickSort(moves, pivot + 1, high);
+            }
+        }
+
+        /// <summary>
+        /// Partitions an array into sub arrays and sorts the sub array.
+        /// </summary>
+        /// <param name="moves">The list of moves to sort.</param>
+        /// <param name="low">The lower bound of the sub array.</param>
+        /// <param name="high">The upper bound of the sub array.</param>
+        /// <returns>A partition index signifying where to split the array.</returns>
+        private int Partition(IList<IMove> moves, int low, int high)
+        {
+            // Set the pivot to the right of the sub array.
+            int pivot = _moveScores[high];
+            
+            // Temporary pivot index
+            int i = low - 1;
+
+            for (int j = low; j <= high - 1; j++)
+            {
+                // If current element is larger than the pivot element
+                if (_moveScores[j] > pivot)
+                {
+                    // Increment index of smaller element
+                    i++;
+                    
+                    // Swap current value with value at temporary pivot index
+                    (_moveScores[i], _moveScores[j]) = (_moveScores[j], _moveScores[i]);
+                    (moves[i], moves[j]) = (moves[j], moves[i]);
+                }
+            }
+
+            // Move the pivot element to the correct pivot position (between smaller and larger elements)
+            (_moveScores[i + 1], _moveScores[high]) = (_moveScores[high], _moveScores[i + 1]);
+            (moves[i + 1], moves[high]) = (moves[high], moves[i + 1]);
+            
+            // The pivot index
+            return i + 1;
         }
 
         /// <summary>
