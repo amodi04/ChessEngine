@@ -18,7 +18,11 @@ namespace Engine.AI
         // Maximum number of moves in any given board state
         private const int MaxMoveCount = 218;
         private const int CapturedPieceValueMultiplier = 10;
+        
+        // Threshold at which to switch to quick sort rather than insertion sort
+        private const int MoveLengthThreshold = 30;
         private int[] _moveScores;
+        private bool _useQuickSort;
 
         public MoveOrdering()
         {
@@ -33,7 +37,9 @@ namespace Engine.AI
         /// <returns>An IEnumerable collection of moves.</returns>
         public IEnumerable<IMove> OrderMoves(Board board, List<IMove> moves)
         {
-            _moveScores = new int[moves.Count];
+            _useQuickSort = moves.Count > MoveLengthThreshold;
+            _moveScores = _useQuickSort ? new int[moves.Count] : new int[MaxMoveCount];
+            
             for (var i = 0; i < moves.Count; i++)
             {
                 var move = moves[i];
@@ -68,10 +74,40 @@ namespace Engine.AI
             }
 
             // Sort the moves
-            QuickSort(moves);
+            if (_useQuickSort)
+            {
+                QuickSort(moves);
+            }
+            else
+            {
+                InsertionSort(moves);
+            }
 
             // Return the sorted moves
             return moves;
+        }
+        
+        /// <summary>
+        ///     Sorts a list of moves using insertion sort.
+        /// </summary>
+        /// <param name="moves">The moves to sort.</param>
+        private void InsertionSort(IList<IMove> moves)
+        {
+            for (var i = 0; i < moves.Count; i++)
+            {
+                for (var j = i + 1; j > 0; j--)
+                {
+                    var swapIndex = j - 1;
+                    if (_moveScores[swapIndex] < _moveScores[j])
+                    {
+                        // Swap the moves
+                        (moves[j], moves[swapIndex]) = (moves[swapIndex], moves[j]);
+                        
+                        // Swap the move scores
+                        (_moveScores[j], _moveScores[swapIndex]) = (_moveScores[swapIndex], _moveScores[j]);
+                    }
+                }
+            }
         }
 
         /// <summary>
