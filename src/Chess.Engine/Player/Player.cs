@@ -29,8 +29,8 @@ namespace Engine.Player
             PlayerType = coalition.IsWhite() ? BoardUtilities.WhitePlayerType : BoardUtilities.BlackPlayerType;
             _board = board;
             King = GetKingOnBoard();
-            Moves = moves.Concat(ComputeCastleMoves(opponentMoves)).ToList();
             _isInCheck = CalculateAttacksOnTile(King.PiecePosition, opponentMoves).Any();
+            Moves = moves.Concat(ComputeCastleMoves(opponentMoves)).ToList();
         }
         
         public King King { get; }

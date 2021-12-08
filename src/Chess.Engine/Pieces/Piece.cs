@@ -87,7 +87,7 @@ namespace Engine.Pieces
             return HashCode.Combine((int) Type, PiecePosition, (int) PieceCoalition, IsFirstMove);
         }
         
-        public static bool operator ==(Piece left, Piece right)
+        public static bool operator ==(Piece? left, Piece? right)
         {
             return Equals(left, right);
         }

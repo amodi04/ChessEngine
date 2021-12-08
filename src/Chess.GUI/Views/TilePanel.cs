@@ -15,7 +15,6 @@ using Engine.BoardRepresentation;
 using Engine.MoveGeneration;
 using Engine.MoveGeneration.Types;
 using Engine.Pieces;
-using MathNet.Numerics.Providers.LinearAlgebra;
 using static Engine.BoardRepresentation.BoardUtilities;
 
 namespace Chess.GUI.Views
@@ -56,7 +55,7 @@ namespace Chess.GUI.Views
             
             if (!_mainWindow.BoardModel.GetTile(TileIndex).IsOccupied()) return;
             
-            Piece piece = _mainWindow.BoardModel.GetTile(TileIndex).Piece;
+            Piece? piece = _mainWindow.BoardModel.GetTile(TileIndex).Piece;
             Image image = IOUtilities.GenerateImage(piece);
             Children.Add(image);
         }
