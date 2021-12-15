@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using Engine.IO;
@@ -40,6 +41,9 @@ namespace Engine.BoardRepresentation
             CurrentPlayer = boardBuilder.CoalitionToMove.ChoosePlayer(WhitePlayer, BlackPlayer);
             
             PlyCount = boardBuilder.PlyCount;
+
+            // Hash board state and store with board
+            Zobristkey = Zobrist.Hash(this);
         }
 
         public IEnumerable<Piece> WhitePieces { get; }
@@ -51,6 +55,7 @@ namespace Engine.BoardRepresentation
         public IEnumerable<IMove> AllMoves { get; }
         public Pawn EnPassantPawn { get; }
         public int PlyCount { get; }
+        public ulong Zobristkey { get; }
 
         /// <summary>
         ///     Gets all pieces on the current board.

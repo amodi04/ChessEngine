@@ -13,9 +13,9 @@ namespace Engine.BoardRepresentation
             BoardConfiguration = new Piece[BoardUtilities.NumTiles];
         }
         
-        public Piece[] BoardConfiguration { get; }
+        public Piece?[] BoardConfiguration { get; }
         public Coalition CoalitionToMove { get; private set; }
-        public Pawn EnPassantPawn { get; private set; }
+        public Pawn? EnPassantPawn { get; private set; }
         public int PlyCount { get; private set; }
 
         /// <summary>

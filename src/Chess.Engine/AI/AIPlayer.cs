@@ -19,14 +19,14 @@ namespace Engine.AI
         public AIPlayer()
         {
             Worker = new BackgroundWorker();
-            Search = new AlphaBetaSearch();
+            Search = new Search();
             _useBook = false;
 
             // Subscribe the StartThreadedSearch method to the BackgroundWorker DoWork event
             Worker.DoWork += InitialiseSearch;
         }
         
-        private AlphaBetaSearch Search { get; }
+        private Search Search { get; }
         public BackgroundWorker Worker { get; }
 
 

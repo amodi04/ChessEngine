@@ -11,19 +11,20 @@ namespace Engine.AI
     /// <summary>
     ///     Class responsible for searching through moves using Alpha Beta pruning.
     /// </summary>
-    public class AlphaBetaSearch
+    public class Search
     {
         private int _searchDepth;
+        private int _targetDepth;
         private IEvaluator _evaluation;
         private readonly MoveOrdering _moveOrdering;
-        private IMove _bestMove;
+        private IMove? _bestMove;
         private bool _isWhite;
         
         // Debug values
         private int _cutoffsProduced;
         private int _movesEvaluated;
         
-        public AlphaBetaSearch()
+        public Search()
         {
             _searchDepth = AISettings.Depth;
             _moveOrdering = new MoveOrdering();
@@ -49,14 +50,33 @@ namespace Engine.AI
             _cutoffsProduced = 0;
             _bestMove = null;
             _isWhite = board.CurrentPlayer.Coalition.IsWhite();
+            _searchDepth = AISettings.Depth;
+            
+            TranspositionTable transpositionTable = new(board, 64000);
 
             // Create evaluator based on the user value in the AISettings class
             _evaluation = AISettings.UseBetterEvaluator ? new BetterEvaluator() : new DefaultEvaluator();
 
-            // Search for the best move
-            _searchDepth = AISettings.Depth;
-            AlphaBeta(board, _searchDepth, int.MinValue, int.MaxValue, _isWhite);
+            // Start timer for iterative deepening
+            Stopwatch iterativeDeepeningTimer = new();
+            iterativeDeepeningTimer.Start();
             
+            // Loop until max search depth defined by user is reached
+            for (int i = 1; i <= _searchDepth; i++)
+            {
+                // If time exceeded for search, break and use best move found so far
+                // TODO: Use setting
+
+                if (iterativeDeepeningTimer.ElapsedMilliseconds > 4000) break;
+                
+                // Set the current depth iteration that is being searched (used for depth checks in the alpha beta search)
+                _targetDepth = i;
+                Debug.WriteLine(i);
+                
+                // Search at target depth
+                AlphaBeta(board, _targetDepth, int.MinValue, int.MaxValue, _isWhite, transpositionTable);
+            }
+            iterativeDeepeningTimer.Stop();
             watch.Stop();
             Debug.WriteLine($"Evaluated {_movesEvaluated} moves in {watch.ElapsedMilliseconds}ms");
             Debug.WriteLine($"Cutoffs Produced: {_cutoffsProduced}");
@@ -76,11 +96,21 @@ namespace Engine.AI
         /// <param name="depth">The depth at which to search at.</param>
         /// <param name="alpha">Minimum score of the maximising player (worst score).</param>
         /// <param name="beta">Maximum score of the minimising player (worst score).</param>
-        /// <param name="maximisingPlayer">Flag for running the algorithm as either black or white</param>
+        /// <param name="maximisingPlayer">Flag for running the algorithm as either black or white.</param>
+        /// <param name="transpositionTable">Table of previously searched boards.</param>
         /// <returns>An integer board value that is propagated up the game tree.</returns>
-        private int AlphaBeta(Board board, int depth, int alpha, int beta, bool maximisingPlayer)
+        private int AlphaBeta(Board board, int depth, int alpha, int beta, bool maximisingPlayer, TranspositionTable transpositionTable)
         {
-            // If the depth is 0 (leaf node) or the game has ended
+            // Try to find the evaluation score for the board we are attempting to evaluate
+            int transpositionEvaluation = transpositionTable.LookupEvaluation(depth, alpha, beta);
+            
+            // If there is an evaluation stored
+            if (transpositionEvaluation != int.MinValue)
+            {
+                _bestMove = transpositionTable.GetStoredMove();
+                return transpositionEvaluation;
+            }
+            
             if (depth == 0 || IsEndgame(board))
             {
                 _movesEvaluated++;
@@ -88,8 +118,7 @@ namespace Engine.AI
                 // Return the static evaluation of the board
                 return _evaluation.Evaluate(board, depth);
             }
-
-            // Sort the moves
+            
             var orderedMoves = _moveOrdering.OrderMoves(board, board.CurrentPlayer.Moves.ToList());
 
             // If the algorithm is running from white's perspective
@@ -97,18 +126,14 @@ namespace Engine.AI
             {
                 // Initialise the maximum evaluation to -Infinity (we want this to increase)
                 var maxEval = int.MinValue;
-
-                // Loop through the sorted moves for the current player
+                
                 foreach (var move in orderedMoves)
                 {
-                    // Make the move
                     var boardTransition = board.CurrentPlayer.MakeMove(move);
                     if (boardTransition.Status == MoveStatus.Done)
                     {
                         // Evaluate the children of the node and get the minimum value (black's best score)
-                        // Decrease depth, pass alpha and beta, and run evaluation of children as black because 
-                        // it becomes black's turn after white.
-                        var eval = AlphaBeta(boardTransition.ToBoard, depth - 1, alpha, beta, false);
+                        var eval = AlphaBeta(boardTransition.ToBoard,  depth - 1, alpha, beta, false, transpositionTable);
 
                         // If black's best score is greater than white's best score
                         if (eval > maxEval)
@@ -117,12 +142,10 @@ namespace Engine.AI
                             maxEval = eval;
 
                             // If we are at the root node (maximal search depth)
-                            if (depth == _searchDepth)
-                                // Set the best move
+                            if (depth == _targetDepth)
                                 _bestMove = move;
                         }
-
-                        // Set alpha to the max of the current evaluation and alpha 
+                        
                         alpha = Math.Max(alpha, eval);
 
                         // If the current evaluation is more than black's best move
@@ -135,40 +158,34 @@ namespace Engine.AI
                         }
                     }
                 }
-
-                // Return the maximum evaluation
+                
+                transpositionTable.StoreEvaluation(depth, alpha, TranspositionTable.UpperBound, _bestMove);
                 return maxEval;
             }
             // Else if the algorithm is running as black
 
             // Initialise the minimum evaluation to +Infinity (we want this to decrease)
             var minEval = int.MaxValue;
-
-            // Loop through the sorted moves for the current player
+            
             foreach (var move in orderedMoves)
             {
-                // Make the move
                 var boardTransition = board.CurrentPlayer.MakeMove(move);
                 if (boardTransition.Status == MoveStatus.Done)
                 {
                     // Evaluate the children of the node and get the maximum value (white's best score)
-                    // Decrease depth, pass alpha and beta, and run evaluation of children as white because 
-                    // it becomes white's turn after black.
-                    var eval = AlphaBeta(boardTransition.ToBoard, depth - 1, alpha, beta, true);
-
-                    // If white's best score is less than black's best score
+                    var eval = AlphaBeta(boardTransition.ToBoard, depth - 1, alpha, beta, true, transpositionTable);
+                    
                     if (eval < minEval)
                     {
                         // Set black's best score to the new score because it has a smaller value
                         minEval = eval;
 
                         // If we are at the root node (maximal search depth)
-                        if (depth == _searchDepth)
+                        if (depth == _targetDepth)
                             // Set the best move
                             _bestMove = move;
                     }
-
-                    // Set beta to the min of the current evaluation and beta 
+                    
                     beta = Math.Min(beta, eval);
 
                     // If the current evaluation is less than white's best move
@@ -181,8 +198,8 @@ namespace Engine.AI
                     }
                 }
             }
-
-            // Return the minimum evaluation
+            
+            transpositionTable.StoreEvaluation(depth, beta, TranspositionTable.LowerBound, _bestMove);
             return minEval;
         }
 
@@ -193,7 +210,6 @@ namespace Engine.AI
         /// <returns>True if the player is in checkmate or in stalemate.</returns>
         private bool IsEndgame(Board board)
         {
-            // Return true if the current player is in checkmate or stalemate(draw)
             return board.CurrentPlayer.IsInCheckmate() || board.CurrentPlayer.IsInStalemate();
         }
     }
