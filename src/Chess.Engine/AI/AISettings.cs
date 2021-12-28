@@ -1,8 +1,4 @@
-﻿using System.Diagnostics;
-using System.IO;
-using System.Text.Json;
-
-namespace Engine.AI
+﻿namespace Engine.AI
 {
     /// <summary>
     ///     Static class holds global AI setting data.
@@ -32,5 +28,6 @@ namespace Engine.AI
         
         public static bool UseBetterEvaluator = false;
         public static bool UseBook = false;
+        public static bool UseIterativeDeepening = false;
     }
 }

@@ -34,6 +34,7 @@ namespace Chess.GUI.Views
 
         private readonly CheckBox _useBetterEvaluator;
         private readonly CheckBox _useBook;
+        private readonly CheckBox _useIterativeDeepening;
         
         public AISettingsWindow()
         {
@@ -57,10 +58,11 @@ namespace Chess.GUI.Views
             _queenValue = this.Find<AISettingControl>("QueenValue");
             _useBetterEvaluator = this.Find<CheckBox>("UseBetterEvaluator");
             _useBook = this.Find<CheckBox>("UseBook");
+            _useIterativeDeepening = this.Find<CheckBox>("UseIterativeDeepening");
 
             SetValues(Depth, CheckmateBonus, CheckBonus, CastleBonus, MobilityMultiplier, PieceMultiplier,
                 AttackMultiplier, DepthMultiplier, TwoBishopsBonus, TwoRooksBonus, PawnValue, KnightValue, BishopValue,
-                RookValue, QueenValue, UseBetterEvaluator, UseBook);
+                RookValue, QueenValue, UseBetterEvaluator, UseBook, UseIterativeDeepening);
 #if DEBUG
             this.AttachDevTools();
 #endif
@@ -86,10 +88,11 @@ namespace Chess.GUI.Views
         /// <param name="queenValue">Queen value.</param>
         /// <param name="useBetterEvaluator">Use Better Evaluation function value.</param>
         /// <param name="useBook">Use book value.</param>
+        /// <param name="useIterativeDeepening">Use iterative deepening value.</param>
         private void SetValues(int depth, int checkmateBonus, int checkBonus, int castleBonus, int mobilityMultiplier,
             int pieceMultiplier, int attackMultiplier, int depthMultiplier, int twoBishopsBonus, int twoRooksBonus,
             int pawnValue, int knightValue, int bishopValue, int rookValue, int queenValue, bool useBetterEvaluator,
-            bool useBook)
+            bool useBook, bool useIterativeDeepening)
         {
             // Set all values
             _depth.SliderValue = depth;
@@ -111,6 +114,7 @@ namespace Chess.GUI.Views
 
             _useBetterEvaluator.IsChecked = useBetterEvaluator;
             _useBook.IsChecked = useBook;
+            _useIterativeDeepening.IsChecked = useIterativeDeepening;
         }
         
         /// <summary>
@@ -131,7 +135,7 @@ namespace Chess.GUI.Views
             // Set values
             SetValues(4, 100000, 50, 25, 1, 1, 1,
                 100, 20, 50, 100, 300, 320, 500,
-                900, false, false);
+                900, false, false, false);
         }
 
         /// <summary>
@@ -183,7 +187,7 @@ namespace Chess.GUI.Views
         }
         
         /// <summary>
-        ///     Called when the checkbox for using the better evaluator is checked
+        ///     Called when the checkbox for using book moves is checked.
         /// </summary>
         /// <param name="sender">The object that owns the event.</param>
         /// <param name="e">The event.</param>
@@ -193,13 +197,33 @@ namespace Chess.GUI.Views
         }
 
         /// <summary>
-        ///     Called when the checkbox for using the better evaluator is unchecked
+        ///     Called when the checkbox for using book moves is unchecked
         /// </summary>
         /// <param name="sender">The object that owns the event.</param>
         /// <param name="e">The event.</param>
         private void UseBook_OnUnchecked(object? sender, RoutedEventArgs e)
         {
             UseBook = false;
+        }
+        
+        /// <summary>
+        ///     Called when the checkbox for using iterative deepening is checked
+        /// </summary>
+        /// <param name="sender">The object that owns the event.</param>
+        /// <param name="e">The event.</param>
+        private void UseIterativeDeepening_OnChecked(object? sender, RoutedEventArgs e)
+        {
+            UseIterativeDeepening = true;
+        }
+
+        /// <summary>
+        ///     Called when the checkbox for using the iterative deepening is unchecked
+        /// </summary>
+        /// <param name="sender">The object that owns the event.</param>
+        /// <param name="e">The event.</param>
+        private void UseIterativeDeepening_OnUnchecked(object? sender, RoutedEventArgs e)
+        {
+            UseIterativeDeepening = false;
         }
     }
 }

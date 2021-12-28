@@ -30,13 +30,14 @@ namespace Engine.AI
         }
 
         /// <summary>
-        ///     Order's a given list of moves.
+        ///     Orders a given list of moves.
         /// </summary>
         /// <param name="board">The board for context.</param>
         /// <param name="moves">The list of moves.</param>
         /// <returns>An IEnumerable collection of moves.</returns>
-        public IEnumerable<IMove> OrderMoves(Board board, List<IMove> moves)
+        public IEnumerable<IMove> OrderMoves(Board board, List<IMove> moves, TranspositionTable transpositionTable)
         {
+            IMove? hashMove = transpositionTable.GetStoredMove();
             _useQuickSort = moves.Count > MoveLengthThreshold;
             _moveScores = _useQuickSort ? new int[moves.Count] : new int[MaxMoveCount];
             
@@ -67,6 +68,12 @@ namespace Engine.AI
                         // Add the value of the piece to promote to because this is classed as a good move
                         score += GetPieceValue(promotionMove.PromotedPiece.Type);
                     }
+                }
+
+                // If the move is the same as the best move stored from a previous search, prioritise it
+                if (move.FromCoordinate == hashMove?.FromCoordinate && move.ToCoordinate == hashMove?.FromCoordinate)
+                {
+                    score += 10000;
                 }
                 
                 // Set the score

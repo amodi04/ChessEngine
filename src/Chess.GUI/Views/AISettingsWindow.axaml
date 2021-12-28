@@ -3,9 +3,9 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:views="clr-namespace:Chess.GUI.Views"
-        mc:Ignorable="d" d:DesignWidth="1200" d:DesignHeight="800"
+        mc:Ignorable="d" d:DesignWidth="1200" d:DesignHeight="1000"
         Width="1200"
-        Height="800"
+        Height="1000"
         x:Class="Chess.GUI.Views.AISettingsWindow"
         Title="AI Settings"
         WindowStartupLocation="CenterOwner">
@@ -84,7 +84,7 @@
                                             IsTextBoxReadonly="False" x:Name="TwoRooksBonus" />
                 </Grid>
                 <!-- Piece value grid -->
-                <Grid Grid.Row="0" Grid.Column="1" RowDefinitions="*, *, *, *, *, *, *" ColumnDefinitions="*, Auto"
+                <Grid Grid.Row="0" Grid.Column="1" RowDefinitions="*, *, *, *, *, *, *, *" ColumnDefinitions="*, Auto"
                       Margin="50"
                       VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
                     <Label Content="Pawn Value" Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" />
@@ -124,7 +124,10 @@
                     <Label Content="Use Opening Book" Grid.Row="6" Grid.Column="0" VerticalAlignment="Center" />
                     <CheckBox Grid.Row="6" Grid.Column="1" Margin="25" x:Name="UseBook" IsChecked="False"
                               Checked="UseBook_OnChecked" Unchecked="UseBook_OnUnchecked" />
-
+                    
+                    <Label Content="Use Iterative Deepening" Grid.Row="7" Grid.Column="0" VerticalAlignment="Center" />
+                    <CheckBox Grid.Row="7" Grid.Column="1" Margin="25" x:Name="UseIterativeDeepening" IsChecked="False"
+                              Checked="UseIterativeDeepening_OnChecked" Unchecked="UseIterativeDeepening_OnUnchecked" />
                 </Grid>
             </Grid>
             <!-- Close and restore defaults buttons -->
