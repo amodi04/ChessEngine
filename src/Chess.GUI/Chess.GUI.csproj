@@ -4,6 +4,7 @@
         <TargetFramework>net5.0</TargetFramework>
         <Nullable>enable</Nullable>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+        <LangVersion>10</LangVersion>
     </PropertyGroup>
     <ItemGroup>
         <AvaloniaResource Include="Assets\**" />
@@ -19,35 +20,35 @@
         <PackageReference Include="VideoLAN.LibVLC.Windows" Version="3.0.16" />
     </ItemGroup>
     <ItemGroup>
-      <ProjectReference Include="..\Chess.Engine\Chess.Engine.csproj" />
+        <ProjectReference Include="..\Chess.Engine\Chess.Engine.csproj" />
     </ItemGroup>
     <ItemGroup>
-      <Compile Update="Views\MoveLogView.axaml.cs">
-        <DependentUpon>MoveLogView.axaml</DependentUpon>
-        <SubType>Code</SubType>
-      </Compile>
-      <Compile Update="Views\CapturedPiecesPanel.axaml.cs">
-        <DependentUpon>CapturedPiecesPanel.axaml</DependentUpon>
-        <SubType>Code</SubType>
-      </Compile>
-      <Compile Update="Views\MainWindow.axaml.cs">
-        <DependentUpon>MainWindow.axaml</DependentUpon>
-        <SubType>Code</SubType>
-      </Compile>
-      <Compile Update="Views\PromotionWindow.axaml.cs">
-        <DependentUpon>PromotionWindow.axaml</DependentUpon>
-        <SubType>Code</SubType>
-      </Compile>
-      <Compile Update="ColourPicker\ColourWheel.axaml.cs">
-        <DependentUpon>ColourWheel.axaml</DependentUpon>
-        <SubType>Code</SubType>
-      </Compile>
-      <Compile Update="Libraries\ColorPicker\ColorWheel.axaml.cs">
-        <DependentUpon>ColorWheel.axaml</DependentUpon>
-        <SubType>Code</SubType>
-      </Compile>
+        <Compile Update="Views\MoveLogView.axaml.cs">
+            <DependentUpon>MoveLogView.axaml</DependentUpon>
+            <SubType>Code</SubType>
+        </Compile>
+        <Compile Update="Views\CapturedPiecesPanel.axaml.cs">
+            <DependentUpon>CapturedPiecesPanel.axaml</DependentUpon>
+            <SubType>Code</SubType>
+        </Compile>
+        <Compile Update="Views\MainWindow.axaml.cs">
+            <DependentUpon>MainWindow.axaml</DependentUpon>
+            <SubType>Code</SubType>
+        </Compile>
+        <Compile Update="Views\PromotionWindow.axaml.cs">
+            <DependentUpon>PromotionWindow.axaml</DependentUpon>
+            <SubType>Code</SubType>
+        </Compile>
+        <Compile Update="ColourPicker\ColourWheel.axaml.cs">
+            <DependentUpon>ColourWheel.axaml</DependentUpon>
+            <SubType>Code</SubType>
+        </Compile>
+        <Compile Update="Libraries\ColorPicker\ColorWheel.axaml.cs">
+            <DependentUpon>ColorWheel.axaml</DependentUpon>
+            <SubType>Code</SubType>
+        </Compile>
     </ItemGroup>
     <ItemGroup>
-      <Content Include="Assets\Games.txt" />
+        <Content Include="Assets\Games.txt" />
     </ItemGroup>
 </Project>

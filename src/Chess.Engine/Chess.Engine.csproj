@@ -4,5 +4,6 @@
         <TargetFramework>net5.0</TargetFramework>
         <RootNamespace>Engine</RootNamespace>
         <Nullable>enable</Nullable>
+        <LangVersion>10</LangVersion>
     </PropertyGroup>
 </Project>

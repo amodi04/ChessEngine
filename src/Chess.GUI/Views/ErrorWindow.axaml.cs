@@ -6,16 +6,16 @@ using Avalonia.Markup.Xaml;
 namespace Chess.GUI.Views;
 
 /// <summary>
-///     Class responsible for displaying a FEN string to the user
+///     Handles GUI errors
 /// </summary>
-public class FenOutputWindow : Window
+public class ErrorWindow : Window
 {
-    public FenOutputWindow(string fen) : this()
+    public ErrorWindow(string error) : this()
     {
-        this.Find<TextBox>("FenOutputLabel").Text = fen;
+        this.Find<TextBox>("ErrorLabel").Text = error;
     }
 
-    public FenOutputWindow()
+    public ErrorWindow()
     {
         InitializeComponent();
 #if DEBUG

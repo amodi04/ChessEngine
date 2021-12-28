@@ -1,13 +1,12 @@
-﻿namespace Engine.MoveGeneration
+﻿namespace Engine.MoveGeneration;
+
+/// <summary>
+///     Enumeration to keep track of move type.
+/// </summary>
+public enum MoveType
 {
-    /// <summary>
-    ///     Enumeration to keep track of move type.
-    /// </summary>
-    public enum MoveType
-    {
-        NormalMove,
-        CaptureMove,
-        CastleMove,
-        PromotionMove
-    }
+    NormalMove,
+    CaptureMove,
+    CastleMove,
+    PromotionMove
 }

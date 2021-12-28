@@ -1,0 +1,32 @@
+﻿<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="600" d:DesignHeight="400"
+        x:Class="Chess.GUI.Views.ErrorWindow"
+        Title="Error Dialog"
+        Width="600"
+        Height="400">
+    <Panel>
+        <!-- Set background -->
+        <ExperimentalAcrylicBorder>
+            <ExperimentalAcrylicBorder.Material>
+                <ExperimentalAcrylicMaterial
+                    BackgroundSource="Digger"
+                    TintColor="Black"
+                    TintOpacity="1"
+                    MaterialOpacity="0.65" />
+            </ExperimentalAcrylicBorder.Material>
+        </ExperimentalAcrylicBorder>
+        <!-- Main panel -->
+        <Grid Margin="30" RowDefinitions="*, *" ColumnDefinitions="*">
+            <TextBox x:Name="ErrorLabel" Grid.Row="0" Grid.Column="0" Height="50" FontSize="18" Text="Error"
+                     HorizontalAlignment="Center" VerticalAlignment="Center" VerticalContentAlignment="Center"
+                     IsReadOnly="True" BorderThickness="0" TextWrapping="NoWrap" Background="Red" />
+            <Grid Grid.Row="1" Grid.Column="0" RowDefinitions="*" ColumnDefinitions="*, *" HorizontalAlignment="Center">
+                <!-- Buttons bound to CloseButton_OnClick method in code behind -->
+                <Button Grid.Column="0" Content="OK" Click="CloseButton_OnClick" Margin="20" />
+            </Grid>
+        </Grid>
+    </Panel>
+</Window>

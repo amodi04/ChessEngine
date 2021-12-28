@@ -1,12 +1,11 @@
-﻿namespace Engine.MoveGeneration
+﻿namespace Engine.MoveGeneration;
+
+/// <summary>
+///     This enum handles move state and is used for checking move progress.
+/// </summary>
+public enum MoveStatus
 {
-    /// <summary>
-    ///     This enum handles move state and is used for checking move progress.
-    /// </summary>
-    public enum MoveStatus
-    {
-        Done,
-        Illegal,
-        PlayerInCheck
-    }
+    Done,
+    Illegal,
+    PlayerInCheck
 }

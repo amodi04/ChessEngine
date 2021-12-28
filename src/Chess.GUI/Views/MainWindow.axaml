@@ -7,10 +7,10 @@
         xmlns:vlc="clr-namespace:LibVLCSharp.Avalonia;assembly=LibVLCSharp.Avalonia"
         mc:Ignorable="d" d:DesignWidth="1280" d:DesignHeight="720"
         x:Class="Chess.GUI.Views.MainWindow"
-        Icon="/Assets/avalonia-logo.ico"
-        Title="Chess.GUI">
+        Icon="/Assets/rbc.ico"
+        Title="Chess">
     <Design.DataContext>
-        <vm:MainWindowViewModel/>
+        <vm:MainWindowViewModel />
     </Design.DataContext>
     <!-->
     This file defines static gui which can call events and methods in the code-behind
@@ -55,15 +55,11 @@
                         <MenuItem Header="Change Dark Tile Colour" Click="ChangeTileColours_OnClick" />
                         <MenuItem Header="Reset Tile Colours" Click="ResetTileColours_OnClick" />
                         <MenuItem Header="Flip Board" Click="FlipBoardMenuItem_OnClick" />
-                        <MenuItem Header="Highlight Legal Moves" Click="HighlightLegalMovesMenuItem_OnClick" />
+                        <CheckBox Content="Highlight Legal Moves"
+                                  Click="HighlightLegalMovesMenuItem_OnClick" IsChecked="True"/>
                     </MenuItem>
                     <Separator />
                     <MenuItem Header="Configure AI settings" Click="ConfigureAISettings_OnClick" />
-                </MenuItem>
-                <!-- Defines the about menu -->
-                <MenuItem Header="NEA Information">
-                    <MenuItem Header="Author: Arjun Modi"/>
-                    <MenuItem Header="Candidate Number: 4498"></MenuItem>
                 </MenuItem>
             </Menu>
 
@@ -87,7 +83,7 @@
                 <views:MoveLogView Grid.Column="4" x:Name="MoveLogView" />
             </Grid>
         </DockPanel>
-        
-        <vlc:VideoView MediaPlayer="{Binding MediaPlayer}" Width="0" Height="0"/>
+
+        <vlc:VideoView MediaPlayer="{Binding MediaPlayer}" Width="0" Height="0" />
     </Panel>
 </Window>

@@ -9,7 +9,7 @@
     <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" RowDefinitions="*, *" Background="#FF333333">
 
         <!-- Top Players Grid of captured pieces -->
-        <UniformGrid Grid.Row="0" x:Name="TopGrid" Rows="8" Columns="3" />
+        <UniformGrid Grid.Row="0" x:Name="TopGrid" Rows="8" Columns="4" />
 
         <!-- Bottom Players Grid of captured pieces -->
         <UniformGrid Grid.Row="1" x:Name="BottomGrid" Rows="8" Columns="4" />

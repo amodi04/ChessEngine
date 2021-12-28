@@ -5,50 +5,47 @@ using Chess.GUI.ViewModels;
 using Chess.GUI.Views;
 using LibVLCSharp.Shared;
 
-namespace Chess.GUI
+namespace Chess.GUI;
+
+/// <summary>
+///     Main application loop.
+/// </summary>
+public class App : Application
 {
     /// <summary>
-    ///     Main application loop.
+    ///     Initialises GUI components
     /// </summary>
-    public class App : Application
+    public override void Initialize()
     {
-        /// <summary>
-        ///     Initialises GUI components
-        /// </summary>
-        public override void Initialize()
-        {
-            Core.Initialize();
-            AvaloniaXamlLoader.Load(this);
-        }
+        Core.Initialize();
+        AvaloniaXamlLoader.Load(this);
+    }
 
-        /// <summary>
-        ///     Called when application has loaded internally.
-        /// </summary>
-        public override void OnFrameworkInitializationCompleted()
+    /// <summary>
+    ///     Called when application has loaded internally.
+    /// </summary>
+    public override void OnFrameworkInitializationCompleted()
+    {
+        if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
-            if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
+            // Load the main window
+            desktop.MainWindow = new MainWindow
             {
-                // Load the main window
-                desktop.MainWindow = new MainWindow()
-                {
-                    DataContext = new MainWindowViewModel()
-                };
+                DataContext = new MainWindowViewModel()
+            };
 
-                desktop.Exit += OnExit;
-            }
-
-            base.OnFrameworkInitializationCompleted();
+            desktop.Exit += OnExit!;
         }
-        
-        void OnExit(object sender, ControlledApplicationLifetimeExitEventArgs e)
+
+        base.OnFrameworkInitializationCompleted();
+    }
+
+    private void OnExit(object sender, ControlledApplicationLifetimeExitEventArgs e)
+    {
+        if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
-            if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
-            {
-                var vm = (MainWindowViewModel)desktop.MainWindow?.DataContext;
-                if (vm != null)
-                    vm.Dispose();
-            }
+            var vm = (MainWindowViewModel)desktop.MainWindow?.DataContext!;
+            vm.Dispose();
         }
-
     }
 }

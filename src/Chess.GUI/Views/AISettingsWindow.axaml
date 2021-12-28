@@ -3,8 +3,8 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:views="clr-namespace:Chess.GUI.Views"
-        mc:Ignorable="d" d:DesignWidth="1200" d:DesignHeight="1000"
-        Width="1200"
+        mc:Ignorable="d" d:DesignWidth="1200" d:DesignHeight="1600"
+        Width="1600"
         Height="1000"
         x:Class="Chess.GUI.Views.AISettingsWindow"
         Title="AI Settings"
@@ -119,15 +119,15 @@
 
                     <Label Content="Use Better Evaluator" Grid.Row="5" Grid.Column="0" VerticalAlignment="Center" />
                     <CheckBox Grid.Row="5" Grid.Column="1" Margin="25" x:Name="UseBetterEvaluator" IsChecked="False"
-                              Checked="UseBetterEvaluator_OnChecked" Unchecked="UseBetterEvaluator_OnUnchecked" />
-                    
+                              Click="UseBetterEvaluator_OnClick" />
+
                     <Label Content="Use Opening Book" Grid.Row="6" Grid.Column="0" VerticalAlignment="Center" />
                     <CheckBox Grid.Row="6" Grid.Column="1" Margin="25" x:Name="UseBook" IsChecked="False"
-                              Checked="UseBook_OnChecked" Unchecked="UseBook_OnUnchecked" />
-                    
+                              Click="UseBook_OnClick" />
+
                     <Label Content="Use Iterative Deepening" Grid.Row="7" Grid.Column="0" VerticalAlignment="Center" />
                     <CheckBox Grid.Row="7" Grid.Column="1" Margin="25" x:Name="UseIterativeDeepening" IsChecked="False"
-                              Checked="UseIterativeDeepening_OnChecked" Unchecked="UseIterativeDeepening_OnUnchecked" />
+                              Click="UseIterativeDeepening_OnClick" />
                 </Grid>
             </Grid>
             <!-- Close and restore defaults buttons -->

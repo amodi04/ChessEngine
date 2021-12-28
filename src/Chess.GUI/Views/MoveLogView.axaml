@@ -19,9 +19,9 @@
         <!-- Bind values -->
         <DataGrid.Columns>
             <DataGridTextColumn Header="Move Number" Binding="{Binding MoveNumber}" Width="*"
-                                CellStyleClasses="moveLogStyle"/>
-            <DataGridTextColumn Header="White" Binding="{Binding WhiteMove}" Width="*" CellStyleClasses="moveLogStyle"/>
-            <DataGridTextColumn Header="Black" Binding="{Binding BlackMove}" Width="*" CellStyleClasses="moveLogStyle"/>
+                                CellStyleClasses="moveLogStyle" />
+            <DataGridTextColumn Header="White" Binding="{Binding WhiteMove}" Width="*" CellStyleClasses="moveLogStyle" />
+            <DataGridTextColumn Header="Black" Binding="{Binding BlackMove}" Width="*" CellStyleClasses="moveLogStyle" />
         </DataGrid.Columns>
     </DataGrid>
 </UserControl>

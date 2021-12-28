@@ -4,41 +4,37 @@ using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
 using Chess.GUI.ViewModels;
 
-namespace Chess.GUI.Views
+namespace Chess.GUI.Views;
+
+/// <summary>
+///     Endgame Window UI class
+/// </summary>
+public class EndgameWindow : Window
 {
-    /// <summary>
-    /// Endgame Window UI class
-    /// </summary>
-    public class EndgameWindow : Window
+    public EndgameWindow()
     {
-        public EndgameWindow()
-        {
-            InitializeComponent();
-            ViewModel = new EndgameWindowViewModel();
-            DataContext = ViewModel;
+        InitializeComponent();
+        ViewModel = new EndgameWindowViewModel();
+        DataContext = ViewModel;
 #if DEBUG
-            this.AttachDevTools();
+        this.AttachDevTools();
 #endif
-        }
-        
-        public EndgameWindowViewModel ViewModel { get; }
+    }
 
-        /// <summary>
-        ///     Initialises GUI components
-        /// </summary>
-        private void InitializeComponent()
-        {
-            AvaloniaXamlLoader.Load(this);
-        }
+    public EndgameWindowViewModel ViewModel { get; }
 
-        /// <summary>
-        ///     Called when the close button is clicked.
-        /// </summary>
-        /// <param name="sender">The object that owns the event.</param>
-        /// <param name="e">The event.</param>
-        private void CloseButton_OnClick(object? sender, RoutedEventArgs e)
-        {
-            Close();
-        }
+    private void InitializeComponent()
+    {
+        AvaloniaXamlLoader.Load(this);
+    }
+
+    /// <summary>
+    ///     Called when the close button is clicked.
+    /// </summary>
+    /// <param name="sender">The object that owns the event.</param>
+    /// <param name="e">The event.</param>
+    private void CloseButton_OnClick(object? sender, RoutedEventArgs e)
+    {
+        Close();
     }
 }
